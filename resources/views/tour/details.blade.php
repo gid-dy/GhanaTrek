@@ -86,68 +86,66 @@
                         <div class="preview col-md-6">
 
                             <div class="preview-pic tab-content">
-                                <div class="tab-pane active" id="pic-1"><img src="{{ asset('images/backend_images/tours/large/'.$tourpackagesDetails->Imageaddress) }}" /></div>
-                                <div class="tab-pane" id="pic-2"><img src="{{ asset('images/frontend_images/nzulezu_01.jpg') }}" /></div>
-                                <div class="tab-pane" id="pic-3"><img src="{{ asset('images/frontend_images/nzulezu_02.jpg') }}" /></div>
-                                <div class="tab-pane" id="pic-4"><img src="{{ asset('images/frontend_images/nzulezu_03.jpg') }}" /></div>
-                                <div class="tab-pane" id="pic-5"><img src="{{ asset('images/frontend_images/nzulezu_04.jpg') }}" /></div>
+                                <div class="tab-pane active" id="pic-1"><img class="mainImage" src="{{ asset('images/backend_images/tours/large/'.$tourpackagesDetails->Imageaddress) }}" /></div>
+                                <div>
+                                @foreach($tourAltImage as $altimage)
+                                   <img class="changeImage" src="{{ asset('images/backend_images/tours/large/'.$altimage->Image) }}" style="width:80px; display:inline;float:left;margin-top:20px; padding-right:10px; cursor:pointer;" />
+                                    @endforeach
                             </div>
-                            <ul class="preview-thumbnail nav nav-tabs">
-                                <li class="active">
-                                    <a data-target="#pic-1" data-toggle="tab"><img src="{{ asset('images/frontend_images/nzulezu.jpg') }}" /></a>
-                                </li>
-                                <li>
-                                    <a data-target="#pic-2" data-toggle="tab"><img src="{{ asset('images/frontend_images/nzulezu_01.jpg') }}" /></a>
-                                </li>
-                                <li>
-                                    <a data-target="#pic-3" data-toggle="tab"><img src="{{ asset('images/frontend_images/nzulezu_02.jpg') }}" /></a>
-                                </li>
-                                <li>
-                                    <a data-target="#pic-4" data-toggle="tab"><img src="{{ asset('images/frontend_images/nzulezu_03.jpg') }}" /></a>
-                                </li>
-                                <li>
-                                    <a data-target="#pic-5" data-toggle="tab"><img src="{{ asset('images/frontend_images/nzulezu_04.jpg') }}" /></a>
-                                </li>
-                            </ul>
+                            </div>
+                            
 
                         </div>
                         <div class="details col-md-6">
-                            <h3 class="product-title">{{ $tourpackagesDetails->PackageName}}</h3>
-                            <p>Tour Code: {{ $tourpackagesDetails->PackageCode}}</p>
-                            <p>
-                                <select id="SelType" name="TourTypeName">
-                                    <option value="">Select Tour Type</option>
-                                    @foreach($tourpackagesDetails->tourtypes as $tourtype)
-                                    <option value="{{ $tourpackagesDetails->PackageId}}-{{ $tourtype->TourTypeName }}">{{ $tourtype->TourTypeName }}</option>
-                                    @endforeach
-                                    </select>
-                            </p>
+                            <form name="addtocartform" id="addtocartform" action="{{ url('add-cart') }}" method="post">
+                                @csrf
+                                <input type="hidden" name="PackageId" value="{{ $tourpackagesDetails->PackageId}}">
+                                <input type="hidden" name="PackageName" value="{{ $tourpackagesDetails->PackageName}}">
+                                <input type="hidden" name="PackagePrice" id="PackagePrice" value="{{ $tourpackagesDetails->PackagePrice}}">
+                                <input type="hidden" name="PackageCode" id="PackageCode" value="{{ $tourpackagesDetails->PackageCode}}">
+                                <div class="tour-details">
+                                    <h3 class="product-title">{{ $tourpackagesDetails->PackageName}}</h3>
+                                    <p>Tour Code: {{ $tourpackagesDetails->PackageCode}}</p>
+                                    <p>
+                                        <select id="SelType" name="TourTypeName">
+                                            <option value="">Select Tour Type</option>
+                                            @foreach($tourpackagesDetails->tourtypes as $tourtype)
+                                            <option value="{{ $tourpackagesDetails->PackageId}}-{{ $tourtype->TourTypeName }}">{{ $tourtype->TourTypeName }}</option>
+                                            @endforeach
+                                            </select>
+                                    </p>
 
-                            <h4 class="price">current price: <span id="getPackagePrice">GHS {{ $tourpackagesDetails->PackagePrice}}</span></h4>
+                                    <h4 class="price">current price: <span id="getPackagePrice">GHS {{ $tourpackagesDetails->PackagePrice}}</span></h4>
+                                    <div class="form-control>"
+                                        <label>Number of Travellers</label>
+                                        <input type="text" name="Travellers" value="1" />
+                                        @if($total_availability>0)
+                                            <button class="add-to-cart btn btn-default" id="cartbutton" type="submit">add to cart</button>
+                                        @endif
+                                        <button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button>
+                                    </div>
+                                    <p>
+                                        <select id="SelTran" name="TransportName">
+                                            <option value="">Select Tour Type</option>
+                                            @foreach($tourpackagesDetails->tourtransports as $transport)
+                                            <option value="{{ $tourpackagesDetails->PackageId }}-{{ $transport->TransportName }}">{{ $transport->TransportName }}</option>
+                                            @endforeach
+                                            </select>
+                                    </p>
 
-                            <div>
-                                <p><i class="fa fa-check" aria-hidden="true"></i>Free Cancellation up to 24 hours in advance</p>
-                                <p><i class="fa fa-check" aria-hidden="true"></i>Low Price Guarantee</p>
-                                <p><i class="fa fa-check" aria-hidden="true"></i>Reserve Now & Pay Later</p>
-                            </div>
-                            <p>
-                                <select id="SelTran" name="TransportName">
-                                
-                                    <option value="">Select Transportation</option>
-                                    @foreach($tourpackagesDetails->tourtransports as $tourtransport)
-                                    <option value="{{ $tourpackagesDetails->PackageId}}-{{ $tourtransport->TransportName }}">{{ $tourtransport->TransportName }}</option>
-                                    @endforeach
-                                    </select>
-                            </p>
+                                    <h4 class="price">current price: <span id="getTransportCost">GHS {{ $transport->TransportCost }}</span></h4>
+                                        <p><b>Availability:</b> <span id="Availability"> @if($total_availability>0) Available @else Sold Out @endif </span></p>
+                                    
 
-                            <h4 class="price">cost: <span id="getTransportCost">GHS {{ $tourtransport->TransportCost}}</span></h4>
+                                    <div>
+                                        <p><i class="fa fa-check" aria-hidden="true"></i>Free Cancellation up to 24 hours in advance</p>
+                                        <p><i class="fa fa-check" aria-hidden="true"></i>Low Price Guarantee</p>
+                                        <p><i class="fa fa-check" aria-hidden="true"></i>Reserve Now & Pay Later</p>
+                                    </div>
 
-                            
-                            <div class="action">
-                                <button class="add-to-cart btn btn-default" type="button">add to cart</button>
-                                <button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button>
-                            </div>
-
+                                    
+                                </div>
+                            </form>
                         </div>
                         
                             
@@ -687,182 +685,43 @@
                 <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                     <!-- Wrapper for slides -->
                     <div class="carousel-inner">
-                        <div class="item active">
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <div class="col-item">
-                                        <div class="photo box19">
-                                            <img src="{{ asset('images/frontend_images/kakum_03.jpg') }}" class="img-responsive" alt="a" />
-                                            <div class="box-content">
-                                                <ul class="title">
-                                                    <li><i class="fa fa-list"></i><a href="{{ url('details') }}" class="hidden-sm">More details</a> </li>
-                                                </ul>
+                        <?php $count=1; ?>
+                        @foreach($relatedTour->chunk(3) as $chunk)
+                            <div <?php if($count==1){ ?> class="item active" <?php } else { ?> class="item" <?php } ?>>
+                                @foreach($chunk as $tour)
+                                    <div class="col-sm-4">
+                                        <div class="col-item">
+                                            <div class="photo box19">
+                                                <img src="{{ asset('images/backend_images/tours/large/'.$tour->Imageaddress) }}"  alt="a" />
+                                                <div class="box-content">
+                                                    <ul class="title">
+                                                        <li><i class="fa fa-list"></i><a href="{{ url('tours/'.$tour->PackageId) }}" class="hidden-sm">More details</a> </li>
+                                                    </ul>
 
-                                                <ul class="title">
-                                                    <li><i class="fa fa-shopping-cart"></i><a href="{{ url('cart') }}" class="hidden-sm">Add to cart</a></li>
-                                                </ul>
+                                                    <ul class="title">
+                                                        <li><i class="fa fa-shopping-cart"></i><a href="{{ url('cart') }}" class="hidden-sm">Add to cart</a></li>
+                                                    </ul>
 
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="info">
-                                            <div class="separator clear-left">
-                                                <p class="btn-add">
-                                                    Tour Name</p>
-                                                <p class="btn-details">
-                                                    234.56</p>
-                                            </div>
+                                            <div class="info">
+                                                <div class="separator clear-left">
+                                                    <p class="btn-add">
+                                                        {{ $tour->PackageName }}</p>
+                                                    <p class="btn-details">
+                                                        GHS {{ $tour->PackagePrice }}</p>
+                                                </div>
 
-                                            <div class="clearfix">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="col-item">
-                                        <div class="photo box19">
-                                            <img src="{{ asset('images/frontend_images/elmina_04.jpg') }}" class="img-responsive" alt="a" />
-                                            <div class="box-content">
-                                                <ul class="title">
-                                                    <li><i class="fa fa-list"></i><a href="{{ url('details') }}" class="hidden-sm">More details</a> </li>
-                                                </ul>
-
-                                                <ul class="title">
-                                                    <li><i class="fa fa-shopping-cart"></i><a href="{{ url('cart') }}" class="hidden-sm">Add to cart</a></li>
-                                                </ul>
-
-                                            </div>
-                                        </div>
-                                        <div class="info">
-                                            <div class="separator clear-left">
-                                                <p class="btn-add">
-                                                    Tour Name</p>
-                                                <p class="btn-details">
-                                                    234.56</p>
-                                            </div>
-
-                                            <div class="clearfix">
+                                                <div class="clearfix">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="col-item">
-                                        <div class="photo box19">
-                                            <img src="{{ asset('images/frontend_images/mole_01.jpg') }}" class="img-responsive" alt="a" />
-                                            <div class="box-content">
-                                                <ul class="title">
-                                                    <li><i class="fa fa-list"></i><a href="{{ url('details') }}" class="hidden-sm">More details</a> </li>
-                                                </ul>
-
-                                                <ul class="title">
-                                                    <li><i class="fa fa-shopping-cart"></i><a href="{{ url('cart') }}" class="hidden-sm">Add to cart</a></li>
-                                                </ul>
-
-                                            </div>
-                                        </div>
-                                        <div class="info">
-                                            <div class="separator clear-left">
-                                                <p class="btn-add">
-                                                    Tour Name</p>
-                                                <p class="btn-details">
-                                                    234.56</p>
-                                            </div>
-
-                                            <div class="clearfix">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                    
+                                @endforeach
                             </div>
-                        </div>
-                        <div class="item">
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <div class="col-item">
-                                        <div class="photo box19">
-                                            <img src="{{ asset('images/frontend_images/umbrella stone.jpg') }}" class="img-responsive" alt="a" />
-                                            <div class="box-content">
-                                                <ul class="title">
-                                                    <li><i class="fa fa-list"></i><a href="{{ url('details') }}" class="hidden-sm">More details</a> </li>
-                                                </ul>
-
-                                                <ul class="title">
-                                                    <li><i class="fa fa-shopping-cart"></i><a href="{{ url('cart') }}" class="hidden-sm">Add to cart</a></li>
-                                                </ul>
-
-                                            </div>
-                                        </div>
-                                        <div class="info">
-                                            <div class="separator clear-left">
-                                                <p class="btn-add">
-                                                    Tour Name</p>
-                                                <p class="btn-details">
-                                                    234.56</p>
-                                            </div>
-
-                                            <div class="clearfix">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="col-item">
-                                        <div class="photo box19">
-                                            <img src="{{ asset('images/frontend_images/fiema_03.jpg') }}" class="img-responsive" alt="a" />
-                                            <div class="box-content">
-                                                <ul class="title">
-                                                    <li><i class="fa fa-list"></i><a href="{{ url('details') }}" class="hidden-sm">More details</a> </li>
-                                                </ul>
-
-                                                <ul class="title">
-                                                    <li><i class="fa fa-shopping-cart"></i><a href="{{ url('cart') }}" class="hidden-sm">Add to cart</a></li>
-                                                </ul>
-
-                                            </div>
-                                        </div>
-                                        <div class="info">
-                                            <div class="separator clear-left">
-                                                <p class="btn-add">
-                                                    Tour Name</p>
-                                                <p class="btn-details">
-                                                    234.56</p>
-                                            </div>
-
-                                            <div class="clearfix">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="col-item">
-                                        <div class="photo box19">
-                                            <img src="{{ asset('images/frontend_images/paga.jpg') }}" class="img-responsive" alt="a" />
-                                            <div class="box-content">
-                                                <ul class="title">
-                                                    <li><i class="fa fa-list"></i><a href="{{ url('details') }}" class="hidden-sm">More details</a> </li>
-                                                </ul>
-
-                                                <ul class="title">
-                                                    <li><i class="fa fa-shopping-cart"></i><a href="{{ url('cart') }}" class="hidden-sm">Add to cart</a></li>
-                                                </ul>
-
-                                            </div>
-                                        </div>
-                                        <div class="info">
-                                            <div class="separator clear-left">
-                                                <p class="btn-add">
-                                                    Tour Name</p>
-                                                <p class="btn-details">
-                                                    234.56</p>
-                                            </div>
-
-                                            <div class="clearfix">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                            <?php $count++; ?>
+                        @endforeach
                     </div>
                 </div>
             </div>

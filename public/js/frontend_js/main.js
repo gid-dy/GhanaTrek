@@ -545,6 +545,7 @@ jQuery(document).ready(function($) {
 
     //tour price
     $(document).ready(function(){
+        
         $("#SelType").change(function(){
             var idTourTypeName = $(this).val();
             if(idTourTypeName == ""){
@@ -555,8 +556,18 @@ jQuery(document).ready(function($) {
                 url:'/get-tourpackage-Price',
                 data:{idTourTypeName:idTourTypeName},
                 success:function(resp){
-                    // alert(resp);
-                    $("#getPackagePrice").html("GHS " + resp);
+                    //alert(resp); return false;
+                    var arr = resp.split('#');
+                    $("#getPackagePrice").html("GHS " +arr[0]);
+                    $("#PackagePrice").val(arr[0]);
+                    if(arr[1]==0){
+                        $("#cartbutton").hide();
+                        $("#Availability").text("Sold Out");
+                    }else{
+                        $("#cartbutton").show();
+                        $("#Availability").text("Available for booking");
+                    }
+                    $("#PackagePrice").val(arr[0]);
                 },error:function(){
                     alert("Error");
                 }
@@ -566,18 +577,19 @@ jQuery(document).ready(function($) {
 
     //transport price
     $(document).ready(function(){
+        
         $("#SelTran").change(function(){
             var idTransportName = $(this).val();
-            if(idTransportName == ""){
+            if(idTransportName == " "){
                 return false;
             }
             $.ajax({
                 type:'get',
-                url:'/get-tourport-Cost',
+                url:'/get-transport-Cost',
                 data:{idTransportName:idTransportName},
                 success:function(resp){
-                    // alert(resp);
-                    $("#getTransportCost").html("GHS " + resp);
+                    //alert(resp); 
+                    $("#getTransportCost").html("GHS " +resp);
                 },error:function(){
                     alert("Error");
                 }
@@ -585,4 +597,41 @@ jQuery(document).ready(function($) {
         });
     });
 
+     $(".changeImage").click(function(){
+        var Image = $(this).attr('src');
+        $(".mainImage").attr("src",Image);
+    });
+
 });
+
+// // Instantiate EasyZoom instances
+// 		var $easyzoom = $('.easyzoom').easyZoom();
+
+// 		// Setup thumbnails example
+// 		var api1 = $easyzoom.filter('.easyzoom--with-thumbnails').data('easyZoom');
+
+// 		$('.thumbnails').on('click', 'a', function(e) {
+// 			var $this = $(this);
+
+// 			e.preventDefault();
+
+// 			// Use EasyZoom's `swap` method
+// 			api1.swap($this.data('standard'), $this.attr('href'));
+// 		});
+
+// 		// Setup toggles example
+// 		var api2 = $easyzoom.filter('.easyzoom--with-toggle').data('easyZoom');
+
+// 		$('.toggle').on('click', function() {
+// 			var $this = $(this);
+
+// 			if ($this.data("active") === true) {
+// 				$this.text("Switch on").data("active", false);
+// 				api2.teardown();
+// 			} else {
+// 				$this.text("Switch off").data("active", true);
+// 				api2._init();
+// 			}
+// 		});
+
+  

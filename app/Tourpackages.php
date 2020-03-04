@@ -25,4 +25,7 @@ class Tourpackages extends Model
     public function tourlocations(){
         return $this->hasMany('App\Tourlocations','PackageId','PackageId');
     }
+    public function packageimages(){
+        return $this->hasMany('App\Packageimages','PackageId','PackageId');
+    }
 }

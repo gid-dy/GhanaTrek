@@ -26,9 +26,11 @@
 
   <!-- Main Stylesheet File -->
   <link rel="stylesheet" href="{{ asset('css/frontend_css/style.css') }}" >
+  <link rel="stylesheet" href="{{ asset('css/frontend_css/easyzoom.css') }}" >
   <link rel="stylesheet" href="{{ asset('css/frontend_css/colors/style.css') }}" />
   <link rel="stylesheet" href="{{ asset('css/frontend_css/colors/blue.css') }}">
   <link rel="stylesheet" href="{{ asset('css/frontend_css/shop.css') }}">
+  
 
 
 </head>
@@ -70,7 +72,7 @@
 
     <!-- Template Main Javascript File -->
     <script src="{{ asset('js/frontend_js/main.js') }}"></script>
-    <script src="{{ asset('js/frontend_js/validate.js') }}"></script>
+    <script src="{{ asset('js/frontend_js/easyzoom.js') }}"></script>
 
 
 </html>

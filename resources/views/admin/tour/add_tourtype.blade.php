@@ -73,32 +73,36 @@
             <h5>View Tourtype</h5>
           </div>
           <div class="widget-content nopadding">
-            <table class="table table-bordered data-table">
-                <thead>
-                    <tr>
-                    <th>Tourtype Id</th>
-                    <th>SKU</th>
-                    <th>TourType Name</th>
-                    <th>TourType Size</th>
-                    <th>Package Price</th>
-                    <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($tourpackagesDetails['tourtypes'] as $tourtype)
-                        <tr class="gradeX">
-                            <td>{{ $tourtype->TourTypeID }}</td>
-                            <td>{{ $tourtype->SKU }}</td>
-                            <td>{{ $tourtype->TourTypeName }}</td>
-                            <td>{{ $tourtype->TourTypeSize }}</td>
-                            <td>{{ $tourtype->PackagePrice }}</td>
-                            <td class="center">
-                              <a rel="{{ $tourtype->TourTypeID }}" rel1="delete-tourtype" href="javascript:" class="btn btn-danger btn-mini deleteRecord">Delete</a>
-                            </td>
+              <form  class="form-horizontal" method="post" action="{{ url('/admin/edit-tourtype/'.$tourpackagesDetails->PackageId) }}" name="edit_tourtype" id="edit_tourtype">
+                  @csrf
+                  <table class="table table-bordered data-table">
+                    <thead>
+                        <tr>
+                        <th>Tourtype Id</th>
+                        <th>SKU</th>
+                        <th>TourType Name</th>
+                        <th>TourType Size</th>
+                        <th>Package Price</th>
+                        <th>Actions</th>
                         </tr>
-                    @endforeach                   
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach ($tourpackagesDetails['tourtypes'] as $tourtype)
+                            <tr class="gradeX">
+                                <td><input type="hidden" name="idType[]"value="{{ $tourtype->TourTypeID }}"> {{ $tourtype->TourTypeID }}</td>
+                                <td>{{ $tourtype->SKU }}</td>
+                                <td>{{ $tourtype->TourTypeName }}</td>
+                                <td><input type="text" name="TourTypeSize[]" value="{{ $tourtype->TourTypeSize }}"></td>
+                                <td><input type="text" name="PackagePrice[]" value="{{ $tourtype->PackagePrice }}"></td>
+                                <td class="center">
+                                <input type="submit" value="update" class="btn btn-primary btn-mini">
+                                  <a rel="{{ $tourtype->TourTypeID }}" rel1="delete-tourtype" href="javascript:" class="btn btn-danger btn-mini deleteRecord">Delete</a>
+                                </td>
+                            </tr>
+                        @endforeach                   
+                    </tbody>
+                  </table>
+              </form>
           </div>
         </div>
       </div>
@@ -153,28 +157,32 @@
             <h5>View Tour transport</h5>
           </div>
           <div class="widget-content nopadding">
-            <table class="table table-bordered data-table">
-                <thead>
-                    <tr>
-                    <th>Tour TransportationID</th>
-                    <th>Transport Name</th>
-                    <th>Transport Cost</th>
-                    <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($tourpackagesDetails['tourtransports'] as $tourtransportation)
-                        <tr class="gradeX">
-                            <td>{{ $tourtransportation->TourTransportationID }}</td>
-                            <td>{{ $tourtransportation->TransportName }}</td>
-                            <td>{{ $tourtransportation->TransportCost }}</td>
-                            <td class="center">
-                              <a rel="{{ $tourtransportation->TourTransportationID }}" rel1="delete-transport" href="javascript:" class="btn btn-danger btn-mini deleteRecord">Delete</a>
-                            </td>
+              <form class="form-horizontal" method="post" action="{{ url('/admin/edit-tourtransportation/'.$tourpackagesDetails->PackageId) }}" name="edit_transportation" id="edit_transportation" novalidate="novalidate">
+                  @csrf
+                  <table class="table table-bordered data-table">
+                    <thead>
+                        <tr>
+                        <th>Tour TransportationID</th>
+                        <th>Transport Name</th>
+                        <th>Transport Cost</th>
+                        <th>Actions</th>
                         </tr>
-                    @endforeach                   
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach ($tourpackagesDetails['tourtransports'] as $tourtransportation)
+                            <tr class="gradeX">
+                                <td><input type="hidden" name="idTransport[]"value="{{ $tourtransportation->TourTransportationID }}">{{ $tourtransportation->TourTransportationID }}</td>
+                                <td>{{ $tourtransportation->TransportName }}</td>
+                                <td><input type="text" name="TransportCost[]" value="{{ $tourtransportation->TransportCost }}"></td>
+                                <td class="center">
+                                  <input type="submit" value="update" class="btn btn-primary btn-mini">
+                                  <a rel="{{ $tourtransportation->TourTransportationID }}" rel1="delete-transport" href="javascript:" class="btn btn-danger btn-mini deleteRecord">Delete</a>
+                                </td>
+                            </tr>
+                        @endforeach                   
+                    </tbody>
+                </table>
+              </form>
           </div>
         </div>
       </div>

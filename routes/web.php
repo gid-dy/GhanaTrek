@@ -38,9 +38,12 @@ Route::get('/tour/{CategoryName}','TourpackagesController@tour');
 //tour detail page
 Route::get('/tours/{PackageId}','TourpackagesController@tours');
 
+//add to cart
+Route::match(['get','post'],'/add-cart', 'TourpackagesController@addtocart')->name('add-cart');
+
 
 Route::get('/get-tourpackage-Price','TourpackagesController@getTourpackagePrice');
-Route::get('/get-tourport-Cost','TourpackagesController@getTransportCost');
+Route::get('/get-transport-Cost','TourpackagesController@getTransportCost');
 
 //  Route::middleware(['auth'])->group(function(){
     //Route::match(['get','post'],'/login', 'UserController@login')->name('login');
@@ -93,9 +96,11 @@ Route::prefix('admin')->group(function() {
 
     //tourtype
     Route::match(['get','post'],'/add-tourtype/{PackageId}', 'TourpackagesController@tourtype')->name('admin.add-tourtype');
+    Route::match(['get','post'],'/edit-tourtype/{PackageId}', 'TourpackagesController@edittourtype')->name('admin.edit-tourtype');
     Route::get('/delete-tourtype/{TourTypeID}', 'TourpackagesController@deleteTourtype');
     // Alternative Image
     Route::match(['get','post'],'/add-image/{PackageId}', 'TourpackagesController@image')->name('admin.add-image');
+    Route::get('/delete-alt-image/{PackageId}', 'TourpackagesController@deleteAltimage');
 
     //tour-include
     Route::match(['get','post'],'/add-include/{PackageId}', 'TourpackagesController@tourinclude')->name('admin.add-include');
@@ -103,6 +108,7 @@ Route::prefix('admin')->group(function() {
 
     //tour transport
     Route::match(['get','post'],'/add-tourtransportation/{PackageId}', 'TourpackagesController@transport')->name('admin.add-tourtransportation');
+    Route::match(['get','post'],'/edit-tourtransportation/{PackageId}', 'TourpackagesController@edittransport')->name('admin.edit-tourtransportation');
     Route::get('/delete-transport/{TourTransportationID}', 'TourpackagesController@deleteTransport');
 
     //tour accommodation

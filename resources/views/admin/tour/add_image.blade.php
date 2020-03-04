@@ -47,7 +47,7 @@
 
               
               <div class="form-actions">
-                <input type="submit" value="Add Tour Attribute" class="btn btn-success">
+                <input type="submit" value="Add Alt Image" class="btn btn-success">
               </div>
             </form>
           </div>
@@ -71,20 +71,23 @@
                     <th>Image</th>
                     <th>Actions</th>
                     </tr>
+                     
                 </thead>
                 <tbody>
-                    {{-- @foreach ($tourpackagesDetails['tourtypes'] as $tourtype)
+                        @foreach ($packageimages as $packageimage)
                         <tr class="gradeX">
-                            <td>{{ $tourtype->TourTypeID }}</td>
-                            <td>{{ $tourtype->SKU }}</td>
-                            <td>{{ $tourtype->TourTypeName }}</td>
-                            <td>{{ $tourtype->TourTypeSize }}</td>
-                            <td>{{ $tourtype->PackagePrice }}</td>
+                            <td>{{ $packageimage->PackageImagesId }}</td>
+                            <td>{{ $packageimage->PackageId }}</td>
+                            <td>
+                                @if(!empty($packageimage->Image))
+                                    <img src="{{ asset ('/images/backend_images/tours/small/'.$packageimage->Image) }}" style= "width:70px;">
+                                @endif
+                            </td>
                             <td class="center">
-                              <a rel="{{ $tourtype->TourTypeID }}" rel1="delete-tourtype" href="javascript:" class="btn btn-danger btn-mini deleteRecord">Delete</a>
+                              <a rel="{{ $packageimage->PackageImagesId }}" rel1="delete-alt-image" href="javascript:" class="btn btn-danger btn-mini deleteRecord">Delete</a>
                             </td>
                         </tr>
-                    @endforeach                    --}}
+                    @endforeach                
                 </tbody>
             </table>
           </div>

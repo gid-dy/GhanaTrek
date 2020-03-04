@@ -15,11 +15,15 @@ class CreateCartsTable extends Migration
     {
         Schema::create('carts', function (Blueprint $table) {
             $table->bigIncrements('CartId');
-			$table->unsignedBiginteger('UserId')->index('RefUsers1');
-			$table->unsignedBiginteger('PackageId')->index('RefTourPackages5');
-			$table->unsignedBiginteger('TourPackageIncludeID')->nullable()->index('RefTourPackageInclude32');
-			$table->dateTime('CartDateTimeCreated');
-			$table->dateTime('CartDateTimeModified')->nullable();
+            $table->unsignedBiginteger('PackageId')->index('RefTourPackages5');
+            $table->string('PackageName', 150)->index('RefTourPackages51');
+            $table->string('PackageCode', 20)->index('RefTourPackages21');
+            $table->string('TourTypeName', 25);
+            $table->integer('Travellers');
+            $table->decimal('PackagePrice',20,2);
+            $table->string('UserEmail',100);
+            $table->string('sessionId', 255);
+            
             $table->timestamps();
         });
     }
