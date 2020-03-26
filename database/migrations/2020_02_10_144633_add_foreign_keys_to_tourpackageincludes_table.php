@@ -14,8 +14,8 @@ class AddForeignKeysToTourpackageincludesTable extends Migration {
 	{
 		Schema::table('tourpackageincludes', function(Blueprint $table)
 		{
-			$table->foreign('TourIncludeID', 'RefTourIncludes28')->references('TourIncludeID')->on('tourincludes')->onUpdate('CASCADE')->onDelete('CASCADE');
-			$table->foreign('PackageId', 'RefTourPackages29')->references('PackageId')->on('tourpackages')->onUpdate('CASCADE')->onDelete('CASCADE');
+			$table->foreign('TourInclude_id', 'RefTourIncludes28')->references('id')->on('tourincludes')->onUpdate('CASCADE')->onDelete('CASCADE');
+			$table->foreign('Package_id', 'RefTourPackages29')->references('id')->on('tourpackages')->onUpdate('CASCADE')->onDelete('CASCADE');
 		});
 	}
 

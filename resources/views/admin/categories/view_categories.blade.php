@@ -39,7 +39,7 @@
               <tbody>
                 @foreach ($tourpackagecategory as $tourpackagecategory)
                    <tr class="gradeX">
-                  <td>{{ $tourpackagecategory->categoryId }}</td>
+                  <td>{{ $tourpackagecategory->id }}</td>
                   <td>{{ $tourpackagecategory->CategoryName }}</td>
                   <td>{{ $tourpackagecategory->CategoryDescription }}</td>
                   <td>
@@ -48,8 +48,8 @@
                       @endif
                   </td>
                   <td class="center">
-                    <a href="{{ url('/admin/edit-category/'.$tourpackagecategory->categoryId) }}" class="btn btn-primary btn-mini">Edit</a>
-                    <a rel={{ "$tourpackagecategory->categoryId" }} rel1="delete-category" <?php /*href="{{ url('/admin/delete-tour/'.$tour->id) }}" */?> href="javascript:" class="btn btn-danger btn-mini deleteRecord">Delete</a>
+                    <a href="{{ url('/admin/edit-category/'.$tourpackagecategory->id) }}" class="btn btn-primary btn-mini">Edit</a>
+                    <a rel={{ "$tourpackagecategory->id" }} rel1="delete-category" href="javascript:" class="btn btn-danger btn-mini deleteRecord">Delete</a>
                   </td>
                 </tr> 
                 @endforeach

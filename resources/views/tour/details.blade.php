@@ -1,154 +1,88 @@
 @extends('layouts.frontLayout.userdesign')
-<body>
-  <div class="topbar clearfix">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-6">
-          <div class="contactinfo pull-left">
-            <ul class="nav nav-pills">
-              <li><a href="#"><i class="fa fa-phone"></i> +233 542 500 499</a></li>
-              <li><a href="#"><i class="fa fa-envelope"></i> einsteingideon@gmail.com</a></li>
-            </ul>
-					</div>
-				</div>
-        <div class="col-sm-6">
-          <div class="social-icons pull-right">
-                <ul class="nav navbar-nav">
-                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                    <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                </ul>
-            </div>
-        </div>
-      </div>
-    </div>
-    <!-- end container -->
-  </div>
-  <!-- end topbar -->
+    @section('content')
 
-
- <header class="header">
-    <div class="container">
-      <div class="site-header clearfix">
-        <div class="col-lg-3 col-md-3 col-sm-12 title-area">
-          <div class="site-title" id="title">
-            <a href="{{ url('index') }}" title="">
-              <h4>GHANA<span>TREK</span></h4>
-            </a>
-          </div>
-        </div>
-        <!-- title area -->
-        <div class="col-lg-9 col-md-12 col-sm-12">
-          <div id="nav" class="right">
-            <div class="container clearfix">
-              <ul id="jetmenu" class="jetmenu blue">
-                <li><a href="{{ url('index') }}">{{ __('Home') }}</a></li>
-                <li><a href="{{ url('setting') }}"><i class="fa fa-user"></i> {{ __('Account') }}</a></li>
-        				<li><a href="{{ url('wishlist') }}"><i class="fa fa-star"></i> {{ __('Wishlist') }}</a></li>
-        				<li><a href="{{ url('cart') }}"><i class="fa fa-shopping-cart"></i> {{ __('Cart') }}</a></li>
-        				<li><a href="{{ url('login') }}"><i class="fa fa-lock"></i> {{ __('Login') }}</a></li>
-
-                <li><a href="#">USA</a>
-                  <ul class="dropdown">
-                    <li><a href="#">Canada</a></li>
-                    <li><a href="#">UK</a></li>
-                  </ul>
-                </li>
-                <li><a href="#">DOLLAR</a>
-                  <ul class="dropdown">
-                    <li><a href="#">Canadian Dollar</a></li>
-                    <li><a href="#">Pound</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <!-- nav -->
-        </div>
-        <!-- title area -->
-      </div>
-      <!-- site header -->
-    </div>
-    <!-- end container -->
-  </header>
-  <!-- end header -->
-
-
-@section('content')
-
+@include('layouts.frontLayout.user_topbar')
+  
+@include('layouts.frontLayout.user_header')
     <section>
         <div class="container">
             <div class="card">
                 <div class="container-fliud">
                     <div class="wrapper row">
                         <div class="preview col-md-6">
-
                             <div class="preview-pic tab-content">
                                 <div class="tab-pane active" id="pic-1"><img class="mainImage" src="{{ asset('images/backend_images/tours/large/'.$tourpackagesDetails->Imageaddress) }}" /></div>
-                                <div>
-                                @foreach($tourAltImage as $altimage)
-                                   <img class="changeImage" src="{{ asset('images/backend_images/tours/large/'.$altimage->Image) }}" style="width:80px; display:inline;float:left;margin-top:20px; padding-right:10px; cursor:pointer;" />
-                                    @endforeach
-                            </div>
-                            </div>
-                            
-
-                        </div>
-                        <div class="details col-md-6">
-                            <form name="addtocartform" id="addtocartform" action="{{ url('add-cart') }}" method="post">
-                                @csrf
-                                <input type="hidden" name="PackageId" value="{{ $tourpackagesDetails->PackageId}}">
-                                <input type="hidden" name="PackageName" value="{{ $tourpackagesDetails->PackageName}}">
-                                <input type="hidden" name="PackagePrice" id="PackagePrice" value="{{ $tourpackagesDetails->PackagePrice}}">
-                                <input type="hidden" name="PackageCode" id="PackageCode" value="{{ $tourpackagesDetails->PackageCode}}">
-                                <div class="tour-details">
-                                    <h3 class="product-title">{{ $tourpackagesDetails->PackageName}}</h3>
-                                    <p>Tour Code: {{ $tourpackagesDetails->PackageCode}}</p>
-                                    <p>
-                                        <select id="SelType" name="TourTypeName">
-                                            <option value="">Select Tour Type</option>
-                                            @foreach($tourpackagesDetails->tourtypes as $tourtype)
-                                            <option value="{{ $tourpackagesDetails->PackageId}}-{{ $tourtype->TourTypeName }}">{{ $tourtype->TourTypeName }}</option>
-                                            @endforeach
-                                            </select>
-                                    </p>
-
-                                    <h4 class="price">current price: <span id="getPackagePrice">GHS {{ $tourpackagesDetails->PackagePrice}}</span></h4>
-                                    <div class="form-control>"
-                                        <label>Number of Travellers</label>
-                                        <input type="text" name="Travellers" value="1" />
-                                        @if($total_availability>0)
-                                            <button class="add-to-cart btn btn-default" id="cartbutton" type="submit">add to cart</button>
-                                        @endif
-                                        <button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button>
-                                    </div>
-                                    <p>
-                                        <select id="SelTran" name="TransportName">
-                                            <option value="">Select Tour Type</option>
-                                            @foreach($tourpackagesDetails->tourtransports as $transport)
-                                            <option value="{{ $tourpackagesDetails->PackageId }}-{{ $transport->TransportName }}">{{ $transport->TransportName }}</option>
-                                            @endforeach
-                                            </select>
-                                    </p>
-
-                                    <h4 class="price">current price: <span id="getTransportCost">GHS {{ $transport->TransportCost }}</span></h4>
-                                        <p><b>Availability:</b> <span id="Availability"> @if($total_availability>0) Available @else Sold Out @endif </span></p>
-                                    
-
                                     <div>
-                                        <p><i class="fa fa-check" aria-hidden="true"></i>Free Cancellation up to 24 hours in advance</p>
-                                        <p><i class="fa fa-check" aria-hidden="true"></i>Low Price Guarantee</p>
-                                        <p><i class="fa fa-check" aria-hidden="true"></i>Reserve Now & Pay Later</p>
+                                        @foreach($tourAltImage as $altimage)
+                                            <img class="changeImage" src="{{ asset('images/backend_images/tours/large/'.$altimage->Image) }}" style="width:80px; display:inline;float:left;margin-top:20px; padding-right:10px; cursor:pointer;" />
+                                        @endforeach
                                     </div>
-
-                                    
                                 </div>
-                            </form>
-                        </div>
-                        
                             
+
+                            </div>
+                            <div class="details col-md-6">
+                                @if (Session::has('flash_message_error'))    
+                                    <div class="alert alert-error alert-block" style="background-color: #f2dfd0">
+                                        <button type="button" class="close" data-dismiss='alert'></button>
+                                        <strong>{!! session('flash_message_error') !!}</strong>
+                                    </div>
+                                @endif 
+                                <form name="addtocartform" id="addtocartform" action="{{ url('add-cart') }}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="Package_id" value="{{ $tourpackagesDetails->id }}">
+                                    <input type="hidden" name="PackageName" value="{{ $tourpackagesDetails->PackageName }}">
+                                    <input type="hidden" name="PackagePrice" id="PackagePrice" value="{{ $tourpackagesDetails->PackagePrice }}">
+                                    <input type="hidden" name="PackageCode" id="PackageCode" value="{{ $tourpackagesDetails->PackageCode }}">
+                                    {{-- <input type="hidden" name="TourTransportationID" value="{{ $tourpackagesDetails->TourTransportationID}}">
+                                    <input type="hidden" name="TransportName" id="TransportName" value="{{ $tourpackagesDetails->TransportName}}">
+                                    <input type="hidden" name="TransportCost" id="TransportCost" value="{{ $tourpackagesDetails->TransportCost}}"> --}}
+                                    <div class="tour-details">
+                                        <h3 class="product-title">{{ $tourpackagesDetails->PackageName}}</h3>
+                                        <p>Tour Code: {{ $tourpackagesDetails->PackageCode}}</p>
+                                        <p>
+                                            <select id="SelType" name="TourTypeName">
+                                                <option value="">Select Tour Type</option>
+                                                @foreach($tourpackagesDetails->tourtypes as $tourtype)
+                                                <option value="{{ $tourpackagesDetails->id }}-{{ $tourtype->TourTypeName }}">{{ $tourtype->TourTypeName }}</option>
+                                                @endforeach
+                                                </select>
+                                        </p>
+
+                                        <h4 class="price">current price: <span id="getPackagePrice">GHS {{ $tourpackagesDetails->PackagePrice}}</span></h4>
+                                        
+                                        <p>
+                                            <select id="SelTran" name="TransportName">
+                                                <option value="">Select Transportation</option>
+                                                @foreach($tourpackagesDetails->tourtransports as $tourtransportation)
+                                                <option value="{{ $tourpackagesDetails->id }}-{{ $tourtransportation->TransportName }}">{{ $tourtransportation->TransportName }}</option>
+                                                @endforeach
+                                                </select>
+                                        </p>
+
+                                        <h4 class="price">cost: <span id="getTransportCost" hidden>GHS  0</span></h4>
+                                        
+                                            <p><b>Availability:</b> <span id="Availability"> @if($total_availability>0) Available @else Sold Out @endif </span></p>
+                                        <div class="form-control>"
+                                            <label>Number of Travellers</label>
+                                            <input id="nt" type="number"  min="1" max="1"  name="Travellers" value="1" />
+                                            @if($total_availability>0)
+                                                <button class="add-to-cart btn btn-default" id="cartbutton" type="submit">add to cart</button>
+                                            @endif
+                                            <button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button>
+                                        </div>
+
+                                        <div>
+                                            <p><i class="fa fa-check" aria-hidden="true"></i>Free Cancellation up to 24 hours in advance</p>
+                                            <p><i class="fa fa-check" aria-hidden="true"></i>Low Price Guarantee</p>
+                                            <p><i class="fa fa-check" aria-hidden="true"></i>Reserve Now & Pay Later</p>
+                                        </div>
+
+                                        
+                                    </div>
+                                </form>
+                            </div>       
+                        </div>
                     </div>
                 </div>
             </div>
@@ -695,7 +629,7 @@
                                                 <img src="{{ asset('images/backend_images/tours/large/'.$tour->Imageaddress) }}"  alt="a" />
                                                 <div class="box-content">
                                                     <ul class="title">
-                                                        <li><i class="fa fa-list"></i><a href="{{ url('tours/'.$tour->PackageId) }}" class="hidden-sm">More details</a> </li>
+                                                        <li><i class="fa fa-list"></i><a href="{{ url('tours/'.$tour->id) }}" class="hidden-sm">More details</a> </li>
                                                     </ul>
 
                                                     <ul class="title">
@@ -728,35 +662,7 @@
 
         </div>
     </section>
+@include('layouts.frontLayout.user_subscription')
 
-    <section id="subs" class="subscribe">
-
-    <div class="subscribe-title text-center">
-      <h2>
-        Join our Subscribers List to Get Regular Update
-      </h2>
-      <p>
-        Subscribe Now. We will send you Best offer for your Trip
-      </p>
-    </div>
-    <form>
-      <div class="row">
-        <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-          <div class="custom-input-group">
-            <input type="email" class="form-control" placeholder="Enter your Email Here">
-            <button class="appsLand-btn subscribe-btn">Subscribe</button>
-            <div class="clearfix"></div>
-            <i class="fa fa-envelope"></i>
-          </div>
-
-        </div>
-      </div>
-    </form>
-</section>
-
+@include('layouts.frontLayout.user_footer')
 @endsection
-
-
-</body>
-
-</html>

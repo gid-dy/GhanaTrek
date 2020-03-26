@@ -14,15 +14,13 @@ class CreateRefundinfosTable extends Migration
     public function up()
     {
         Schema::create('refundinfos', function (Blueprint $table) {
-            $table->bigIncrements('RefundInfoID');
-			$table->dateTime('RefundDateTime');
-			$table->dateTime('RefundLastModifiedDateTime')->nullable();
-			$table->decimal('RefundAmount', 20, 4)->nullable();
-			$table->unsignedBiginteger('BookingId')->index('RefBookings24');
-			$table->unsignedBiginteger('RefundPenaltyID')->nullable()->index('RefRefundPenalty25');
+            $table->bigIncrements('id');
+			$table->decimal('RefundAmount', 20, 2)->nullable();
+			$table->unsignedBiginteger('Booking_id')->index('RefBookings24');
+			$table->unsignedBiginteger('RefundPenalty_id')->nullable()->index('RefRefundPenalty25');
 			$table->unsignedBiginteger('RefundCreated')->index('RefundCreated');
 			$table->unsignedBiginteger('RefundModifed')->nullable()->index('RefundModified');
-			$table->unsignedBiginteger('PaymentDeliveryCostID')->index('RefPaymentDeliveryCost62');
+			$table->unsignedBiginteger('PaymentDeliveryCost_id')->index('RefPaymentDeliveryCost62');
             $table->timestamps();
         });
     }

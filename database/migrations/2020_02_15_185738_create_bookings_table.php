@@ -14,14 +14,12 @@ class CreateBookingsTable extends Migration
     public function up()
     {
         Schema::create('bookings', function (Blueprint $table) {
-            $table->bigIncrements('BookingId');
+            $table->bigIncrements('id');
 			$table->string('Status', 25)->nullable();
-			$table->dateTime('BookingDateTimeCreated')->nullable();
-			$table->dateTime('BookingDateTimeModified')->nullable();
-			$table->unsignedBiginteger('UserId')->index('RefUsers6');
-			$table->unsignedBiginteger('CouponId')->nullable()->index('RefCoupons14');
-			$table->unsignedBiginteger('TourIncludeID')->nullable()->index('RefTourIncludes17');
-			$table->unsignedBiginteger('CartId')->index('RefCarts33');
+			$table->unsignedBigInteger('User_id');
+			$table->unsignedBigInteger('Coupon_id')->nullable();
+			$table->unsignedBigInteger('TourInclude_id')->nullable();
+			$table->unsignedBigInteger('Cart_id');
             $table->timestamps();
         });
     }

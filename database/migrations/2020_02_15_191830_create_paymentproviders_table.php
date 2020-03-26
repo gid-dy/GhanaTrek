@@ -14,8 +14,8 @@ class CreatePaymentprovidersTable extends Migration
     public function up()
     {
         Schema::create('paymentproviders', function (Blueprint $table) {
-            $table->bigIncrements('PaymentProviderID');
-			$table->string('PaymentType', 18)->nullable();
+            $table->bigIncrements('id');
+			$table->string('PaymentType', 100)->nullable();
 			$table->string('PaymentTypeProvider', 150);
             $table->timestamps();
         });

@@ -14,10 +14,9 @@ class CreatePaymenttypesTable extends Migration
     public function up()
     {
         Schema::create('paymenttypes', function (Blueprint $table) {
-            $table->bigIncrements('PTyID');
-			$table->string('PTyPaymentTypeName', 50)->nullable();
-			$table->string('PTyPaymentTypeDesc', 18)->nullable();
-			$table->unsignedBiginteger('PaymentProviderID')->index('RefPaymentProvider61');
+            $table->bigIncrements('id');
+			$table->string('PTyPaymentTypeName', 150)->nullable();
+			$table->unsignedBiginteger('PaymentProvider_id')->index('RefPaymentProvider61');
             $table->timestamps();
         });
     }

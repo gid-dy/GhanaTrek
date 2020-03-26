@@ -14,7 +14,7 @@ class AddForeignKeysToUserpaymentcardsTable extends Migration {
 	{
 		Schema::table('userpaymentcards', function(Blueprint $table)
 		{
-			$table->foreign('UserId', 'RefUsers56')->references('UserId')->on('users')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+			$table->foreign('User_id', 'RefUsers56')->references('id')->on('users')->onUpdate('RESTRICT')->onDelete('RESTRICT');
 		});
 	}
 

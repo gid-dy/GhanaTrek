@@ -14,11 +14,11 @@ class CreatePaymentapiinfosTable extends Migration
     public function up()
     {
         Schema::create('paymentapiinfos', function (Blueprint $table) {
-            $table->bigIncrements('PayAPIInfoID');
+            $table->bigIncrements('id');
 			$table->string('APIVersion', 50)->nullable();
 			$table->string('APIName', 150)->nullable();
 			$table->string('IntegrationMode', 150)->nullable();
-			$table->string('MerchantEMail', 30)->nullable();
+			$table->string('MerchantEMail', 100)->nullable();
 			$table->string('MerchantAPIKey', 18)->nullable();
 			$table->string('APIServiceType', 50)->nullable();
             $table->timestamps();

@@ -14,9 +14,9 @@ class CreateRefundpayingsTable extends Migration
     public function up()
     {
         Schema::create('refundpayings', function (Blueprint $table) {
-            $table->bigIncrements('RefundPayingID');
-			$table->unsignedBiginteger('PayingInfoID')->index('RefPayingInfo64');
-			$table->unsignedBiginteger('RefundInfoID')->index('RefRefundInfo65');
+            $table->bigIncrements('id');
+			$table->unsignedBiginteger('PayingInfo_id')->index('RefPayingInfo64');
+			$table->unsignedBiginteger('RefundInfo_id')->index('RefRefundInfo65');
             $table->timestamps();
         });
     }

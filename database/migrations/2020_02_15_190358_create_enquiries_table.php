@@ -14,7 +14,7 @@ class CreateEnquiriesTable extends Migration
     public function up()
     {
         Schema::create('enquiries', function (Blueprint $table) {
-            $table->bigIncrements('EnquiryId');
+            $table->bigIncrements('id');
 			$table->string('Name')->nullable();
 			$table->string('EnquiryEmail', 30);
 			$table->string('Subject', 50)->nullable();

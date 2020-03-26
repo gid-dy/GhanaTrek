@@ -1,36 +1,7 @@
 @extends('layouts.frontLayout.userdesign')
-
-
-<body>
-    <div class="topbar clearfix">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-6">
-          <div class="contactinfo pull-left">
-            <ul class="nav nav-pills">
-              <li><a href="#"><i class="fa fa-phone"></i> +233 542 500 499</a></li>
-              <li><a href="#"><i class="fa fa-envelope"></i> einsteingideon@gmail.com</a></li>
-            </ul>
-					</div>
-				</div>
-        <div class="col-sm-6">
-          <div class="social-icons pull-right">
-							<ul class="nav navbar-nav">
-								<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-								<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-								<li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-								<li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-								<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-							</ul>
-						</div>
-        </div>
-      </div>
-    </div>
-    <!-- end container -->
-  </div>
-  <!-- end topbar -->
-
     @section('content')
+
+@include('layouts.frontLayout.user_topbar')
       <header class="header">
         <div class="container">
           <div class="site-header clearfix">
@@ -49,6 +20,18 @@
       <!-- end header -->
 
       <section class="post-wrapper-top">
+      @if (Session::has('flash_message_error'))    
+                <div class="alert alert-error alert-block" style="background-color: #f2dfd0">
+                    <button type="button" class="close" data-dismiss='alert'></button>
+                    <strong>{!! session('flash_message_error') !!}</strong>
+                </div>
+            @endif 
+            @if (Session::has('flash_message_success'))    
+                <div class="alert alert-success alert-block">
+                    <button type="button" class="close" data-dismiss='alert'></button>
+                    <strong>{!! session('flash_message_success') !!}</strong>
+                </div>
+            @endif
         <div class="container">
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <ul class="breadcrumb">
@@ -69,11 +52,11 @@
                 <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.</p>
                 <p>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
                 <p class="withpadding">Still not registered?
-                    <a href="{{ url('/user/register') }}">Click Here</a> to register now.</p>
+                    <a href="{{ url('/register') }}">Click Here</a> to register now.</p>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12">
                 <h4 class="title"><span>{{ __('Login Form') }}</span></h4>
-                  <form method="POST" action="{{ route('user.login.submit') }}">
+                  <form method="POST" action="{{ url('/login') }}">
                         @csrf
 
                         <div class="form-group row">
@@ -81,9 +64,9 @@
 
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="UserEmail" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                <input id="UserEmail" type="email" class="form-control @error('UserEmail') is-invalid @enderror" name="UserEmail" value="{{ old('UserEmail') }}" required autocomplete="email" autofocus>
 
-                                @error('email')
+                                @error('UserEmail')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -96,9 +79,9 @@
 
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                <input id="Password" type="password" class="form-control @error('Password') is-invalid @enderror" name="Password" required autocomplete="current-password">
 
-                                @error('password')
+                                @error('Password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -110,19 +93,19 @@
 
                         <div class="form-group row">
                             <div class="col-md-6 offset-md-4">
-                                <span class="pull-right">
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                </span>
+                            <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+    
+                                        <label class="form-check-label" for="remember">
+                                            {{ __('Remember Me') }}
+                                        </label>
+                                    </div>
                               </div>
                         </div>
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <span class="pull-right">
-                                    <input type="submit" class="button" value="register">
+                                    <input type="submit" class="button" value="Login">
                                 </span>
                             </div>
                             <div>
@@ -142,9 +125,9 @@
         <!-- end container -->
       </section>
       {{--  < end section >  --}}
+      @include('layouts.frontLayout.user_footer')
   @endsection
 
 
 
-</body>
-</html>
+

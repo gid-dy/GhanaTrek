@@ -14,11 +14,11 @@ class AddForeignKeysToRefundinfosTable extends Migration {
 	{
 		Schema::table('refundinfos', function(Blueprint $table)
 		{
-			$table->foreign('BookingId', 'RefBookings24')->references('BookingId')->on('bookings')->onUpdate('RESTRICT')->onDelete('RESTRICT');
-			$table->foreign('PaymentDeliveryCostID', 'RefPaymentDeliveryCost62')->references('PaymentDeliveryCostID')->on('paymentdeliverycosts')->onUpdate('RESTRICT')->onDelete('RESTRICT');
-			$table->foreign('RefundPenaltyID', 'RefRefundPenalty25')->references('RefundPenaltyID')->on('refundpenalties')->onUpdate('RESTRICT')->onDelete('RESTRICT');
-			$table->foreign('RefundCreated', 'RefundCreated')->references('UserId')->on('users')->onUpdate('RESTRICT')->onDelete('RESTRICT');
-			$table->foreign('RefundModifed', 'RefundModified')->references('UserId')->on('users')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+			$table->foreign('Booking_Id', 'RefBookings24')->references('id')->on('bookings')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+			$table->foreign('PaymentDeliveryCost_id', 'RefPaymentDeliveryCost62')->references('id')->on('paymentdeliverycosts')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+			$table->foreign('RefundPenalty_id', 'RefRefundPenalty25')->references('id')->on('refundpenalties')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+			$table->foreign('RefundCreated', 'RefundCreated')->references('id')->on('users')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+			$table->foreign('RefundModifed', 'RefundModified')->references('id')->on('users')->onUpdate('RESTRICT')->onDelete('RESTRICT');
 		});
 	}
 

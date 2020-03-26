@@ -14,7 +14,7 @@ class AddForeignKeysToFeedbacksTable extends Migration {
 	{
 		Schema::table('feedbacks', function(Blueprint $table)
 		{
-			$table->foreign('BookingId', 'RefBookings36')->references('BookingId')->on('bookings')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+			$table->foreign('Booking_id', 'RefBookings36')->references('id')->on('bookings')->onUpdate('RESTRICT')->onDelete('RESTRICT');
 		});
 	}
 

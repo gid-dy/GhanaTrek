@@ -14,12 +14,12 @@ class CreateTourtypesTable extends Migration {
 	{
 		Schema::create('tourtypes', function(Blueprint $table)
 		{
-			$table->bigIncrements('TourTypeID');
+			$table->bigIncrements('id');
 			$table->string('TourTypeName', 25);
 			$table->biginteger('TourTypeSize');
 			$table->string('SKU', 25)->nullable();
 			$table->decimal('PackagePrice', 20, 2);
-			$table->unsignedBiginteger('PackageId')->index('RefTourPackages28');
+			$table->unsignedBiginteger('Package_id')->index('RefTourPackages28');
 			$table->timestamps();
 		});
 	}

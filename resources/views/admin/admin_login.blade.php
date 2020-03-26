@@ -25,20 +25,20 @@
                     <strong>{!! session('flash_message_success') !!}</strong>
                 </div>
             @endif
-            <form id="loginform" role="form" class="form-vertical" method="POST" action="{{ route('admin.login.submit') }}">
+            <form id="" role="form" class="form-vertical" method="POST" action="{{ url('admin/login') }}">
             @csrf
 				 <div class="control-group normal_text"> <h3><img src="{{ asset('/images/backend_images/logo.png') }}" alt="Logo" /></h3></div>
                 <div class="control-group">
                     <div class="controls">
                         <div class="main_input_box">
-                            <span class="add-on bg_lg"><i class="icon-user"> </i></span><input type="email"  name="email" placeholder="Email" />
+                            <span class="add-on bg_lg"><i class="icon-user"> </i></span><input id="UserEmail" type="email"  name="UserEmail" placeholder="Email" required/>
                         </div>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="controls">
                         <div class="main_input_box">
-                            <span class="add-on bg_ly"><i class="icon-lock"></i></span><input type="password" name="password" placeholder="Password" />
+                            <span class="add-on bg_ly"><i class="icon-lock"></i></span><input id="Password" type="password" name="Password" placeholder="Password" />
                         </div>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
 
                 <div class="form-actions">
                     <span class="pull-left"><a href="#" class="flip-link btn btn-success" id="to-login">&laquo; Back to login</a></span>
-                    <span class="pull-right"><a class="btn btn-info"/>Reecover</a></span>
+                    <span class="pull-right"><a class="btn btn-info"/>Recover</a></span>
                 </div>
             </form>
         </div>

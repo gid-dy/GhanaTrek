@@ -27,9 +27,9 @@
           </div>
           
           <div class="widget-content nopadding">
-            <form enctype="multipart/form-data" class="form-horizontal" method="post" action="{{ url('/admin/add-image/'.$tourpackagesDetails->PackageId) }}" name="add_image" id="add_image">
+            <form enctype="multipart/form-data" class="form-horizontal" method="post" action="{{ url('/admin/add-image/'.$tourpackagesDetails->id) }}" name="add_image" id="add_image">
                 @csrf
-                <input type="hidden" name="PackageId" value="{{ $tourpackagesDetails->PackageId }}" />
+                <input type="hidden" name="Package_id" value="{{ $tourpackagesDetails->id }}" />
                 <div class="control-group">
                     <label class="control-label">Package Name</label>
                     <label class="control-label"><strong>{{ $tourpackagesDetails->PackageName }}</strong></label>
@@ -76,15 +76,15 @@
                 <tbody>
                         @foreach ($packageimages as $packageimage)
                         <tr class="gradeX">
-                            <td>{{ $packageimage->PackageImagesId }}</td>
-                            <td>{{ $packageimage->PackageId }}</td>
+                            <td>{{ $packageimage->id }}</td>
+                            <td>{{ $packageimage->Package_id }}</td>
                             <td>
                                 @if(!empty($packageimage->Image))
                                     <img src="{{ asset ('/images/backend_images/tours/small/'.$packageimage->Image) }}" style= "width:70px;">
                                 @endif
                             </td>
                             <td class="center">
-                              <a rel="{{ $packageimage->PackageImagesId }}" rel1="delete-alt-image" href="javascript:" class="btn btn-danger btn-mini deleteRecord">Delete</a>
+                              <a rel="{{ $packageimage->id }}" rel1="delete-alt-image" href="javascript:" class="btn btn-danger btn-mini deleteRecord">Delete</a>
                             </td>
                         </tr>
                     @endforeach                

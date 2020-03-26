@@ -26,7 +26,7 @@
             <h5>Edit Category</h5>
           </div>
           <div class="widget-content nopadding">
-            <form class="form-horizontal" enctype="multipart/form-data" method="post" action="{{ url('/admin/edit-category/'.$categoryDetails->categoryId) }}" name="edit_category" id="edit_category" novalidate="novalidate">
+            <form class="form-horizontal" enctype="multipart/form-data" method="post" action="{{ url('/admin/edit-category/'.$categoryDetails->id) }}" name="edit_category" id="edit_category" novalidate="novalidate">
                 @csrf
               <div class="control-group">
                 <label class="control-label">Category Name</label>

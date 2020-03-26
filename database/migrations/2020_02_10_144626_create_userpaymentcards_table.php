@@ -14,12 +14,12 @@ class CreateUserpaymentcardsTable extends Migration {
 	{
 		Schema::create('userpaymentcards', function(Blueprint $table)
 		{
-			$table->bigIncrements('VMCardID');
+			$table->bigIncrements('id');
 			$table->string('NameOnCard', 150);
 			$table->string('CardNumber', 50)->nullable();
 			$table->date('ExpiryDate')->nullable();
 			$table->string('CVV', 25)->nullable();
-			$table->unsignedBiginteger('UserId')->index('RefUsers56');
+			$table->unsignedBiginteger('User_id')->index('RefUsers56');
 			$table->timestamps();
 		});
 	}

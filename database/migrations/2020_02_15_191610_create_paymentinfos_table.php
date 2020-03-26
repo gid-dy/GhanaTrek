@@ -14,12 +14,12 @@ class CreatePaymentinfosTable extends Migration
     public function up()
     {
         Schema::create('paymentinfos', function (Blueprint $table) {
-            $table->bigIncrements('PaymentInfoID');
-			$table->unsignedBiginteger('UPIUserPaymentDetailsID');
+            $table->bigIncrements('id');
+			$table->unsignedBiginteger('UPIUserPaymentDetails_id');
 			$table->unsignedBiginteger('UPIUserPaymentMethod');
-			$table->unsignedBiginteger('BookingId')->index('RefBookings38');
-			$table->unsignedBiginteger('TaxID')->nullable()->index('RefPaymentTaxation42');
-			$table->unsignedBiginteger('PTyID')->index('RefPaymentType63');
+			$table->unsignedBiginteger('Booking_id')->index('RefBookings38');
+			$table->unsignedBiginteger('Tax_id')->nullable()->index('RefPaymentTaxation42');
+			$table->unsignedBiginteger('PTy_id')->index('RefPaymentType63');
             $table->timestamps();
         });
     }

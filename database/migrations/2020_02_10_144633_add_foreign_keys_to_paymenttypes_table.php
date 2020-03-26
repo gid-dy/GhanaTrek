@@ -14,7 +14,7 @@ class AddForeignKeysToPaymenttypesTable extends Migration {
 	{
 		Schema::table('paymenttypes', function(Blueprint $table)
 		{
-			$table->foreign('PaymentProviderID', 'RefPaymentProvider61')->references('PaymentProviderID')->on('paymentproviders')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+			$table->foreign('PaymentProvider_id', 'RefPaymentProvider61')->references('id')->on('paymentproviders')->onUpdate('RESTRICT')->onDelete('RESTRICT');
 		});
 	}
 

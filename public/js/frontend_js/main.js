@@ -93,11 +93,11 @@ jQuery(document).ready(function($) {
     });
 
     // DM Menu
-    $('#nav').affix({
-        offset: {
-            top: $('#nav').offset().top
-        }
-    });
+    // $('#nav').affix({
+    //     offset: {
+    //         top: $('#nav').offset().top
+    //     }
+    // });
 
     // Menu
     $(".panel a").click(function(e) {
@@ -551,6 +551,17 @@ jQuery(document).ready(function($) {
             if(idTourTypeName == ""){
                 return false;
             }
+            let ck = $(this).val().split('-');
+            //console.log(ck)
+            if(ck[1] === "Organisation"){
+                $('#nt').attr('max','30')
+            }else if(ck[1] === "Family"){
+                $('#nt').attr('max','8')
+            }else if(ck[1] === "Individual"){
+                $('#nt').attr('max', '1')
+            }else if(ck[1] === "Couple"){
+                $('#nt').attr('max','2')
+            }
             $.ajax({
                 type:'get',
                 url:'/get-tourpackage-Price',
@@ -588,8 +599,11 @@ jQuery(document).ready(function($) {
                 url:'/get-transport-Cost',
                 data:{idTransportName:idTransportName},
                 success:function(resp){
-                    //alert(resp); 
-                    $("#getTransportCost").html("GHS " +resp);
+                    console.log(resp); 
+                    var el = $("#getTransportCost")
+                    el.removeAttr('hidden')
+                    el.html("GHS " +resp);
+
                 },error:function(){
                     alert("Error");
                 }
@@ -603,6 +617,149 @@ jQuery(document).ready(function($) {
     });
 
 });
+
+$().ready(function(){
+    //validate register form on keypress
+    $("#registerform").validate({
+        rules:{
+            SurName:{
+                required:true,
+                minlength:2,
+                accept: "[a-zA-Z]+"
+            },
+            OtherNames:{
+                required:true,
+                minlength:2,
+                accept: "[a-zA-Z]+"
+            },
+            UserEmail:{
+                required:true,
+                email:true,
+                remote:"/check-email"
+            },
+            Mobile:{
+                required:true,
+                minlength:10,
+                accept: "[0-9]+"
+            },
+            password:{
+                required:true,
+                minlength:8
+            }
+        },
+        messages:{
+            SurName:{
+                required:"Please enter your Sur Name",
+                minlength: "Your SurName must be at least 2 characters long",
+                accept:"Your name must contain letters only"
+            },
+            OtherNames: {
+                required:"Please enter Other names",
+                minlength: "Other names must be at least 2 characters long",
+                accept:"Your name must contain letters only"
+            },
+            UserEmail:{
+                required: "Please enter your email",
+                email: "Please enter a valid Email",
+                remote:"Email already exist"
+            },
+            Mobile:{
+                required: "Please enter your contact",
+                Mobile: "Your contact should be at leat 10 digits",
+                accept:"Your contact must contain numbers only"
+            },
+            password:{
+                required: "Please provide your Password",
+                minlength: "Your Password should be at least 8 characters long"
+            }
+        }
+    });
+
+    $("#current_pwd").keyup(function(){
+		var current_pwd = $(this).val();
+		$.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+			type:'post',
+			url:'/check-user-pwd',
+			data:{current_pwd:current_pwd},
+			success:function(resp){
+				//alert(resp);
+                if(resp=="false"){
+					$("#chkPwd").html("<font color='red'>Current Password is Incorrect</font>");
+				}else if(resp=="true"){
+					$("#chkPwd").html("<font color='green'>Current Password is Correct</font>");
+				}
+			},error:function(){
+				alert("Error");
+			}
+		});
+	});
+    $("#passwordform").validate({
+		rules:{
+			current_pwd:{
+				required: true,
+				minlength:6,
+				maxlength:20
+			},
+			new_pwd:{
+				required: true,
+				minlength:6,
+				maxlength:20
+			},
+			confirm_pwd:{
+				required:true,
+				minlength:6,
+				maxlength:20,
+				equalTo:"#new_pwd"
+			}
+		},
+		errorClass: "help-inline",
+		errorElement: "span",
+		highlight:function(element, errorClass, validClass) {
+			$(element).parents('.control-group').addClass('error');
+		},
+		unhighlight: function(element, errorClass, validClass) {
+			$(element).parents('.control-group').removeClass('error');
+			$(element).parents('.control-group').addClass('success');
+		}
+	});
+
+    //Password strength Script
+    $('#myPassword').passtrength({
+        minChars: 8,
+        passwordToggle: true,
+        tooltip: true,
+        eyeImg :"images/frontend_images/eye.svg"
+    });
+
+    $("#ship-box").click(function(){
+        if(this.checked){
+            $("#travelling_SurName").val($("#billing_SurName").val());
+            $("#travelling_OtherNames").val($("#billing_OtherNames").val());
+            $("#travelling_email").val($("#billing_email").val());
+            $("#travelling_Mobile").val($("#billing_Mobile").val());
+            $("#travelling_OtherContact").val($("#billing_OtherContact").val());
+            $("#travelling_country_name").val($("#billing_country_name").val());
+            $("#travelling_Address").val($("#billing_Address").val());
+            $("#travelling_City").val($("#billing_City").val());
+            $("#travelling_State").val($("#billing_State").val());
+        }else{
+            $("#travelling_SurName").val('');
+            $("#travelling_OtherNames").val('');
+            $("#travelling_email").val('');
+            $("#travelling_Mobile").val('');
+            $("#travelling_OtherContact").val('');
+            $("#travelling_country_name").val('');
+            $("#travelling_Address").val('');
+            $("#travelling_City").val('');
+            $("#travelling_State").val('');
+        }
+    });
+    
+});
+    
 
 // // Instantiate EasyZoom instances
 // 		var $easyzoom = $('.easyzoom').easyZoom();

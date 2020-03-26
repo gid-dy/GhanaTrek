@@ -14,14 +14,14 @@ class CreateTourlocationsTable extends Migration {
 	{
 		Schema::create('tourlocations', function(Blueprint $table)
 		{
-			$table->bigIncrements('LocationID');
+			$table->bigIncrements('id');
 			$table->string('LocationName', 150);
 			$table->string('Longitude', 25)->nullable();
 			$table->string('Latitude', 25)->nullable();
 			$table->string('Weather', 50)->nullable();
 			$table->string('GhanaPostAddress', 25)->nullable();
 			$table->string('OtherAddress', 150)->nullable();
-			$table->unsignedBiginteger('PackageId')->index('RefTourPackages11');
+			$table->unsignedBiginteger('Package_id')->index('RefTourPackages11');
 			$table->timestamps();
 		});
 	}

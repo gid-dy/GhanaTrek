@@ -14,15 +14,14 @@ class CreatePayinginfosTable extends Migration
     public function up()
     {
         Schema::create('payinginfos', function (Blueprint $table) {
-            $table->bigIncrements('PayingInfoID');
+            $table->bigIncrements('id');
 			$table->string('PaymentToken', 150)->nullable();
 			$table->string('PayemntOrderCode', 150)->nullable();
 			$table->binary('PaymentQRCode', 4000)->nullable();
 			$table->string('TransactionCode', 150)->nullable();
-			$table->dateTime('PayingDateTimeMade')->nullable();
 			$table->decimal('TotalCost', 20, 2)->nullable();
 			$table->string('PaymentStatus', 25)->nullable();
-			$table->unsignedBiginteger('PaymentInfoID')->index('RefPaymentInfo44');
+			$table->unsignedBiginteger('PaymentInfo_id')->index('RefPaymentInfo44');
             $table->timestamps();
         });
     }

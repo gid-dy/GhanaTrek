@@ -14,9 +14,9 @@ class CreateTourpackagecategoriesTable extends Migration {
 	{
 		Schema::create('tourpackagecategories', function(Blueprint $table)
 		{
-			$table->bigIncrements('categoryId');
-			$table->string('CategoryName');
-			$table->string('CategoryDescription', 18)->nullable();
+			$table->bigIncrements('id');
+			$table->string('CategoryName', 100);
+			$table->string('CategoryDescription', 100)->nullable();
 			$table->boolean('CategoryStatus')->nullable();
 			$table->string('Imageaddress', 4000)->nullable();
 			$table->timestamps();

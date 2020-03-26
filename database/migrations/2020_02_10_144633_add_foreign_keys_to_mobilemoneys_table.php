@@ -14,7 +14,7 @@ class AddForeignKeysToMobilemoneysTable extends Migration {
 	{
 		Schema::table('mobilemoneys', function(Blueprint $table)
 		{
-			$table->foreign('UserId', 'RefUsers55')->references('UserId')->on('users')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+			$table->foreign('User_id', 'RefUsers55')->references('id')->on('users')->onUpdate('RESTRICT')->onDelete('RESTRICT');
 		});
 	}
 

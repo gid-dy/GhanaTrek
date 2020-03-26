@@ -14,11 +14,11 @@ class CreateToursitesTable extends Migration {
 	{
 		Schema::create('toursites', function(Blueprint $table)
 		{
-			$table->bigIncrements('TourSitesID');
+			$table->bigIncrements('id');
 			$table->string('TourSiteName', 150);
-			$table->string('TourSiteDesc', 18)->nullable();
-			$table->unsignedBiginteger('LocationID')->index('RefTourLocation18');
-			$table->unsignedBiginteger('PackageId')->nullable()->index('RefTourPackages37');
+			$table->string('TourSiteDesc', 200)->nullable();
+			$table->unsignedBiginteger('Location_id')->index('RefTourLocation18');
+			$table->unsignedBiginteger('Package_id')->nullable()->index('RefTourPackages37');
 			$table->timestamps();
 		});
 	}

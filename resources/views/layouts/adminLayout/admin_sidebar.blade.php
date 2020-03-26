@@ -15,6 +15,12 @@
         <li><a href="{{ url('/admin/view_tourpackages') }}">View Tour Package</a></li>
       </ul>
     </li>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>Coupon</span> <span class="label label-important">2</span></a>
+      <ul>
+        <li><a href="{{ url('/admin/add-coupon') }}">Add Coupon</a></li>
+        <li><a href="{{ url('/admin/view-coupons') }}">View Coupon</a></li>
+      </ul>
+    </li>
 
     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>Bookings</span> <span class="label label-important">1</span></a>
       <ul>

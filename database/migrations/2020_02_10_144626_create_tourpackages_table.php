@@ -14,14 +14,14 @@ class CreateTourpackagesTable extends Migration {
 	{
 		Schema::create('tourpackages', function(Blueprint $table)
 		{
-			$table->bigIncrements('PackageId');
+			$table->bigIncrements('id');
 			$table->string('PackageName', 150);
 			$table->string('PackageCode', 20)->unique('PackageCode');
-			$table->string('Description', 18)->nullable();
+			$table->string('Description', 100)->nullable();
 			$table->decimal('PackagePrice', 20, 2);
 			$table->string('Imageaddress', 4000)->nullable();
 			$table->boolean('Status')->nullable();
-			$table->unsignedBiginteger('categoryId')->nullable()->index('RefTourPackageCategories4');
+			$table->unsignedBiginteger('Category_id')->nullable()->index('RefTourPackageCategories4');
 			$table->timestamps();
 		});
 	}

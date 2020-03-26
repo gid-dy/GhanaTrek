@@ -14,8 +14,8 @@ class AddForeignKeysToRefundpayingsTable extends Migration {
 	{
 		Schema::table('refundpayings', function(Blueprint $table)
 		{
-			$table->foreign('PayingInfoID', 'RefPayingInfo64')->references('PayingInfoID')->on('payinginfos')->onUpdate('RESTRICT')->onDelete('RESTRICT');
-			$table->foreign('RefundInfoID', 'RefRefundInfo65')->references('RefundInfoID')->on('refundinfos')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+			$table->foreign('PayingInfo_id', 'RefPayingInfo64')->references('id')->on('payinginfos')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+			$table->foreign('RefundInfo_id', 'RefRefundInfo65')->references('id')->on('refundinfos')->onUpdate('RESTRICT')->onDelete('RESTRICT');
 		});
 	}
 

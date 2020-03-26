@@ -59,12 +59,12 @@ class TourpackagecategoryController extends Controller
             }
             $tourpackagecategory->save();
             return redirect('/admin/view-categories')->with('flash_message_success', 'Category added Successfully!');
-        }
-        if(Session::has('adminSession')){
+         }
+        // if(Session::has('adminSession')){
 
-        }else{
-            return redirect('/admin/login')->with('flash_message_error','Please login to access');
-        }
+        // }else{
+        //     return redirect('/admin/login')->with('flash_message_error','Please login to access');
+        // }
         return view('admin.categories.add_category');
     }
 
@@ -72,11 +72,11 @@ class TourpackagecategoryController extends Controller
     {
         $tourpackagecategory = Tourpackagecategory::get();
         $tourpackagecategory = json_decode(json_encode($tourpackagecategory));
-        if(Session::has('adminSession')){
+        // if(Session::has('adminSession')){
 
-        }else{
-            return redirect('/admin/login')->with('flash_message_error','Please login to access');
-        }
+        // }else{
+        //     return redirect('/admin/login')->with('flash_message_error','Please login to access');
+        // }
         return view('admin.categories.view_categories')->with(compact('tourpackagecategory'));
     }
 
@@ -86,7 +86,7 @@ class TourpackagecategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function editCategory(Request $request, $categoryId=null)
+    public function editCategory(Request $request, $id=null)
     {
         //echo "test";die;
         if($request->isMethod('post')){
@@ -113,7 +113,7 @@ class TourpackagecategoryController extends Controller
             }else{
                 $filename = $data['current_image'];
             }
-            Tourpackagecategory::where(['categoryId'=>$categoryId])->update([
+            Tourpackagecategory::where(['id'=>$id])->update([
                 'CategoryName'=>$data['CategoryName'],
                 'CategoryDescription'=>$data['CategoryDescription'],
                 'CategoryStatus'=>$CategoryStatus,
@@ -121,7 +121,7 @@ class TourpackagecategoryController extends Controller
             ]);
             return redirect('/admin/view-categories')->with('flash_message_success','Category updated Successfully!');
         }
-        $categoryDetails = Tourpackagecategory::where(['categoryId'=>$categoryId])->first();
+        $categoryDetails = Tourpackagecategory::where(['id'=>$id])->first();
         return view('admin.categories.edit_category')->with(compact('categoryDetails'));
     }
 
@@ -131,17 +131,17 @@ class TourpackagecategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function deleteCategory($categoryId = null)
+    public function deleteCategory($id = null)
     {
-        if(!empty($categoryId)){
-            Tourpackagecategory::where(['categoryId'=>$categoryId])->delete();
+        if(!empty($id)){
+            Tourpackagecategory::where(['id'=>$id])->delete();
             return redirect()->back()->with('flash_message_success', 'Category deleted Successfully!');
         }
     }
 
-    public function deleteCategoryImage($categoryId = null)
+    public function deleteCategoryImage($id = null)
     {
-        $tourcategoryimage = Tourpackagecategory::where(['categoryId'=>$categoryId])->first();
+        $tourcategoryimage = Tourpackagecategory::where(['id'=>$id])->first();
         //echo $tourpackageimage->Imageaddress; die;
         $large_image_path = 'images/backend_images/categories/large/';
         $medium_image_path = 'images/backend_images/categories/medium/';
@@ -156,7 +156,7 @@ class TourpackagecategoryController extends Controller
             unlink($medium_image_path.$tourcategoryimage->Imageaddress);
         }
 
-        Tourpackagecategory:: where(['categoryId'=>$categoryId])->update(['Imageaddress'=>'']);
+        Tourpackagecategory:: where(['id'=>$id])->update(['Imageaddress'=>'']);
         return redirect()->back()->with('flash_message_success', 'Category Image has been deleted successfully!');
     }
 

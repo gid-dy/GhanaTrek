@@ -14,7 +14,7 @@ class CreatePaymenttaxationsTable extends Migration
     public function up()
     {
         Schema::create('paymenttaxations', function (Blueprint $table) {
-            $table->bigIncrements('TaxID');
+            $table->bigIncrements('id');
 			$table->string('TaxName', 25)->unique('TaxName');
 			$table->decimal('TaxAmount', 20, 2);
 			$table->string('TaxAmountType', 50);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Tourpackages;
 use App\Country;
 use App\Tourtype;
@@ -11,6 +12,10 @@ use App\Accommodation;
 use App\Packageimages;
 use App\Tourtransportation;
 use App\Tourinclude;
+use App\Coupon;
+use App\User;
+use App\TravelAddress;
+use Auth;
 use Image;
 use App\Tourpackagecategory;
 use Session;
@@ -34,14 +39,14 @@ class TourpackagesController extends Controller
                 $Status = 1;
             }
 
-             if(empty($data['categoryId'])){
+             if(empty($data['Category_id'])){
                  return redirect()->back()->with('flash_message_error', 'Select Under category option!');
              }
              if (Tourpackages::where('PackageCode', $request->PackageCode)->exists()){
                 return redirect()->back()->with('flash_message_error', 'Package code already exists!');
             }
             $tourpackages = new Tourpackages;
-            $tourpackages->categoryId = $data['categoryId'];
+            $tourpackages->Category_id = $data['Category_id'];
             $tourpackages->PackageName = $data['PackageName'];
             $tourpackages->PackageCode = $data['PackageCode'];
             if (!empty($data['Description'])) {
@@ -78,7 +83,7 @@ class TourpackagesController extends Controller
         $tourpackagecategory = Tourpackagecategory::get();
         $tourpackagecategory_dropdown ="<option value='' selected disabled>Select</option>";
         foreach ($tourpackagecategory as $cat) {
-            $tourpackagecategory_dropdown .= "<option value='".$cat->categoryId."'>".$cat->CategoryName."</option>";
+            $tourpackagecategory_dropdown .= "<option value='".$cat->id."'>".$cat->CategoryName."</option>";
         }
         return view('admin.tour.tourpackage')->with(compact('tourpackagecategory_dropdown'));
     }
@@ -88,14 +93,14 @@ class TourpackagesController extends Controller
         $tourpackages = Tourpackages::get();
         $tourpackages = json_decode(json_encode($tourpackages));
             foreach($tourpackages as $key => $val){
-                $CategoryName = Tourpackagecategory::where(['categoryId'=>$val->categoryId])->first();
+                $CategoryName = Tourpackagecategory::where(['id'=>$val->Category_id])->first();
                 $tourpackages[$key]->CategoryName = $CategoryName->CategoryName;
             }
 
         return view('admin.tour.view_tourpackages')->with(compact('tourpackages'));
     }
 
-    public function editTour(Request $request, $PackageId=null)
+    public function editTour(Request $request, $id=null)
     {
         if($request->isMethod('post')){
             $data = $request->all();
@@ -106,7 +111,7 @@ class TourpackagesController extends Controller
                 $Status = 1;
             }
 
-            if(empty($data['categoryId'])){
+            if(empty($data['Category_id'])){
                 return redirect()->back()->with('flash_message_error', 'Select Under category option!');
             }
 
@@ -131,8 +136,8 @@ class TourpackagesController extends Controller
                 $data['description']= '';
             }
 
-            Tourpackages::where(['PackageId'=>$PackageId])->update([
-                'categoryId'=>$data['categoryId'],
+            Tourpackages::where(['id'=>$id])->update([
+                'Category_id'=>$data['Category_id'],
                 'PackageName'=>$data['PackageName'],
                 'PackageCode'=>$data['PackageCode'],
                 'Description'=>$data['Description'],
@@ -144,25 +149,25 @@ class TourpackagesController extends Controller
             return redirect()->back()->with('flash_message_success', 'Tour has been updated successfully!');
         }
 
-        $tourpackagesDetails = Tourpackages::where(['PackageId'=>$PackageId])->first();
+        $tourpackagesDetails = Tourpackages::where(['id'=>$id])->first();
 
         $tourpackagecategory = Tourpackagecategory::get();
         $tourpackagecategory_dropdown ="<option value='' selected disabled>Select</option>";
         foreach ($tourpackagecategory as $cat) {
-            if($cat->PackageId==$tourpackagesDetails->categoryId){
+            if($cat->id==$tourpackagesDetails->Category_id){
                 $selected ="selected";
             }else{
                 $selected = " ";
             }
-            $tourpackagecategory_dropdown .= "<option value='".$cat->categoryId."'>".$cat->CategoryName."</option>";
+            $tourpackagecategory_dropdown .= "<option value='".$cat->id."'>".$cat->CategoryName."</option>";
         }
 
         return view('admin.tour.edit_tourpackages')->with(compact('tourpackagesDetails', 'tourpackagecategory_dropdown'));
     }
 
-    public function deleteTourImage($PackageId = null)
+    public function deleteTourImage($id = null)
     {
-        $tourpackageimage = Tourpackages::where(['PackageId'=>$PackageId])->first();
+        $tourpackageimage = Tourpackages::where(['id'=>$id])->first();
         //echo $tourpackageimage->Imageaddress; die;
         $large_image_path = 'images/backend_images/tours/large/';
         $medium_image_path = 'images/backend_images/tours/medium/';
@@ -183,19 +188,19 @@ class TourpackagesController extends Controller
             unlink($small_image_path.$tourpackageimage->Imageaddress);
         }
 
-        Tourpackages:: where(['PackageId'=>$PackageId])->update(['Imageaddress'=>'']);
+        Tourpackages:: where(['id'=>$id])->update(['Imageaddress'=>'']);
         return redirect()->back()->with('flash_message_success', 'Tour Image has been deleted successfully!');
     }
 
-    public function deleteTourpackage($PackageId=null)
+    public function deleteTourpackage($id=null)
     {
-        Tourpackages::where(['PackageId'=>$PackageId])->delete();
+        Tourpackages::where(['id'=>$id])->delete();
         return redirect()->back()->with('flash_message_success', 'Tour has been deleted successfully!');
     }
 
-    public function deleteTourtype($TourTypeID = null)
+    public function deleteTourtype($id = null)
     {
-        Tourtype::where(['TourTypeID'=>$TourTypeID])->delete();
+        Tourtype::where(['id'=>$id])->delete();
         return redirect()->back()->with('flash_message_success', 'Tour type has been deleted successfully!');
     }
 
@@ -205,9 +210,9 @@ class TourpackagesController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function tourtype(Request $request, $PackageId = null)
+    public function tourtype(Request $request, $id = null)
     {
-        $tourpackagesDetails = Tourpackages::with('tourtypes')->where(['PackageId'=>$PackageId])->first();
+        $tourpackagesDetails = Tourpackages::with('tourtypes')->where(['id'=>$id])->first();
         // $tourpackagesDetails = json_decode(json_encode($tourpackagesDetails ));
         // echo "<pre>"; print_r($tourpackagesDetails); die;
 
@@ -220,18 +225,18 @@ class TourpackagesController extends Controller
                     //prevent duplicate sku
                     $typeCountSKU = Tourtype::where('SKU', $val)->count();
                     if($typeCountSKU>0){
-                        return redirect('admin/add-tourtype/'.$PackageId)->with('flash_message_error', 'SKU already exist! Please add another SKU.');
+                        return redirect('admin/add-tourtype/'.$id)->with('flash_message_error', 'SKU already exist! Please add another SKU.');
                     }
 
                     //prevent duplicate tourtype
-                    $typeCountName = Tourtype::where(['PackageId'=>$PackageId,'TourTypeName'=>$data['TourTypeName'][$key]])->count();
+                    $typeCountName = Tourtype::where(['Package_id'=>$id,'TourTypeName'=>$data['TourTypeName'][$key]])->count();
                     if($typeCountName>0){
-                        return redirect('admin/add-tourtype/'.$PackageId)->with('flash_message_error','"'.$data['TourTypeName'][$key].'"Tour type name already exist for this tour! Please add another name.');
+                        return redirect('admin/add-tourtype/'.$id)->with('flash_message_error','"'.$data['TourTypeName'][$key].'"Tour type name already exist for this tour! Please add another name.');
                     }
-                    
+
 
                     $tourtype = new Tourtype;
-                    $tourtype->PackageId =$PackageId;
+                    $tourtype->Package_id =$id;
                     $tourtype->SKU =$val;
                     $tourtype->TourTypeName =$data['TourTypeName'][$key];
                     $tourtype->TourTypeSize =$data['TourTypeSize'][$key];
@@ -239,18 +244,18 @@ class TourpackagesController extends Controller
                     $tourtype->save();
                 }
             }
-            return redirect('admin/add-tourtype/'.$PackageId)->with('flash_message_success', 'Tour Type has been added successfully');
+            return redirect('admin/add-tourtype/'.$id)->with('flash_message_success', 'Tour Type has been added successfully');
         }
         return view('admin.tour.add_tourtype')->with(compact('tourpackagesDetails'));
     }
 
-    public function edittourtype(Request $request, $TourTypeID = null)
+    public function edittourtype(Request $request, $id = null)
     {
         if($request->isMethod('post')){
             $data = $request->all();
             //echo "<pre>"; print_r($data); die;
              foreach($data['idType'] as $key => $type){
-                 Tourtype::where(['TourTypeID' =>$data['idType'][$key]])->update([
+                 Tourtype::where(['id' =>$data['idType'][$key]])->update([
                      'PackagePrice'=>$data['PackagePrice'][$key],
                      'TourTypeSize'=>$data['TourTypeSize'][$key]
                      ]);
@@ -259,12 +264,12 @@ class TourpackagesController extends Controller
          }
     }
 
-  
 
-    public function image(Request $request, $PackageId = null)
+
+    public function image(Request $request, $id = null)
     {
-        $tourpackagesDetails = Tourpackages::with('packageimages')->where(['PackageId'=>$PackageId])->first();
-        
+        $tourpackagesDetails = Tourpackages::with('packageimages')->where(['id'=>$id])->first();
+
         if($request->isMethod('post')){
             $data = $request->all();
            if($request->hasFile('Image')){
@@ -274,32 +279,32 @@ class TourpackagesController extends Controller
                  $Image = new Packageimages;
                  $extension = $file->getClientOriginalExtension();
                  $fileName = rand(111,999999).'.'.$extension;
-     
+
                  $large_image_path = 'images/backend_images/tours/large/'.$fileName;
                  $medium_image_path = 'images/backend_images/tours/medium/'.$fileName;
                  $small_image_path = 'images/backend_images/tours/small/'.$fileName;
-     
+
                  //Resize Images
                  Image::make($file)->save($large_image_path);
                  Image::make($file)->resize(270,180)->save($medium_image_path);
                  Image::make($file)->resize(135,90)->save($small_image_path);
-     
+
                  $Image->Image =$fileName;
-                 $Image->PackageId = $data['PackageId'];
+                 $Image->Package_id = $data['Package_id'];
                  $Image->save();
                }
-               return redirect('admin/add-image/'.$PackageId)->with('flash_message_success', 'Image has been added successfully');
+               return redirect('admin/add-image/'.$id)->with('flash_message_success', 'Image has been added successfully');
             }
         }
-        $packageimages = Packageimages::where(['PackageId' => $PackageId])->get();
+        $packageimages = Packageimages::where(['Package_id' => $id])->get();
         $packageimages = json_decode(json_encode($packageimages));
-        
+
         return view('admin.tour.add_image')->with(compact('tourpackagesDetails','packageimages'));
     }
 
-    public function deleteAltimage($PackageImagesId = null)
+    public function deleteAltimage($id = null)
     {
-        $tourpackageimage = Packageimages::where(['PackageImagesId'=>$PackageImagesId])->first();
+        $tourpackageimage = Packageimages::where(['id'=>$id])->first();
         //echo $tourpackageimage->Imageaddress; die;
         $large_image_path = 'images/backend_images/tours/large/';
         $medium_image_path = 'images/backend_images/tours/medium/';
@@ -320,14 +325,14 @@ class TourpackagesController extends Controller
             unlink($small_image_path.$tourpackageimage->Image);
         }
 
-        Packageimages:: where(['PackageImagesId'=>$PackageImagesId])->delete();
+        Packageimages:: where(['id'=>$id])->delete();
         return redirect()->back()->with('flash_message_success', 'Alt Image has been deleted successfully!');
     }
 
 
-    public function transport(Request $request, $PackageId = null)
+    public function transport(Request $request, $id = null)
     {
-        $tourpackagesDetails = Tourpackages::with('tourtransports')->where(['PackageId'=>$PackageId])->first();
+        $tourpackagesDetails = Tourpackages::with('tourtransports')->where(['id'=>$id])->first();
         if($request->isMethod('post')){
             $data = $request->all();
 
@@ -335,98 +340,97 @@ class TourpackagesController extends Controller
                 if(!empty($val)){
 
                     //prevent duplicate tourtransport
-                    $tranCountName = Tourtransportation::where(['PackageId'=>$PackageId,'TransportName'=>$TransportName =$val])->count();
+                    $tranCountName = Tourtransportation::where(['Package_id'=>$id,'TransportName'=>$val])->count();
                     if($tranCountName>0){
-                        return redirect('admin/add-tourtype/'.$PackageId)->with('flash_message_error','"'.$TransportName =$val.'"Transportation already exist for this tour! Please add another name.');
+                        return redirect('admin/add-tourtype/'.$id)->with('flash_message_error','"'.$val.'"Transportation name already exist for this tour! Please add another name.');
                     }
 
                     $tourtransportation = new Tourtransportation;
-                    $tourtransportation->PackageId =$PackageId;
+                    $tourtransportation->Package_id =$id;
                     $tourtransportation->TransportName =$val;
                     $tourtransportation->TransportCost =$data['TransportCost'][$key];
                     $tourtransportation->save();
                 }
             }
-            return redirect('admin/add-tourtype/'.$PackageId)->with('flash_message_success', 'Tour Transport has been added successfully');
+            return redirect('admin/add-tourtype/'.$id)->with('flash_message_success', 'Tour Transport has been added successfully');
         }
         return view('admin.tour.add_tourtype')->with(compact('tourpackagesDetails'));
     }
 
-    public function edittransport(Request $request, $TourTransportationID = null)
+    public function edittransport(Request $request, $id = null)
     {
         if($request->isMethod('post')){
             $data = $request->all();
             //echo "<pre>"; print_r($data); die;
             foreach($data['idTransport'] as $key => $transport){
-                Tourtransportation::where(['TourTransportationID' =>$data['idTransport'][$key]])->update(
+                Tourtransportation::where(['id' =>$data['idTransport'][$key]])->update(
                     ['TransportCost'=>$data['TransportCost'][$key]]);
             }
             return redirect()->back()->with('flash_message_success', 'Tour Transport has been updated successfully');
         }
     }
 
-    
 
-    public function deleteTransport($TourTransportationID = null)
+
+    public function deleteTransport($id = null)
     {
-        Tourtransportation::where(['TourTransportationID'=>$TourTransportationID])->delete();
+        Tourtransportation::where(['id'=>$id])->delete();
         return redirect()->back()->with('flash_message_success', 'Tour Transportation has been deleted successfully!');
     }
 
-    public function tourinclude(Request $request, $PackageId = null)
+    public function tourinclude(Request $request, $id = null)
     {
-        $tourpackagesDetails = Tourpackages::with('tourincludes')->where(['PackageId'=>$PackageId])->first();
+        $tourpackagesDetails = Tourpackages::with('tourincludes')->where(['id'=>$id])->first();
         if($request->isMethod('post')){
             $data = $request->all();
 
             foreach($data['IncludeName'] as $key => $val){
                 if(!empty($val)){
                     $tourinclude = new Tourinclude;
-                    $tourinclude->PackageId =$PackageId;
+                    $tourinclude->Package_id =$id;
                     $tourinclude->IncludeName =$val;
                     $tourinclude->TourIncludeInfo =$data['TourIncludeInfo'][$key];
                     $tourinclude->TourExcludeName =$data['TourExcludeName'][$key];
                     $tourinclude->save();
                 }
             }
-            return redirect('admin/add-tourtype/'.$PackageId)->with('flash_message_success', 'Tour details has been added successfully');
+            return redirect('admin/add-tourtype/'.$id)->with('flash_message_success', 'Tour details has been added successfully');
         }
         return view('admin.tour.add_tourtype')->with(compact('tourpackagesDetails'));
     }
 
-    public function deleteTourinclude($TourIncludeID = null)
+    public function deleteTourinclude($id = null)
     {
-        Tourinclude::where(['TourIncludeID'=>$TourIncludeID])->delete();
+        Tourinclude::where(['id'=>$id])->delete();
         return redirect()->back()->with('flash_message_success', 'Tour Include has been deleted successfully!');
     }
 
 
-    public function accommodation(Request $request, $PackageId = null)
+    public function accommodation(Request $request, $id = null)
     {
-        $tourpackagesDetails = Tourpackages::with('accommodations')->where(['PackageId'=>$PackageId])->first();
+        $tourpackagesDetails = Tourpackages::with('accommodations')->where(['id'=>$id])->first();
         if($request->isMethod('post')){
             $data = $request->all();
 
             //prevent duplicate accommodation
-            $accCountName = Accommodation::where(['PackageId'=>$PackageId,'AccommodationName'=>$data['AccommodationName']])->count();
+            $accCountName = Accommodation::where(['Package_id'=>$id,'AccommodationName'=>$data['AccommodationName']])->count();
             if($accCountName>0){
-                return redirect('admin/add-tourtype/'.$PackageId)->with('flash_message_error','"'.$data['AccommodationName'].'"Accommodation Name already exist for this tour! Please add another name.');
+                return redirect('admin/add-tourtype/'.$id)->with('flash_message_error','"'.$data['AccommodationName'].'"Accommodation Name already exist for this tour! Please add another name.');
             }
 
             $accommodation = new Accommodation;
-            $accommodation->PackageId =$PackageId;
+            $accommodation->Package_id =$id;
             $accommodation->AccommodationName =$data['AccommodationName'];
-            $accommodation->AccommodationType =$data['AccommodationType'];
             $accommodation->save();
 
-            return redirect('admin/add-tourtype/'.$PackageId)->with('flash_message_success', 'Accomodation has been added successfully');
+            return redirect('admin/add-tourtype/'.$id)->with('flash_message_success', 'Accomodation has been added successfully');
         }
         return view('admin.tour.add_tourtype')->with(compact('tourpackagesDetails','tourlocations_dropdown'));
     }
 
-    public function deleteAccommodation($AccommodationID = null)
+    public function deleteAccommodation($id = null)
     {
-        Accommodation::where(['AccommodationID'=>$AccommodationID])->delete();
+        Accommodation::where(['id'=>$id])->delete();
         return redirect()->back()->with('flash_message_success', 'Accommodation has been deleted successfully!');
     }
 
@@ -436,15 +440,15 @@ class TourpackagesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function location(Request $request, $PackageId = null)
+    public function location(Request $request, $id = null)
     {
-        $tourpackagesDetails = Tourpackages::where(['PackageId'=>$PackageId])->first();
+        $tourpackagesDetails = Tourpackages::where(['id'=>$id])->first();
         if($request->isMethod('post')){
             $data = $request->all();
             //echo "<pre>"; print_r($data);die;
 
             $tourlocations = new Tourlocations;
-            $tourlocations->PackageId =$PackageId;
+            $tourlocations->Package_id =$Package_id;
             $tourlocations->LocationName = $data['LocationName'];
             $tourlocations->Longitude = $data['Longitude'];
             $tourlocations->Latitude = $data['Latitude'];
@@ -453,7 +457,7 @@ class TourpackagesController extends Controller
             $tourlocations->OtherAddress = $data['OtherAddress'];
             $tourlocations->save();
 
-            return redirect('/admin/add-location/'.$PackageId)->with('flash_message_success', 'tour location added Successfully!');
+            return redirect('/admin/add-location/'.$id)->with('flash_message_success', 'tour location added Successfully!');
         }
 
             return view('admin.tour.location')->with(compact('tourpackagesDetails'));
@@ -474,33 +478,36 @@ class TourpackagesController extends Controller
         if ($countCategory==0){
             abort(404);
         }
-        $tourpackagecategory = Tourpackagecategory::with('tourcategories')->where($categoryId=null)->get();
+        $tourpackagecategory = Tourpackagecategory::with('tourcategories')->where($id=null)->get();
         $categoryDetails = Tourpackagecategory::where(['CategoryName'=>$CategoryName])->first();
-        
 
-        $tourpackagesAll = Tourpackages::where(['categoryId' => $categoryDetails->categoryId ])->get();
+
+        $tourpackagesAll = Tourpackages::where(['Category_id' => $categoryDetails->id ])->get();
         return view('tour.package')->with(compact('tourpackagecategory','categoryDetails', 'tourpackagesAll'));
     }
 
 
-    public function tours($PackageId = null)
+    public function tours($id = null)
     {
-        $tourpackagesCount = Tourpackages::where(['PackageId'=>$PackageId, 'Status'=>1])->count();
+       
+        $tourpackagesCount = Tourpackages::where(['id'=>$id, 'Status'=>1])->count();
         if($tourpackagesCount == 0){
             abort(404);
         }
 
-        $tourpackagesDetails = Tourpackages::with('tourtypes','accommodations','tourincludes','tourtransports','tourlocations')->where('PackageId', $PackageId)->first();
+        $tourpackagesDetails = Tourpackages::with('tourtypes','accommodations','tourincludes','tourtransports','tourlocations')->where('id', $id)->first();
         $tourpackagesDetails = json_decode(json_encode($tourpackagesDetails));
+        
        // echo "<pre>"; print_r($tourpackagesDetails);die;
-       $relatedTour = Tourpackages::where('PackageId','!=',$PackageId)->where(['categoryId'=>$tourpackagesDetails->categoryId])->get();
-      
+       $relatedTour = Tourpackages::where('id','!=',$id)->where(['Category_id'=>$tourpackagesDetails->Category_id])->get();
 
-       $tourAltImage = Packageimages::where('PackageId',$PackageId)->get();
+
+       $tourAltImage = Packageimages::where('Package_id',$id)->get();
     //    $tourAltImage = json_decode(json_encode($tourAltImage));
     //    echo "<pre>"; print_r($tourAltImage); die;
 
-    $total_availability = TourType::where('PackageId',$PackageId)->sum('TourTypeSize');
+    $total_availability = TourType::where('Package_id',$id)->sum('TourTypeSize');
+    //dd( $tourpackagesDetails);
         return view('tour.details')->with(compact('tourpackagesDetails','tourAltImage','relatedTour','total_availability'));
     }
 
@@ -512,7 +519,7 @@ class TourpackagesController extends Controller
         $tourArr = explode("-", $data['idTourTypeName']);
         //echo $tourArr[0]; echo $tourArr[1]; die;
 
-        $tourtypeAtt = Tourtype::where(['PackageId' => $tourArr[0], 'TourTypeName' => $tourArr[1]])->first();
+        $tourtypeAtt = Tourtype::where(['Package_id' => $tourArr[0], 'TourTypeName' => $tourArr[1]])->first();
         echo $tourtypeAtt->PackagePrice;
         echo "#";
         echo $tourtypeAtt->TourTypeSize;
@@ -524,52 +531,218 @@ class TourpackagesController extends Controller
         $data = $request->all();
         // echo "<pre>"; print_r($data); die;
         $tranArr = explode("-", $data['idTransportName']);
+
         //echo $tourArr[0]; echo $tourArr[1]; die;
 
-        $tranAtt = Tourtransportation::where(['PackageId' => $tranArr[0], 'TransportName' => $tranArr[1]])->first();
+        $tranAtt = Tourtransportation::where(['Package_id' => $tranArr[0], 'TransportName' => $tranArr[1]])->first();
         echo $tranAtt->TransportCost;
     }
 
     public function addtocart(Request $request){
         $data = $request->all();
+        
+
         //echo "<pre>"; print_r($data); die;
 
         if (empty($data['UserEmail'])){
             $data['UserEmail'] = '';
         }
-
-        if (empty($data['sessionId'])){
-            $data['sessionId'] = '';
+        if (empty($data['TransportCost'])){
+            $data['TransportCost'] = '';
         }
 
+        if (empty($data['TransportName'])) {
+            $data['TransportName']= '';
+        }
+
+
+        $Session_id = Session::get('Session_id');
+        if(empty($Session_id)){
+            $Session_id = str::random(40);
+            Session::put('Session_id',$Session_id);
+        }
+        
+        if (empty($data['TransportName'])){
+            $data['TransportName'] = '';
+        }
+
+
         $TourTypeNameArr = explode("-", $data['TourTypeName']);
-       
-        DB::table('carts')->insert([
-            'PackageId'=>$data['PackageId'],
+        $TransportNameArr = explode("-", $data['TransportName']);
+        
+        if(empty($data['TourTypeName'])){
+            return redirect()->back()->with('flash_message_error', 'Select Tour type !');
+        }
+
+        $countTourpackages = DB::table('carts')->where([
+            'Package_id'=>$data['Package_id'],
             'PackageName'=>$data['PackageName'],
             'PackageCode'=>$data['PackageCode'],
-            'PackagePrice'=>$data['PackagePrice'],
-            'Travellers'=>$data['Travellers'],
             'TourTypeName'=>$TourTypeNameArr[1],
-            'UserEmail'=>$data['UserEmail'],
-            'sessionId'=>$data['sessionId'],
+            'Session_Id'=>$Session_id
 
-        ]);
-        die;
+        ])->count();
+        if($countTourpackages>0){
+            return redirect()->back()->with('flash_message_error',  'Tour Package already exist in cart!');
+        }else{
+            $getSKU =Tourtype::select('SKU')->where(['Package_id' =>$data['Package_id'],'TourTypeName'=>$TourTypeNameArr[1]])->first();
+            DB::table('carts')->insert([
+                'Package_id'=>$data['Package_id'],
+                'PackageName'=>$data['PackageName'],
+                'PackageCode'=>$getSKU->SKU,
+                'PackagePrice'=>$data['PackagePrice'],
+                'Travellers'=>$data['Travellers'],
+                'TourTypeName'=>$TourTypeNameArr[1],
+                'TransportName'=>$TransportNameArr[1],
+                'UserEmail'=>$data['UserEmail'],
+                'Session_id'=>$Session_id
+
+            ]);
+        }
+        return redirect('cart')->with('flash_message_success','tour added to cart');
+        
     }
 
 
-        
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function cart()
     {
-        //
+        $Session_id = Session::get('Session_id');
+        $userCart = DB::table('carts')->where(['Session_id'=>$Session_id])->get();
+        foreach($userCart as $key =>$tourpackages){
+            $tourpackagesDetails = Tourpackages::where('id', $tourpackages->Package_id)->first();
+            $userCart[$key]->Imageaddress = $tourpackagesDetails->Imageaddress;
+        }
+         //echo "<pre>"; print_r($userCart); die;
+        return view('tour.cart')->with(compact('userCart'));
+    }
+
+    public function deleteCartPackage($id = null){
+        DB::table('carts')->where('id', $id)->delete();
+        return redirect('cart')->with('flash_message_success', 'Tour Package has been deleted from cart!');
+    }
+
+    public function applyCoupon(Request $request)
+    {
+        Session::put('CouponAmount');
+        Session::put('CouponCode');
+
+        $data = $request->all();
+        // echo "<pre>"; print_r($data); die;
+        $couponCount = Coupon::where('CouponCode', $data['CouponCode'])->count();
+        if($couponCount == 0){
+            return redirect()->back()->with('flash_message_error', 'This coupon does not exist');
+        }else{
+            //get coupon details
+            $couponDetails = Coupon::where('CouponCode', $data['CouponCode'])->first();
+
+            //if coupon is Inactive
+            if($couponDetails->Status==0){
+                return redirect()->back()->with('flash_message_error', 'This coupon is not active');
+            }
+            //if coupon is expired
+             $ExpiryDate = $couponDetails->ExpiryDate; 
+            $current_date = date('Y-m-d');
+            if($ExpiryDate < $current_date){
+                return redirect()->back()->with('flash_message_error', 'This coupon is expired');
+            }
+
+            //Coupon is valid for discount
+
+            //Get Cart Total Amount
+            $Session_Id = Session::get('Session_id');
+            $userCart = DB::table('carts')->where(['Session_Id'=>$Session_Id])->get();
+            $total_amount = 0;
+            foreach($userCart as $item){
+                $total_amount = $total_amount + ($item->PackagePrice * $item->Travellers);
+                
+            }
+
+            //check if amount type is fixed or percentage
+            if($couponDetails->AmountType=="Fixed"){
+                $couponAmount = $couponDetails->Amount;
+            }else{
+                $couponAmount = $total_amount * ($couponDetails->Amount/100);
+            }
+            
+            //add coupon code $ amount in session
+            Session::put('CouponAmount', $couponAmount);
+            Session::put('CouponCode', $data['CouponCode']);
+
+            return redirect()->back()->with('flash_message_success', 'Coupon code successfully applied. You are availing discount!');
+        }
+    }
+
+    public function billing(Request $request){
+        $user_id =Auth::user()->id;
+        $user_email =Auth::user()->UserEmail;
+        $userDetails = User::find($user_id);
+        $countries =Country::get();
+
+        //checking if Travelling Address exists
+        $travellingCount = TravelAddress::where('user_id',$user_id)->count();
+            if($travellingCount>0){
+                $travellingDetails = TravelAddress::where('user_id',$user_id)->first();
+            }
+
+        if($request->isMethod('post')){
+            $data =$request->all();
+
+            //return to checkout page if any of the field is empty
+            if(empty($data['billing_SurName']) || empty($data['billing_OtherNames']) || empty($data['billing_email']) ||
+              empty($data['billing_country_name']) || empty($data['billing_Mobile']) || empty($data['billing_OtherContact']) ||
+              empty($data['billing_Address']) || empty($data['billing_City']) || empty($data['[billing_State']) ||
+              empty($data['travelling_SurName']) || empty($data['travelling_OtherNames']) || empty($data['travelling_email']) ||
+              empty($data['travelling_country_name']) || empty($data['travelling_Mobile']) || empty($data['travelling_OtherContact']) ||
+              empty($data['travelling_Address']) || empty($data['travelling_City']) || empty($data['travelling_State'])){
+
+                 
+                  return redirect()->back()->with('flash_message_error', 'Please fill all fields to Checkout!');
+              }
+              //Update user details
+              User::where('id',$user_id)->update([
+                  'SurName'=>$data['billing_Surname'],
+                  'OtherNames'=>$data['billing_OtherNames'],
+                  'country_name'=>$data['billing_country_name'],
+                  'Mobile'=>$data['billing_Mobile'],
+                  'Address'=>$data['billing_Address'],
+                  'City'=>$data['billing_City'],
+                  'State'=>$data['billing_State'],
+                  'OtherContact'=>$data['billing_OtherContact'],
+                  'UserEmail'=>$data['billing_email']
+              ]);
+
+              if($travellingCount>0){
+                  //update Travelling Address
+                  TravelAddress::where('user_id',$user_id)->update([
+                    'SurName'=>$data['travelling_Surname'],
+                    'OtherNames'=>$data['travelling_OtherNames'],
+                    'country_name'=>$data['travelling_country_name'],
+                    'Mobile'=>$data['travelling_Mobile'],
+                    'Address'=>$data['travelling_Address'],
+                    'City'=>$data['travelling_City'],
+                    'State'=>$data['travelling_State'],
+                    'OtherContact'=>$data['travelling_OtherContact'],
+                    'UserEmail'=>$data['travelling_email']
+                ]);
+              }else{
+                  //Add new travelling Address
+                  $travelling = new TravelAddress;
+                  $travelling->user_id =$user_id;
+                  $travelling->user_email =$UserEmail;
+                  $travelling->SurName=$data['travelling_SurName'];
+                  $travelling->OtherNames=$data['travelling_SurName'];
+                  $travelling->Mobile=$data['travelling_Mobile'];
+                  $travelling->OtherContact=$data['travelling_OtherContact'];
+                  $travelling->country_name=$data['travelling_country_name'];
+                  $travelling->Address=$data['travelling_SAddress'];
+                  $travelling->City=$data['travelling_City'];
+                  $travelling->State=$data['travelling_State'];
+                  $travelling->save();
+              }
+              echo "Redirect to Other Review Page"; die;
+            
+        }
+        return view('tour.billing')->with(compact('userDetails','countries'));
     }
 
     /**

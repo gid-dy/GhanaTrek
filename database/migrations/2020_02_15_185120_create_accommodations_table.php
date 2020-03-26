@@ -14,10 +14,9 @@ class CreateAccommodationsTable extends Migration
     public function up()
     {
         Schema::create('accommodations', function (Blueprint $table) {
-            $table->bigIncrements('AccommodationID');
+            $table->bigIncrements('id');
 			$table->string('AccommodationName', 25);
-			$table->string('AccommodationType', 18)->nullable();
-			$table->unsignedBiginteger('PackageId')->nullable()->index('RefTourPackages54');
+			$table->unsignedBiginteger('Package_id')->nullable()->index('RefTourPackages54');
             $table->timestamps();
         });
     }

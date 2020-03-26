@@ -14,11 +14,10 @@ class CreateTransactioninfosTable extends Migration {
 	{
 		Schema::create('transactioninfos', function(Blueprint $table)
 		{
-			$table->bigIncrements('TransactionID');
+			$table->bigIncrements('id');
 			$table->string('TransactionCode', 20)->unique('TransactionCode');
-			$table->dateTime('TransactionDateTimeMade')->nullable();
 			$table->string('TransactionStatus', 25)->nullable();
-			$table->unsignedBiginteger('PayingInfoID')->index('RefPayingInfo49');
+			$table->unsignedBiginteger('PayingInfo_id')->index('RefPayingInfo49');
 			$table->timestamps();
 		});
 	}

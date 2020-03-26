@@ -14,7 +14,7 @@ class CreateRefundpenaltiesTable extends Migration {
 	{
 		Schema::create('refundpenalties', function(Blueprint $table)
 		{
-			$table->bigIncrements('RefundPenaltyID');
+			$table->bigIncrements('id');
 			$table->string('PenaltyName', 50);
 			$table->string('PenaltyCode', 20)->unique('PenaltyCode');
 			$table->string('PenaltyDesc', 150)->nullable();

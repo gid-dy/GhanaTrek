@@ -6,6 +6,7 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta content="" name="keywords">
   <meta content="" name="description">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <!-- Favicons -->
   <link rel="shortcut icon" href="{{ asset('images/frontend_images/icon.png') }}" type="image/x-icon">
@@ -30,32 +31,14 @@
   <link rel="stylesheet" href="{{ asset('css/frontend_css/colors/style.css') }}" />
   <link rel="stylesheet" href="{{ asset('css/frontend_css/colors/blue.css') }}">
   <link rel="stylesheet" href="{{ asset('css/frontend_css/shop.css') }}">
-  
-
-
+  <link rel="stylesheet" href="{{ asset('css/frontend_css/passtrength.css') }}">
 </head>
-
-{{--  {{ asset('css/backend_css/bootstrap.min.css') }}  --}}
-    {{--  @include('layouts.frontLayout.user_topbar')
-    @include('layouts.frontLayout.user_header')  --}}
-
+</body>
     @yield('content')
-
-    {{--  @include('layouts.frontLayout.user_subscription')--}}
-
-    @include('layouts.frontLayout.user_footer')
-
-
-
-
-
-
-
-
-<!-- JavaScript Libraries -->
+{{--  <!-- JavaScript Libraries -->  --}}
     <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('lib/bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('lib/php-mail-form/validate.js') }}"></script>
+    {{-- <script src="{{ asset('lib/php-mail-form/validate.js') }}"></script> --}}
     <script src="{{ asset('lib/prettyphoto/js/prettyphoto.js') }}"></script>
     <script src="{{ asset('lib/isotope/isotope.min.js') }}"></script>
     <script src="{{ asset('lib/hover/hoverdir.js') }}"></script>
@@ -66,13 +49,16 @@
     <script src="{{ asset('lib/animate-enhanced/animate-enhanced.min.js') }}"></script>
     <script src="{{ asset('lib/jigowatt/jigowatt.js') }}"></script>
     <script src="{{ asset('lib/easypiechart/easypiechart.min.js') }}"></script>
+    
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false" type="text/javascript"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script> --}}
 
 
-    <!-- Template Main Javascript File -->
+    {{--  <!-- Template Main Javascript File -->  --}}
     <script src="{{ asset('js/frontend_js/main.js') }}"></script>
+    <script src="{{ asset('js/frontend_js/jquery.validate.js') }}"></script>
     <script src="{{ asset('js/frontend_js/easyzoom.js') }}"></script>
+    <script src="{{ asset('js/frontend_js/passtrength.js') }}"></script>
 
-
+</body>
 </html>

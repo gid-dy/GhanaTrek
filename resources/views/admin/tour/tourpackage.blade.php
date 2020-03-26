@@ -32,7 +32,7 @@
                 <div class="control-group">
                     <label class="control-label">Under Category</label>
                     <div class="controls">
-                        <select name="categoryId" id="categoryId" style="width: 220px;">
+                        <select name="Category_id" id="Category_id" style="width: 220px;">
                             <?php echo $tourpackagecategory_dropdown; ?>
                         </select>
                     </div>

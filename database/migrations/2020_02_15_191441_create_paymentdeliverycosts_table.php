@@ -14,10 +14,10 @@ class CreatePaymentdeliverycostsTable extends Migration
     public function up()
     {
         Schema::create('paymentdeliverycosts', function (Blueprint $table) {
-            $table->bigIncrements('PaymentDeliveryCostID');
+            $table->bigIncrements('id');
 			$table->string('DeliveryCostName', 50);
 			$table->decimal('DeliveryCost', 20, 2);
-			$table->unsignedBiginteger('PaymentProviderID')->index('RefPaymentProvider41');
+			$table->unsignedBiginteger('PaymentProvider_id')->index('RefPaymentProvider41');
             $table->timestamps();
         });
     }

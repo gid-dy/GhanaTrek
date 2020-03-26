@@ -14,11 +14,10 @@ class CreateTourtransportationsTable extends Migration {
 	{
 		Schema::create('tourtransportations', function(Blueprint $table)
 		{
-			$table->bigIncrements('TourTransportationID');
-			$table->string('TransportName', 50)->nullable();
-			$table->string('TransportDesc', 18)->nullable();
-			$table->decimal('TransportCost', 20, 2)->nullable();
-			$table->unsignedBiginteger('PackageId')->index('RefTourPackages20');
+			$table->bigIncrements('id');
+			$table->string('TransportName', 50);
+			$table->decimal('TransportCost',20,2);
+			$table->unsignedBiginteger('Package_id')->index('RefTourPackages20');
 			$table->timestamps();
 		});
 	}

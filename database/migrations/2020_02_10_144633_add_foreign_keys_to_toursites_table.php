@@ -14,8 +14,8 @@ class AddForeignKeysToToursitesTable extends Migration {
 	{
 		Schema::table('toursites', function(Blueprint $table)
 		{
-			$table->foreign('LocationID', 'RefTourLocation18')->references('LocationID')->on('tourlocations')->onUpdate('CASCADE')->onDelete('CASCADE');
-			$table->foreign('PackageId', 'RefTourPackages37')->references('PackageId')->on('tourpackages')->onUpdate('CASCADE')->onDelete('SET NULL');
+			$table->foreign('Location_id', 'RefTourLocation18')->references('id')->on('tourlocations')->onUpdate('CASCADE')->onDelete('CASCADE');
+			$table->foreign('Package_id', 'RefTourPackages37')->references('id')->on('tourpackages')->onUpdate('CASCADE')->onDelete('SET NULL');
 		});
 	}
 

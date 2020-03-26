@@ -14,7 +14,7 @@ class AddForeignKeysToPackageimagesTable extends Migration {
 	{
 		Schema::table('packageimages', function(Blueprint $table)
 		{
-			$table->foreign('PackageId', 'RefTourPackages3')->references('PackageId')->on('tourpackages')->onUpdate('CASCADE')->onDelete('CASCADE');
+			$table->foreign('Package_id', 'RefTourPackages3')->references('id')->on('tourpackages')->onUpdate('CASCADE')->onDelete('CASCADE');
 		});
 	}
 

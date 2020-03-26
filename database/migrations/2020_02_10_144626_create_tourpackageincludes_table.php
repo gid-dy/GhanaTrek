@@ -14,9 +14,9 @@ class CreateTourpackageincludesTable extends Migration {
 	{
 		Schema::create('tourpackageincludes', function(Blueprint $table)
 		{
-			$table->bigIncrements('TourPackageIncludeID');
-			$table->unsignedBiginteger('TourIncludeID')->index('RefTourIncludes28');
-			$table->unsignedBiginteger('PackageId')->index('RefTourPackages29');
+			$table->bigIncrements('id');
+			$table->unsignedBiginteger('TourInclude_id')->index('RefTourIncludes28');
+			$table->unsignedBiginteger('Package_id')->index('RefTourPackages29');
 			$table->timestamps();
 		});
 	}

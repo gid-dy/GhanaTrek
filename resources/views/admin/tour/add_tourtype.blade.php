@@ -27,9 +27,9 @@
           </div>
           
           <div class="widget-content nopadding">
-            <form enctype="multipart/form-data" class="form-horizontal" method="post" action="{{ url('/admin/add-tourtype/'.$tourpackagesDetails->PackageId) }}" name="add_tourtype" id="add_tourtype">
+            <form enctype="multipart/form-data" class="form-horizontal" method="post" action="{{ url('/admin/add-tourtype/'.$tourpackagesDetails->id) }}" name="add_tourtype" id="add_tourtype">
                 @csrf
-                <input type="hidden" name="PackageId" value="{{ $tourpackagesDetails->PackageId }}" />
+                <input type="hidden" name="Package_id" value="{{ $tourpackagesDetails->id }}" />
                 <div class="control-group">
                     <label class="control-label">Package Name</label>
                     <label class="control-label"><strong>{{ $tourpackagesDetails->PackageName }}</strong></label>
@@ -73,8 +73,6 @@
             <h5>View Tourtype</h5>
           </div>
           <div class="widget-content nopadding">
-              <form  class="form-horizontal" method="post" action="{{ url('/admin/edit-tourtype/'.$tourpackagesDetails->PackageId) }}" name="edit_tourtype" id="edit_tourtype">
-                  @csrf
                   <table class="table table-bordered data-table">
                     <thead>
                         <tr>
@@ -89,20 +87,19 @@
                     <tbody>
                         @foreach ($tourpackagesDetails['tourtypes'] as $tourtype)
                             <tr class="gradeX">
-                                <td><input type="hidden" name="idType[]"value="{{ $tourtype->TourTypeID }}"> {{ $tourtype->TourTypeID }}</td>
+                                <td><input type="hidden" name="idType[]"value="{{ $tourtype->id }}"> {{ $tourtype->id }}</td>
                                 <td>{{ $tourtype->SKU }}</td>
                                 <td>{{ $tourtype->TourTypeName }}</td>
                                 <td><input type="text" name="TourTypeSize[]" value="{{ $tourtype->TourTypeSize }}"></td>
                                 <td><input type="text" name="PackagePrice[]" value="{{ $tourtype->PackagePrice }}"></td>
                                 <td class="center">
                                 <input type="submit" value="update" class="btn btn-primary btn-mini">
-                                  <a rel="{{ $tourtype->TourTypeID }}" rel1="delete-tourtype" href="javascript:" class="btn btn-danger btn-mini deleteRecord">Delete</a>
+                                  <a rel="{{ $tourtype->id }}" rel1="delete-tourtype" href="javascript:" class="btn btn-danger btn-mini deleteRecord">Delete</a>
                                 </td>
                             </tr>
                         @endforeach                   
                     </tbody>
                   </table>
-              </form>
           </div>
         </div>
       </div>
@@ -121,7 +118,7 @@
           </div>
           
           <div class="widget-content nopadding">
-            <form enctype="multipart/form-data" class="form-horizontal" method="post" action="{{ url('/admin/add-tourtransportation/'.$tourpackagesDetails->PackageId) }}" name="add_transportation" id="add_transportation" novalidate="novalidate">
+            <form enctype="multipart/form-data" class="form-horizontal" method="post" action="{{ url('/admin/add-tourtransportation/'.$tourpackagesDetails->id) }}" name="add_transportation" id="add_transportation" novalidate="novalidate">
                 @csrf
                 <div class="control-group">
                 
@@ -131,7 +128,6 @@
                     </div>
                     <div class="field_wrapper_transport">
                         <div>
-                        <input type="hidden" name="PackageId" value="{{ $tourpackagesDetails->PackageId }}" />
                             <input type="text" name="TransportName[]" id="TransportName" placeholder="TransportName" style="width:120px; margin-left:100px;" required/>
                             <input type="text" name="TransportCost[]" id="TransportCost" placeholder="TransportCost" style="width:120px;" required/>
                             <a href="javascript:void(0);" class="add_button_trans" title="Add field">Add</a>
@@ -157,12 +153,12 @@
             <h5>View Tour transport</h5>
           </div>
           <div class="widget-content nopadding">
-              <form class="form-horizontal" method="post" action="{{ url('/admin/edit-tourtransportation/'.$tourpackagesDetails->PackageId) }}" name="edit_transportation" id="edit_transportation" novalidate="novalidate">
+              <form class="form-horizontal" method="post" action="{{ url('/admin/edit-tourtransportation/'.$tourpackagesDetails->id) }}" name="edit_transportation" id="edit_transportation" novalidate="novalidate">
                   @csrf
                   <table class="table table-bordered data-table">
                     <thead>
                         <tr>
-                        <th>Tour TransportationID</th>
+                        <th> Transportation ID</th>
                         <th>Transport Name</th>
                         <th>Transport Cost</th>
                         <th>Actions</th>
@@ -171,12 +167,12 @@
                     <tbody>
                         @foreach ($tourpackagesDetails['tourtransports'] as $tourtransportation)
                             <tr class="gradeX">
-                                <td><input type="hidden" name="idTransport[]"value="{{ $tourtransportation->TourTransportationID }}">{{ $tourtransportation->TourTransportationID }}</td>
+                                <td><input type="hidden" name="idTransport[]"value="{{ $tourtransportation->id }}"> {{ $tourtransportation->id }}</td>
                                 <td>{{ $tourtransportation->TransportName }}</td>
                                 <td><input type="text" name="TransportCost[]" value="{{ $tourtransportation->TransportCost }}"></td>
                                 <td class="center">
                                   <input type="submit" value="update" class="btn btn-primary btn-mini">
-                                  <a rel="{{ $tourtransportation->TourTransportationID }}" rel1="delete-transport" href="javascript:" class="btn btn-danger btn-mini deleteRecord">Delete</a>
+                                  <a rel="{{ $tourtransportation->id }}" rel1="delete-transport" href="javascript:" class="btn btn-danger btn-mini deleteRecord">Delete</a>
                                 </td>
                             </tr>
                         @endforeach                   
@@ -201,7 +197,7 @@
           </div>
           
           <div class="widget-content nopadding">
-            <form enctype="multipart/form-data" class="form-horizontal" method="post" action="{{ url('/admin/add-include/'.$tourpackagesDetails->PackageId) }}" name="add_include" id="add_include" novalidate="novalidate">
+            <form enctype="multipart/form-data" class="form-horizontal" method="post" action="{{ url('/admin/add-include/'.$tourpackagesDetails->id) }}" name="add_include" id="add_include" novalidate="novalidate">
                 @csrf
                 <div class="control-group">
                 
@@ -211,7 +207,7 @@
                     </div>
                     <div class="field_wrapper_include">
                         <div>
-                        <input type="hidden" name="PackageId" value="{{ $tourpackagesDetails->PackageId }}" />
+                        <input type="hidden" name="Package_id" value="{{ $tourpackagesDetails->id }}" />
                             <input type="text" name="IncludeName[]" id="IncludeName" placeholder="IncludeName" style="width:120px; margin-left:100px;" required/>
                             <input type="text" name="TourIncludeInfo[]" id="TourIncludeInfo" placeholder="TourIncludeInfo" style="width:120px;" required/>
                             <input type="text" name="TourExcludeName[]" id="TourExcludeName" placeholder="TourExcludeName" style="width:120px;" required/>
@@ -251,13 +247,13 @@
                 <tbody>
                     @foreach ($tourpackagesDetails['tourincludes'] as $tourinclude)
                         <tr class="gradeX">
-                            <td>{{ $tourinclude->TourIncludeID }}</td>
+                            <td>{{ $tourinclude->id }}</td>
                             <td>{{ $tourinclude->IncludeName }}</td>
                             <td>{{ $tourinclude->TourIncludeInfo }}</td>
                             <td>{{ $tourinclude->TourExcludeName }}</td>
                             
                             <td class="center">
-                              <a rel="{{ $tourinclude->TourIncludeID }}" rel1="delete-tourinclude" href="javascript:" class="btn btn-danger btn-mini deleteRecord">Delete</a>
+                              <a rel="{{ $tourinclude->id }}" rel1="delete-tourinclude" href="javascript:" class="btn btn-danger btn-mini deleteRecord">Delete</a>
                             </td>
                         </tr>
                     @endforeach                   
@@ -277,31 +273,21 @@
         <div class="widget-box">
           <div class="widget-title"> <span class="icon"> <i class="icon-info-sign"></i> </span>
             <h5>Add Accomodation</h5>
-
           </div>
-          
-          <form class="form-horizontal" enctype="multipart/form-data" method="post" action="{{ url('/admin/add-accommodation/'.$tourpackagesDetails->PackageId) }}" name="add_location" id="add_location" novalidate="novalidate">
-                @csrf
-                <input type="hidden" name="PackageId" value="{{ $tourpackagesDetails->PackageId }}" />
-                
+          <form class="form-horizontal" enctype="multipart/form-data" method="post" action="{{ url('/admin/add-accommodation/'.$tourpackagesDetails->id) }}" name="add_accommodation" id="add_accommodation" novalidate="novalidate">
+              @csrf
+              <input type="hidden" name="Package_id" value="{{ $tourpackagesDetails->id }}" />
               <div class="control-group">
-                  <label class="control-label">Accommodation Name</label>
-                  <div class="controls">
-                    <input type="text" name="AccommodationName" id="AccommodationName">
-                  </div>
-              </div>
-              <div class="control-group">
-                <label class="control-label">Accommodation Type</label>
+                <label class="control-label">Accommodation Name</label>
                 <div class="controls">
-                  <input type="text" name="AccommodationType" id="AccommodationType">
+                  <input type="text" name="AccommodationName" id="AccommodationName">
                 </div>
               </div>
-
-             
+              
               <div class="form-actions">
                 <input type="submit" value="Add Accomodation" class="btn btn-success">
               </div>
-            </form>
+          </form>
         </div>
       </div>
     </div>
@@ -320,18 +306,16 @@
                     <tr>
                     <th>AccommodationID</th>
                     <th>Accommodation Name</th>
-                    <th>Accommodation Type</th>
                     <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($tourpackagesDetails['accommodations'] as $accommodation)
                         <tr class="gradeX">
-                            <td>{{ $accommodation->AccommodationID }}</td>
+                            <td>{{ $accommodation->id }}</td>
                             <td>{{ $accommodation->AccommodationName }}</td>
-                            <td>{{ $accommodation->AccommodationType }}</td>
                             <td class="center">
-                              <a rel="{{ $accommodation->AccommodationID }}" rel1="delete-accommodation" href="javascript:" class="btn btn-danger btn-mini deleteRecord">Delete</a>
+                              <a rel="{{ $accommodation->id }}" rel1="delete-accommodation" href="javascript:" class="btn btn-danger btn-mini deleteRecord">Delete</a>
                             </td>
                         </tr>
                     @endforeach                   

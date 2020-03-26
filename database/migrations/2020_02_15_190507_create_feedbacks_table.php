@@ -14,12 +14,12 @@ class CreateFeedbacksTable extends Migration
     public function up()
     {
         Schema::create('feedbacks', function (Blueprint $table) {
-            $table->bigIncrements('FeedbackId');
+            $table->bigIncrements('id');
 			$table->string('Name');
 			$table->string('Email');
-			$table->string('Message', 18)->nullable();
+			$table->string('Message', 250)->nullable();
 			$table->boolean('Status');
-			$table->unsignedBiginteger('BookingId')->index('RefBookings36');
+			$table->unsignedBiginteger('Booking_id')->index('RefBookings36');
             $table->timestamps();
         });
     }

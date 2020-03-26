@@ -14,11 +14,11 @@ class CreateTourincludesTable extends Migration {
 	{
 		Schema::create('tourincludes', function(Blueprint $table)
 		{
-			$table->bigIncrements('TourIncludeID');
+			$table->bigIncrements('id');
 			$table->string('IncludeName', 25);
 			$table->string('TourIncludeInfo', 30)->nullable();
 			$table->string('TourExcludeName', 30)->nullable();
-			$table->unsignedBiginteger('PackageId')->index('RefTourPackages4');
+			$table->unsignedBiginteger('Package_id')->index('RefTourPackages4');
 			$table->timestamps();
 		});
 	}

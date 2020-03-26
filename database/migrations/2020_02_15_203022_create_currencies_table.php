@@ -14,7 +14,7 @@ class CreateCurrenciesTable extends Migration
     public function up()
     {
         Schema::create('currencies', function (Blueprint $table) {
-            $table->bigIncrements('CurrencyId');
+            $table->bigIncrements('id');
 			$table->string('CurrencyCode', 20)->unique('CurrencyCode');
 			$table->float('ExchangeRate', 8, 0)->nullable();
 			$table->char('CurrencyPreviousExchangeRate', 10)->nullable();

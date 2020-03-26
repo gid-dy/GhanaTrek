@@ -42,8 +42,8 @@
                 <tbody>
                     @foreach ($tourpackages as $tourpackages)
                         <tr class="gradeX">
-                            <td>{{ $tourpackages->PackageId }}</td>
-                            <td>{{ $tourpackages->categoryId }}</td>
+                            <td>{{ $tourpackages->id }}</td>
+                            <td>{{ $tourpackages->Category_id }}</td>
                             <td>{{ $tourpackages->CategoryName }}</td>
                             <td>{{ $tourpackages->PackageName }}</td>
                             <td>{{ $tourpackages->PackageCode }}</td>
@@ -54,23 +54,23 @@
                                 @endif
                             </td>
                             <td class="center">
-                              <a href="#myModal{{ $tourpackages->PackageId }}" data-toggle="modal" class="btn btn-success btn-mini">view</a> 
-                              <a href="{{ url('/admin/edit-tour/'.$tourpackages->PackageId) }}" class="btn btn-primary btn-mini">Edit</a>
-                              <a href="{{ url('/admin/add-tourtype/'.$tourpackages->PackageId) }}" class="btn btn-dark btn-mini">Add</a>
-                              <a href="{{ url('/admin/add-image/'.$tourpackages->PackageId) }}" class="btn btn-info btn-mini">Image</a>
-                              <a href="{{ url('/admin/add-location/'.$tourpackages->PackageId) }}" class="btn btn-warning btn-mini">location</a>
-                              <a rel="{{ $tourpackages->PackageId }}" rel1="delete-tour" <?php /*href="{{ url('/admin/delete-tour/'.$tour->id) }}" */?> href="javascript:" class="btn btn-danger btn-mini deleteRecord">Delete</a>
+                              <a href="#myModal{{ $tourpackages->id }}" data-toggle="modal" class="btn btn-success btn-mini">view</a> 
+                              <a href="{{ url('/admin/edit-tour/'.$tourpackages->id) }}" class="btn btn-primary btn-mini">Edit</a>
+                              <a href="{{ url('/admin/add-tourtype/'.$tourpackages->id) }}" class="btn btn-dark btn-mini">Add</a>
+                              <a href="{{ url('/admin/add-image/'.$tourpackages->id) }}" class="btn btn-info btn-mini">Image</a>
+                              <a href="{{ url('/admin/add-location/'.$tourpackages->id) }}" class="btn btn-warning btn-mini">location</a>
+                              <a rel="{{ $tourpackages->id }}" rel1="delete-tour" <?php /*href="{{ url('/admin/delete-tour/'.$tour->id) }}" */?> href="javascript:" class="btn btn-danger btn-mini deleteRecord">Delete</a>
                             </td>
                         </tr> 
 
-                        <div id="myModal{{ $tourpackages->PackageId }}" class="modal hide">
+                        <div id="myModal{{ $tourpackages->id }}" class="modal hide">
                             <div class="modal-header">
                               <button data-dismiss="modal" class="close" type="button">×</button>
                               <h3>{{ $tourpackages->PackageName }} Full Details</h3>
                             </div>
                             <div class="modal-body">
-                              <p>Tour ID:{{ $tourpackages->PackageId }} </p>
-                              <p>Category ID:{{ $tourpackages->categoryId }} </p>
+                              <p>Tour ID:{{ $tourpackages->id }} </p>
+                              <p>Category ID:{{ $tourpackages->Category_id }} </p>
                               <p>Package Name:{{ $tourpackages->PackageName }} </p>
                               <p>Package Code:{{ $tourpackages->PackageCode }} </p>
                               <p>Description:{{ $tourpackages->Description }} </p>

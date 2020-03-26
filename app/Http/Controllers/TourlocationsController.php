@@ -22,23 +22,15 @@ class TourlocationsController extends Controller
             $tourlocations->Weather = $data['Weather'];
             $tourlocations->GhanaPostAddress = $data['GhanaPostAddress'];
             $tourlocations->OtherAddress = $data['OtherAddress'];
-            $tourlocations->CountryId = $data['CountryId'];
-
             $tourlocations->save();
             return redirect('/admin/add-location')->with('flash_message_success', 'Category added Successfully!');
         }
-            $countries = Country::get();
-        $countries_dropdown ="<option value='' selected disabled>Select</option>";
-        foreach ($countries as $country) {
-            $countries_dropdown .= "<option value='".$country->CountryId."'>".$country->name."</option>";
-        
-            }
             if(Session::has('adminSession')){
 
             }else{
                 return redirect('/admin/login')->with('flash_message_error','Please login to access');
             }
-            return view('admin.tour.location')->with(compact('countries_dropdown'));
+            return view('admin.tour.location');
             
         }
         

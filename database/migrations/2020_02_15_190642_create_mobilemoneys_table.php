@@ -14,11 +14,11 @@ class CreateMobilemoneysTable extends Migration
     public function up()
     {
         Schema::create('mobilemoneys', function (Blueprint $table) {
-            $table->bigIncrements('MobileMoneyID');
+            $table->bigIncrements('id');
 			$table->string('Currency', 150);
 			$table->string('ExternalID', 25)->nullable();
-			$table->unsignedBiginteger('UserId')->index('RefUsers55');
-			$table->string('AccNumber', 15);
+			$table->unsignedBiginteger('User_id')->index('RefUsers55');
+			$table->string('AccNumber', 30);
             $table->timestamps();
         });
     }

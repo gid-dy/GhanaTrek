@@ -14,10 +14,10 @@ class CreatePackageimagesTable extends Migration
     public function up()
     {
         Schema::create('packageimages', function (Blueprint $table) {
-            $table->bigIncrements('PackageImagesId');
+            $table->bigIncrements('id');
 			$table->string('Image', 4000);
 			$table->string('PackageImageName', 50)->nullable();
-			$table->unsignedBiginteger('PackageId')->index('RefTourPackages3');
+			$table->unsignedBiginteger('Package_id')->index('RefTourPackages3');
             $table->timestamps();
         });
     }

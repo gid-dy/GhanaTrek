@@ -26,9 +26,9 @@
             <h5>Add Location</h5>
           </div>
           <div class="widget-content nopadding">
-            <form class="form-horizontal" enctype="multipart/form-data" method="post" action="{{ url('/admin/add-location/'.$tourpackagesDetails->PackageId) }}" name="add_location" id="add_location" novalidate="novalidate">
+            <form class="form-horizontal" enctype="multipart/form-data" method="post" action="{{ url('/admin/add-location/'.$tourpackagesDetails->id) }}" name="add_location" id="add_location" novalidate="novalidate">
                 @csrf
-                <input type="hidden" name="PackageId" value="{{ $tourpackagesDetails->PackageId }}" />
+                <input type="hidden" name="Package_id" value="{{ $tourpackagesDetails->id }}" />
               <div class="control-group">
                 <label class="control-label">Location Name</label>
                 <div class="controls">

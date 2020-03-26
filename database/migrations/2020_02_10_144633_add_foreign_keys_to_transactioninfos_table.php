@@ -14,7 +14,7 @@ class AddForeignKeysToTransactioninfosTable extends Migration {
 	{
 		Schema::table('transactioninfos', function(Blueprint $table)
 		{
-			$table->foreign('PayingInfoID', 'RefPayingInfo49')->references('PayingInfoID')->on('payinginfos')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+			$table->foreign('PayingInfo_id', 'RefPayingInfo49')->references('id')->on('payinginfos')->onUpdate('RESTRICT')->onDelete('RESTRICT');
 		});
 	}
 
