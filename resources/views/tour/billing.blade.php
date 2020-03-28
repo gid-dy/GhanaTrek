@@ -30,29 +30,23 @@
                                     <div class="col-md-12">
                                         <div class="checkout-form-list">
                                             <label>SurName</label>
-                                            <input value="{{ $userDetails->SurName }}" id="billing_SurName" type="text"  name="billing_SurName" placeholder="SurName" />
+                                            <input @if(!empty($userDetails->SurName)) value="{{ $userDetails->SurName }}"@endif id="billing_SurName" type="text"  name="billing_SurName" placeholder="SurName" />
                                             
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="checkout-form-list">
                                             <label>Other names</label>
-                                            <input value="{{ $userDetails->OtherNames }}" id="billing_OtherNames" type="text"  name="billing_OtherNames" placeholder="OtherNames" />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="checkout-form-list">
-                                            <label>Email</label>
-                                            <input value="{{ $userDetails->UserEmail }}" id="billing_email" type="email"  name="billing_email" placeholder="UserEmail"/>
+                                            <input @if(!empty($userDetails->OtherNames)) value="{{ $userDetails->OtherNames }}"@endif id="billing_OtherNames" type="text"  name="billing_OtherNames" placeholder="OtherNames" />
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="country-select">
                                             <label>Country</label>
-                                            <select  id="billing_country_name" name="billing_country_name" >
+                                            <select  id="billing_Country" name="billing_Country" >
                                                 <option value="">Select Country</option>
                                                 @foreach($countries as $country)
-                                                <option value="{{ $country->country_name }}" @if($country->country_name == $userDetails->country_name)selected @endif>{{ $country->country_name }}</option>
+                                                <option value="{{ $country->Country }}" @if(!empty($userDetails->Country) && $country->Country == $userDetails->Country)selected @endif>{{ $country->Country }}</option>
                                                 @endforeach
                                             </select>                     
                                         </div>
@@ -60,31 +54,31 @@
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
                                             <label>Mobile</label>              
-                                            <input value="{{ $userDetails->Mobile }}" id="billing_Mobile" type="text"  name="billing_Mobile" placeholder="Mobile"  />
+                                            <input @if(!empty($userDetails->Mobile)) value="{{ $userDetails->Mobile }}"@endif id="billing_Mobile" type="text"  name="billing_Mobile" placeholder="Mobile"  />
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
                                             <label>Other Contact</label>              
-                                            <input value="{{ $userDetails->OtherContact }}" id="billing_OtherContact" type="text"  name="billing_OtherContact" placeholder="Other Contact"  />
+                                            <input @if(!empty($userDetails->OtherContact)) value="{{ $userDetails->OtherContact }}"@endif id="billing_OtherContact" type="text"  name="billing_OtherContact" placeholder="Other Contact"  />
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
                                             <label>Address</label>
-                                            <input value="{{ $userDetails->Address }}" id="billing_Address" type="text"  name="billing_Address" placeholder="Address"  />
+                                            <input @if(!empty($userDetails->Address)) value="{{ $userDetails->Address }}"@endif id="billing_Address" type="text"  name="billing_Address" placeholder="Address"  />
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
                                             <label>City</label>
-                                            <input value="{{ $userDetails->City }}" id="billing_City" type="text"  name="billing_City" placeholder="City"  />
+                                            <input @if(!empty($userDetails->City)) value="{{ $userDetails->City }}"@endif id="billing_City" type="text"  name="billing_City" placeholder="City"  />
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="checkout-form-list">
                                             <label>State</label>                   
-                                            <input value="{{ $userDetails->State}}" id="billing_State" type="text"  name="billing_State" placeholder="State" />
+                                            <input @if(!empty($userDetails->State)) value="{{ $userDetails->State}}"@endif id="billing_State" type="text"  name="billing_State" placeholder="State" />
                                         </div>
                                     </div>
                                     <div class="form-check">
@@ -100,29 +94,23 @@
                                     <div class="col-md-12">
                                         <div class="checkout-form-list">
                                             <label>SurName</label>
-                                            <input  id="travelling_SurName" type="text"  name="travelling_SurName" placeholder="SurName" />
+                                            <input @if(!empty($travellingDetails->SurName)) value="{{ $travellingDetails->SurName }}"@endif  id="travelling_SurName" type="text"  name="travelling_SurName" placeholder="SurName" />
                                             
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                            <div class="checkout-form-list">
-                                            <label>Other names</label>
-                                            <input  id="travelling_OtherNames" type="text"  name="travelling_OtherNames" placeholder="OtherNames" />
-                                            </div>
-                                    </div>
-                                    <div class="col-md-12">
                                         <div class="checkout-form-list">
-                                            <label>Email</label>
-                                            <input  id="travelling_email" type="email"  name="travelling_email" placeholder="UserEmail"/>
+                                            <label>Other names</label>
+                                            <input @if(!empty($travellingDetails->OtherNames)) value="{{ $travellingDetails->OtherNames }}"@endif  id="travelling_OtherNames" type="text"  name="travelling_OtherNames" placeholder="OtherNames" />
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="country-select">
                                             <label>Country</label>
-                                            <select  id="travelling_country_name" name="travelling_country_name" >
+                                            <select  id="travelling_Country" name="travelling_Country" >
                                                 <option value="">Select Country</option>
                                                 @foreach($countries as $country)
-                                                <option value="{{ $country->country_name }}">{{ $country->country_name }}</option>
+                                                <option value="{{ $country->Country }}"@if(!empty($travellingDetails->Country) && $country->Country == $travellingDetails->Country)selected @endif>{{ $country->Country }}</option>
                                                 @endforeach
                                             </select>                     
                                         </div>
@@ -130,31 +118,31 @@
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
                                             <label>Mobile</label>              
-                                            <input  id="travelling_Mobile" type="text"  name="travelling_Mobile" placeholder="Mobile" />
+                                            <input @if(!empty($travellingDetails->Mobile)) value="{{ $travellingDetails->Mobile }}"@endif  id="travelling_Mobile" type="text"  name="travelling_Mobile" placeholder="Mobile" />
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
                                             <label>Other Contact</label>              
-                                            <input  id="travelling_OtherContact" type="text"  name="travelling_OtherContact" placeholder="Other Contact"  />
+                                            <input @if(!empty($travellingDetails->OtherContact)) value="{{ $travellingDetails->OtherContact }}"@endif  id="travelling_OtherContact" type="text"  name="travelling_OtherContact" placeholder="Other Contact"  />
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
                                             <label>Address</label>
-                                            <input  id="travelling_Address" type="text"  name="travelling_Address" placeholder="Address"  />
+                                            <input @if(!empty($travellingDetails->Address)) value="{{ $travellingDetails->Address }}"@endif  id="travelling_Address" type="text"  name="travelling_Address" placeholder="Address"  />
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
                                             <label>City</label>
-                                            <input  id="travelling_City" type="text"  name="travelling_City" placeholder="City"  />
+                                            <input @if(!empty($travellingDetails->City)) value="{{ $travellingDetails->City }}"@endif  id="travelling_City" type="text"  name="travelling_City" placeholder="City"  />
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
                                             <label>State</label>                   
-                                            <input  id="travelling_State" type="text"  name="travelling_State" placeholder="State" />
+                                            <input @if(!empty($travellingDetails->State)) value="{{ $travellingDetails->State }}"@endif  id="travelling_State" type="text"  name="travelling_State" placeholder="State" />
                                         </div>
                                     </div> 
                                     <div class="col-md-12">

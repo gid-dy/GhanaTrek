@@ -559,7 +559,7 @@ jQuery(document).ready(function($) {
                 $('#nt').attr('max','8')
             }else if(ck[1] === "Individual"){
                 $('#nt').attr('max', '1')
-            }else if(ck[1] === "Couple"){
+            }else if(ck[1] == "Couple"){
                 $('#nt').attr('max','2')
             }
             $.ajax({
@@ -738,20 +738,18 @@ $().ready(function(){
         if(this.checked){
             $("#travelling_SurName").val($("#billing_SurName").val());
             $("#travelling_OtherNames").val($("#billing_OtherNames").val());
-            $("#travelling_email").val($("#billing_email").val());
             $("#travelling_Mobile").val($("#billing_Mobile").val());
             $("#travelling_OtherContact").val($("#billing_OtherContact").val());
-            $("#travelling_country_name").val($("#billing_country_name").val());
+            $("#travelling_Country").val($("#billing_Country").val());
             $("#travelling_Address").val($("#billing_Address").val());
             $("#travelling_City").val($("#billing_City").val());
             $("#travelling_State").val($("#billing_State").val());
         }else{
             $("#travelling_SurName").val('');
             $("#travelling_OtherNames").val('');
-            $("#travelling_email").val('');
             $("#travelling_Mobile").val('');
             $("#travelling_OtherContact").val('');
-            $("#travelling_country_name").val('');
+            $("#travelling_Country").val('');
             $("#travelling_Address").val('');
             $("#travelling_City").val('');
             $("#travelling_State").val('');
@@ -759,6 +757,16 @@ $().ready(function(){
     });
     
 });
+
+function selectPaymentMethod(){
+    if($('#Paypal').is(':checked') || $('#MobileMoney').is(':checked') || $('#COD').is(':checked')){
+        // alert("checked");
+    }else{
+        alert("Please select Payment Method");
+        return false;
+    }
+    
+}
     
 
 // // Instantiate EasyZoom instances

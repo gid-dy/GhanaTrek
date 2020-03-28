@@ -43,8 +43,9 @@ Route::get('/tours/{id}','TourpackagesController@tours');
 Route::match(['get','post'],'/add-cart', 'TourpackagesController@addtocart')->name('add-cart');
 
 //cart page
-// Route::post('/cart', 'TourpackagesController@cart');
+Route::match(['get','post'],'/cart', 'TourpackagesController@cart');
 
+//Route::get('/cart', 'TourpackagesController@cart');
 
 //delete otur from cart
 Route::get('/cart/delete-tourpackage/{id}', 'TourpackagesController@deleteCartPackage');
@@ -134,9 +135,12 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::match(['get','post'],'/account', 'UsersController@account');
     Route::post('/check-user-pwd', 'UsersController@chkUserPassword');
     Route::post('/update-user-pwd', 'UsersController@updatePassword');
-    Route::get('cart', 'TourpackagesController@cart');
     //checkout page
     Route::match(['get','post'],'billing', 'TourpackagesController@billing');
+    //tour Review Page
+    Route::match(['get','post'],'/tour-review','TourpackagesController@tourReview');
+    //Place Package
+    Route::match(['get','post'],'/place-package','TourpackagesController@placePackage');
 
 });
 

@@ -15,11 +15,20 @@ class CreateBookingsTable extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->bigIncrements('id');
-			$table->string('Status', 25)->nullable();
-			$table->unsignedBigInteger('User_id');
-			$table->unsignedBigInteger('Coupon_id')->nullable();
-			$table->unsignedBigInteger('TourInclude_id')->nullable();
-			$table->unsignedBigInteger('Cart_id');
+            $table->unsignedBigInteger('user_id');
+            $table->string('UserEmail', 100);
+            $table->string('SurName', 150);
+            $table->string('OtherNames', 150);
+            $table->string('Address');
+            $table->string('City');
+            $table->string('State');
+            $table->string('Country');
+            $table->string('Mobile', 15);
+            $table->string('CouponCode', 20);
+			$table->decimal('Amount', 20, 2);
+            $table->string('Status', 25);
+            $table->string('Payment_method', 255);
+			$table->float('Grand_total', 20);
             $table->timestamps();
         });
     }

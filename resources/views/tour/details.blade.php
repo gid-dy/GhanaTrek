@@ -34,9 +34,7 @@
                                     <input type="hidden" name="PackageName" value="{{ $tourpackagesDetails->PackageName }}">
                                     <input type="hidden" name="PackagePrice" id="PackagePrice" value="{{ $tourpackagesDetails->PackagePrice }}">
                                     <input type="hidden" name="PackageCode" id="PackageCode" value="{{ $tourpackagesDetails->PackageCode }}">
-                                    {{-- <input type="hidden" name="TourTransportationID" value="{{ $tourpackagesDetails->TourTransportationID}}">
-                                    <input type="hidden" name="TransportName" id="TransportName" value="{{ $tourpackagesDetails->TransportName}}">
-                                    <input type="hidden" name="TransportCost" id="TransportCost" value="{{ $tourpackagesDetails->TransportCost}}"> --}}
+                                    
                                     <div class="tour-details">
                                         <h3 class="product-title">{{ $tourpackagesDetails->PackageName}}</h3>
                                         <p>Tour Code: {{ $tourpackagesDetails->PackageCode}}</p>

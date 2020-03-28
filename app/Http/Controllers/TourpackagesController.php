@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Support\Str;
 use App\Tourpackages;
 use App\Country;
@@ -14,6 +15,8 @@ use App\Tourtransportation;
 use App\Tourinclude;
 use App\Coupon;
 use App\User;
+use App\Booking;
+use App\BookingsPackage;
 use App\TravelAddress;
 use Auth;
 use Image;
@@ -448,7 +451,7 @@ class TourpackagesController extends Controller
             //echo "<pre>"; print_r($data);die;
 
             $tourlocations = new Tourlocations;
-            $tourlocations->Package_id =$Package_id;
+            $tourlocations->Package_id =$id;
             $tourlocations->LocationName = $data['LocationName'];
             $tourlocations->Longitude = $data['Longitude'];
             $tourlocations->Latitude = $data['Latitude'];
@@ -489,7 +492,7 @@ class TourpackagesController extends Controller
 
     public function tours($id = null)
     {
-       
+
         $tourpackagesCount = Tourpackages::where(['id'=>$id, 'Status'=>1])->count();
         if($tourpackagesCount == 0){
             abort(404);
@@ -497,7 +500,7 @@ class TourpackagesController extends Controller
 
         $tourpackagesDetails = Tourpackages::with('tourtypes','accommodations','tourincludes','tourtransports','tourlocations')->where('id', $id)->first();
         $tourpackagesDetails = json_decode(json_encode($tourpackagesDetails));
-        
+
        // echo "<pre>"; print_r($tourpackagesDetails);die;
        $relatedTour = Tourpackages::where('id','!=',$id)->where(['Category_id'=>$tourpackagesDetails->Category_id])->get();
 
@@ -540,7 +543,7 @@ class TourpackagesController extends Controller
 
     public function addtocart(Request $request){
         $data = $request->all();
-        
+
 
         //echo "<pre>"; print_r($data); die;
 
@@ -561,7 +564,7 @@ class TourpackagesController extends Controller
             $Session_id = str::random(40);
             Session::put('Session_id',$Session_id);
         }
-        
+
         if (empty($data['TransportName'])){
             $data['TransportName'] = '';
         }
@@ -569,7 +572,7 @@ class TourpackagesController extends Controller
 
         $TourTypeNameArr = explode("-", $data['TourTypeName']);
         $TransportNameArr = explode("-", $data['TransportName']);
-        
+
         if(empty($data['TourTypeName'])){
             return redirect()->back()->with('flash_message_error', 'Select Tour type !');
         }
@@ -577,11 +580,8 @@ class TourpackagesController extends Controller
         $countTourpackages = DB::table('carts')->where([
             'Package_id'=>$data['Package_id'],
             'PackageName'=>$data['PackageName'],
-            'PackageCode'=>$data['PackageCode'],
             'TourTypeName'=>$TourTypeNameArr[1],
-            'Session_Id'=>$Session_id
-
-        ])->count();
+            'Session_id'=>$Session_id])->count();
         if($countTourpackages>0){
             return redirect()->back()->with('flash_message_error',  'Tour Package already exist in cart!');
         }else{
@@ -595,19 +595,18 @@ class TourpackagesController extends Controller
                 'TourTypeName'=>$TourTypeNameArr[1],
                 'TransportName'=>$TransportNameArr[1],
                 'UserEmail'=>$data['UserEmail'],
-                'Session_id'=>$Session_id
-
-            ]);
-        }
+                'Session_id'=>$Session_id]);
+            }
         return redirect('cart')->with('flash_message_success','tour added to cart');
-        
+
     }
 
 
     public function cart()
     {
-        $Session_id = Session::get('Session_id');
-        $userCart = DB::table('carts')->where(['Session_id'=>$Session_id])->get();
+            $Session_id = Session::get('Session_id');
+            $userCart = DB::table('carts')->where(['Session_id'=>$Session_id])->get();
+
         foreach($userCart as $key =>$tourpackages){
             $tourpackagesDetails = Tourpackages::where('id', $tourpackages->Package_id)->first();
             $userCart[$key]->Imageaddress = $tourpackagesDetails->Imageaddress;
@@ -640,7 +639,7 @@ class TourpackagesController extends Controller
                 return redirect()->back()->with('flash_message_error', 'This coupon is not active');
             }
             //if coupon is expired
-             $ExpiryDate = $couponDetails->ExpiryDate; 
+             $ExpiryDate = $couponDetails->ExpiryDate;
             $current_date = date('Y-m-d');
             if($ExpiryDate < $current_date){
                 return redirect()->back()->with('flash_message_error', 'This coupon is expired');
@@ -649,21 +648,30 @@ class TourpackagesController extends Controller
             //Coupon is valid for discount
 
             //Get Cart Total Amount
-            $Session_Id = Session::get('Session_id');
-            $userCart = DB::table('carts')->where(['Session_Id'=>$Session_Id])->get();
+            $Session_id = Session::get('Session_id');
+
+            if(Auth::check()){
+                $UserEmail = Auth::user()->UserEmail;
+                $userCart = DB::table('carts')->where(['UserEmail'=>$UserEmail])->get();
+            }else{
+                $Session_id = Session::get('Session_id');
+                $userCart = DB::table('carts')->where(['Session_id'=>$Session_id])->get();
+            }
+
             $total_amount = 0;
             foreach($userCart as $item){
                 $total_amount = $total_amount + ($item->PackagePrice * $item->Travellers);
-                
+
             }
 
             //check if amount type is fixed or percentage
             if($couponDetails->AmountType=="Fixed"){
                 $couponAmount = $couponDetails->Amount;
             }else{
+                //echo $total_amount;die;
                 $couponAmount = $total_amount * ($couponDetails->Amount/100);
             }
-            
+
             //add coupon code $ amount in session
             Session::put('CouponAmount', $couponAmount);
             Session::put('CouponCode', $data['CouponCode']);
@@ -674,97 +682,153 @@ class TourpackagesController extends Controller
 
     public function billing(Request $request){
         $user_id =Auth::user()->id;
-        $user_email =Auth::user()->UserEmail;
+        $UserEmail =Auth::user()->UserEmail;
         $userDetails = User::find($user_id);
         $countries =Country::get();
 
         //checking if Travelling Address exists
         $travellingCount = TravelAddress::where('user_id',$user_id)->count();
+        $travellingDetails = array();
             if($travellingCount>0){
                 $travellingDetails = TravelAddress::where('user_id',$user_id)->first();
             }
 
+            //update cart table with user Email
+            $Session_id = Session::get('Session_id');
+            DB::table('carts')->where(['Session_id'=>$Session_id])->update(['UserEmail'=>$UserEmail]);
         if($request->isMethod('post')){
             $data =$request->all();
 
             //return to checkout page if any of the field is empty
-            if(empty($data['billing_SurName']) || empty($data['billing_OtherNames']) || empty($data['billing_email']) ||
-              empty($data['billing_country_name']) || empty($data['billing_Mobile']) || empty($data['billing_OtherContact']) ||
-              empty($data['billing_Address']) || empty($data['billing_City']) || empty($data['[billing_State']) ||
-              empty($data['travelling_SurName']) || empty($data['travelling_OtherNames']) || empty($data['travelling_email']) ||
-              empty($data['travelling_country_name']) || empty($data['travelling_Mobile']) || empty($data['travelling_OtherContact']) ||
+            if(empty($data['billing_SurName']) || empty($data['billing_OtherNames']) ||
+              empty($data['billing_Country']) || empty($data['billing_Mobile']) || empty($data['billing_OtherContact']) ||
+              empty($data['billing_Address']) || empty($data['billing_City']) || empty($data['billing_State']) ||
+              empty($data['travelling_SurName']) || empty($data['travelling_OtherNames']) ||
+              empty($data['travelling_Country']) || empty($data['travelling_Mobile']) || empty($data['travelling_OtherContact']) ||
               empty($data['travelling_Address']) || empty($data['travelling_City']) || empty($data['travelling_State'])){
 
-                 
+
                   return redirect()->back()->with('flash_message_error', 'Please fill all fields to Checkout!');
               }
               //Update user details
               User::where('id',$user_id)->update([
-                  'SurName'=>$data['billing_Surname'],
+                  'SurName'=>$data['billing_SurName'],
                   'OtherNames'=>$data['billing_OtherNames'],
-                  'country_name'=>$data['billing_country_name'],
+                  'Country'=>$data['billing_Country'],
                   'Mobile'=>$data['billing_Mobile'],
                   'Address'=>$data['billing_Address'],
                   'City'=>$data['billing_City'],
                   'State'=>$data['billing_State'],
                   'OtherContact'=>$data['billing_OtherContact'],
-                  'UserEmail'=>$data['billing_email']
               ]);
 
               if($travellingCount>0){
                   //update Travelling Address
                   TravelAddress::where('user_id',$user_id)->update([
-                    'SurName'=>$data['travelling_Surname'],
+                    'SurName'=>$data['travelling_SurName'],
                     'OtherNames'=>$data['travelling_OtherNames'],
-                    'country_name'=>$data['travelling_country_name'],
+                    'Country'=>$data['travelling_Country'],
                     'Mobile'=>$data['travelling_Mobile'],
                     'Address'=>$data['travelling_Address'],
                     'City'=>$data['travelling_City'],
                     'State'=>$data['travelling_State'],
-                    'OtherContact'=>$data['travelling_OtherContact'],
-                    'UserEmail'=>$data['travelling_email']
+                    'OtherContact'=>$data['travelling_OtherContact']
                 ]);
               }else{
                   //Add new travelling Address
                   $travelling = new TravelAddress;
                   $travelling->user_id =$user_id;
-                  $travelling->user_email =$UserEmail;
+                  $travelling->UserEmail =$UserEmail;
                   $travelling->SurName=$data['travelling_SurName'];
-                  $travelling->OtherNames=$data['travelling_SurName'];
+                  $travelling->OtherNames=$data['travelling_OtherNames'];
                   $travelling->Mobile=$data['travelling_Mobile'];
                   $travelling->OtherContact=$data['travelling_OtherContact'];
-                  $travelling->country_name=$data['travelling_country_name'];
-                  $travelling->Address=$data['travelling_SAddress'];
+                  $travelling->Country=$data['travelling_Country'];
+                  $travelling->Address=$data['travelling_Address'];
                   $travelling->City=$data['travelling_City'];
                   $travelling->State=$data['travelling_State'];
                   $travelling->save();
               }
-              echo "Redirect to Other Review Page"; die;
-            
+              return redirect('/tour-review');
+
         }
-        return view('tour.billing')->with(compact('userDetails','countries'));
+
+        return view('tour.billing')->with(compact('userDetails','countries','travellingDetails'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+
+    public function tourReview(Request $request)
     {
-        //
+        $user_id =Auth::user()->id;
+        $UserEmail =Auth::user()->UserEmail;
+        $userDetails = User::where('id',$user_id)->first();
+        $travellingDetails = TravelAddress::where('user_id',$user_id)->first();
+        $travellingDetails = json_decode(json_encode($travellingDetails));
+        $userCart = DB::table('carts')->where(['UserEmail'=>$UserEmail])->get();
+        foreach($userCart as $key =>$tourpackages){
+            $tourpackagesDetails = Tourpackages::where('id', $tourpackages->Package_id)->first();
+            $userCart[$key]->Imageaddress = $tourpackagesDetails->Imageaddress;
+        }
+
+        return view('tour.tour_review')->with(compact('userDetails','travellingDetails','userCart'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+
+    public function placePackage(Request $request)
     {
-        //
+        if($request->isMethod('post')){
+            $data= $request->all();
+            $user_id = Auth::user()->id;
+            $UserEmail = Auth::user()->UserEmail;
+            //Get travelling Address of User
+            $travellingDetails =TravelAddress::where(['UserEmail' => $UserEmail])->first();
+
+            if(empty(Session::get('CouponCode'))){
+                $CouponCode ='';
+            }else{
+                $CouponCode = Session::get('CouponCode');
+            }
+
+            if(empty(Session::get('CouponAmount'))){
+                $Amount ='';
+            }else{
+                $Amount = Session::get('CouponAmount');
+            }
+
+            $booking = new Booking;
+            $booking->user_id = $user_id;
+            $booking->UserEmail = $UserEmail;
+            $booking->SurName = $travellingDetails->SurName;
+            $booking->OtherNames = $travellingDetails->OtherNames;
+            $booking->Address = $travellingDetails->Address;
+            $booking->City = $travellingDetails->City;
+            $booking->State = $travellingDetails->State;
+            $booking->Country = $travellingDetails->Country;
+            $booking->Mobile = $travellingDetails->Mobile;
+            $booking->CouponCode = $CouponCode;
+            $booking->Amount = $Amount;
+            $booking->Status = "new";
+            $booking->Payment_method = $data['Payment_method'];
+            $booking->Grand_total = $data['Grand_total'];
+            $booking->save();
+
+            //DB::table()->insert($data);
+            $Booking_id = DB::getPdo()->lastInsertId();
+            //return Response()->json(array('success'=>true, 'lat_insert_id'=>$booking->id),200);
+            $cartPackages = DB::table('carts')->where(['UserEmail'=>$UserEmail])->get();
+            foreach($cartPackages as$pro){
+                $cartPro = new BookingsPackage;
+                $cartPro->Booking_id = $Booking_id;
+                $cartPro->user_id = $user_id;
+                $cartPro->Package_id = $pro->Package_id;
+                $cartPro->PackageName = $pro->PackageName;
+                $cartPro->PackageCode = $pro->PackageCode;
+                $cartPro->TourTypeName = $pro->TourTypeName;
+                $cartPro->Travellers = $pro->Travellers;
+                $cartPro->PackagePrice = $pro->PackagePrice;
+                $cartPro->TransportName = $pro->TransportName;
+                $cartPro->save();
+            }
+        }
     }
 }

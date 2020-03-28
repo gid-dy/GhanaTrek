@@ -23,35 +23,43 @@
             <div class="row" style="margin-top: 30px;">
             
                 <div class="col-md-8">
-                    
+                <table class="table table-hover your-order">
+                        <thead style="background-color:yellow;">
+                            <tr>
+                                <th>Tour</th>
+                                <th></th>
+                                <th>Tour Type</th>
+                                <th>Price</th>
+                                <th>No of Travellers</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
                       <?php $total_amount = 0; ?>
                       @foreach($userCart as $cart)
                         <div class="row">
-                        
-                            <div class="col-md-2"><img class="img-responsive" src="{{ asset('images/backend_images/tours/large/'.$cart->Imageaddress) }}">
-                            </div>
-                            <div class="col-md-6">
-                                <h4 class="product-name"><strong>{{ $cart->PackageName }}</strong></h4>
-                                <h4><small>{{ $cart->PackageCode }}</small></h4>
-                                <h4><small>{{ $cart->TourTypeName }}</small></h4>
-                                <h4><small>{{ $cart->Travellers }}</small></h4>
-                                <h4><small>{{ $cart->TransportName }}</small></h4>
-                                <h4><small>Language</small></h4>
-                                <h4  class="button pull-right btn-fyi">GHS {{ $cart->PackagePrice }}</h4>
-                                
-                                <div class="product-removal">
-                                    <a class ="cart_quantity_delete button" href="{{ url('/cart/delete-tourpackage/'.$cart->id) }}"><i class="fa fa-trash"></i> delete</a>
-                                    
-                                </div>
-                                        
-                                    
-                            </div>
-                            <p class="price pull-right">GHS {{ $cart->PackagePrice*$cart->Travellers }}.00
+                            <tr>
+                                <td style="width:100px;"><img class="img-responsive" src="{{ asset('images/backend_images/tours/large/'.$cart->Imageaddress) }}"></td>
+                                <td><h4><small>{{ $cart->PackageName }}</small></h4>
+                                    <h4><small>Tour Code: {{ $cart->PackageCode }}</small></h4>
+                                    <p>  {{ $cart->TransportName }}</p>
+                                </td>
+                                <td><h4><small>{{ $cart->TourTypeName }}</small></h4></td>
+                                <td><p>GHS {{ $cart->PackagePrice }}</p></td>
+                                <td><h4><small>{{ $cart->Travellers }}</small></h4></td>
+                                <td><p class="">GHS {{ $cart->PackagePrice*$cart->Travellers }}.00</td>
+                                <td class="product-removal">
+                                    <a class ="cart_quantity_delete button" href="{{ url('/cart/delete-tourpackage/'.$cart->id) }}"><i class="fa fa-trash"></i> </a>
+                                </td>
+                            </tr>
                             
                         </div>
                         <hr>
                       <?php $total_amount = $total_amount + ($cart->PackagePrice*$cart->Travellers);.00?>
                       @endforeach
+                      </tbody>
+                      </table>
                       <form method="post" action="{{ url('cart/apply-coupon') }}">
                           @csrf
                               <input type="text" name="CouponCode" placeholder="Coupon code" />
@@ -65,7 +73,7 @@
                     <div class="text">
                     @if(!empty(Session::get('CouponAmount')))
                         <p class="heading">Sub Total <span class="pull-right">GHS <?php echo $total_amount; ?>.00</span></p>
-                        <p class="heading">Coupon Discount <span class=" pull-right">GHS <?php echo Session::get('CouponAmount'); ?>.00</span></p>
+                        <p class="heading">Coupon Discount <span class=" pull-right">GHS <?php echo Session::get('CouponAmount'); ?></span></p>
                         <p class="heading">Grand Total <span class="price pull-right">GHS <?php echo $total_amount-Session::get('CouponAmount'); ?>.00</span></p>
                     @else
 

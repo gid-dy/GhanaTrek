@@ -104,7 +104,7 @@ class UsersController extends Controller
 
     if($request->isMethod('post')){
         $data = $request->all();
-
+// dd($data);
         if(empty($data['SurName'])){
             return redirect()->back()->with('flash_message_error', 'Please enter your name');
         }
@@ -126,15 +126,15 @@ class UsersController extends Controller
         }
 
       
-        if(empty($data['country_name'])){
-            $data['country_name']='';
+        if(empty($data['Country'])){
+            $data['Country']='';
         }
         $user = User::find($user_id);
         $user->SurName = $data['SurName'];
         $user->OtherNames = $data['OtherNames'];
         $user->UserEmail = $data['UserEmail'];
         $user->Address = $data['Address'];
-        $user->country_name = $data['country_name'];
+        $user->Country = $data['Country'];
         $user->City = $data['City'];
         $user->State = $data['State'];
         $user->Mobile = $data['Mobile'];

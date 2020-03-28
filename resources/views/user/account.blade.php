@@ -101,10 +101,10 @@
                                         <div class="col-md-12">
                                             <div class="country-select">
                                                 <label>Country</label>
-                                                <select  id="country_name" name="country_name" >
+                                                <select  id="Country" name="Country" >
                                                     <option value="">Select Country</option>
                                                     @foreach($countries as $country)
-                                                    <option value="{{ $country->country_name }}" @if($country->country_name == $userDetails->country_name)selected @endif>{{ $country->country_name }}</option>
+                                                    <option value="{{ $country->Country }}" @if($country->Country == $userDetails->Country)selected @endif>{{ $country->Country }}</option>
                                                     @endforeach
                                                 </select>                     
                                             </div>
