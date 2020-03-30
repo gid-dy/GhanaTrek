@@ -23,14 +23,14 @@
     </li>
 
     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>Bookings</span> <span class="label label-important">1</span></a>
-      <ul>
-        <li><a href="#">View Bookings</a></li>
-      </ul>
+        <ul>
+          <li><a href="{{ url('/admin/view-bookings') }}">View Bookings</a></li>
+        </ul>
     </li>
 
     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>Users</span> <span class="label label-important">1</span></a>
       <ul>
-        <li><a href="#">View Users</a></li>
+        <li><a href="{{ url('/admin/view-users') }}">View Users</a></li>
       </ul>
     </li>
 

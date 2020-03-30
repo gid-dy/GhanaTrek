@@ -5,13 +5,13 @@
   <div id="content-header">
     <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#">Tour Packages</a> <a href="#" class="current">Add Tour Package</a> </div>
     <h1>Tour Packages</h1>
-     @if (Session::has('flash_message_error'))    
+     @if (Session::has('flash_message_error'))
             <div class="alert alert-error alert-block">
                 <button type="button" class="close" data-dismiss='alert'></button>
                 <strong>{!! session('flash_message_error') !!}</strong>
             </div>
-        @endif 
-        @if (Session::has('flash_message_success'))    
+        @endif
+        @if (Session::has('flash_message_success'))
             <div class="alert alert-success alert-block">
                 <button type="button" class="close" data-dismiss='alert'></button>
                 <strong>{!! session('flash_message_success') !!}</strong>
@@ -25,7 +25,7 @@
           <div class="widget-title"> <span class="icon"> <i class="icon-info-sign"></i> </span>
             <h5>Add Tour Package</h5>
           </div>
-          
+
           <div class="widget-content nopadding">
             <form enctype="multipart/form-data" class="form-horizontal" method="post" action="{{ route('admin.add-tour') }}" name="add_tour" id="add_tour" novalidate="novalidate">
                 @csrf
@@ -38,7 +38,7 @@
                     </div>
                 </div>
 
-                 
+
                 <div class="control-group">
                     <label class="control-label">Package Name</label>
                     <div class="controls">
@@ -70,13 +70,19 @@
                     </div>
                 </div>
                 <div class="control-group">
-                  <label class="control-label">Enable</label>
-                  <div class="controls">
-                    <input type="checkbox" name="Status" id="Status" value="1">
-                  </div>
-              </div>
+                    <label class="control-label">Feature Tour</label>
+                    <div class="controls">
+                        <input type="checkbox" name="featured_tour" id="featured_tour" value="1">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Enable</label>
+                    <div class="controls">
+                        <input type="checkbox" name="Status" id="Status" value="1">
+                    </div>
+                </div>
 
-              
+
               <div class="form-actions">
                 <input type="submit" value="Add Tour Package" class="btn btn-success">
               </div>

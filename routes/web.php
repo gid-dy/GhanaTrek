@@ -67,6 +67,10 @@ Route::get('/logout', 'UsersController@logout');
 Route::get('/register', 'UsersController@showRegistrationForm')->name('register');
 Route::post('/register', 'UsersController@register');
 
+//Cornfirm Email account
+Route::get('/confirm/{code}', 'UsersController@confirmAccount');
+//Search Tour
+Route::post('/search-tour', 'TourpackagesController@searchTour');
 
 
 
@@ -124,6 +128,19 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function() {
     Route::match(['get','post'],'/edit-coupon/{id}', 'CouponsController@editCoupon')->name('admin.edit-coupon');
     Route::get('/view-coupons','CouponsController@viewCoupons');
     Route::get('/delete-coupon/{id}', 'CouponsController@deleteCoupon');
+
+    //Admin Bookings Route
+    Route::get('/view-bookings', 'TourpackagesController@viewBookings');
+    //Admin Order Booking Detail Route
+    Route::get('/view-bookings/{id}', 'TourpackagesController@viewBookingDetails');
+
+    //Booking Invoice
+    Route::get('/view-invoice/{id}', 'TourpackagesController@viewBookingInvoice');
+    //Update Booking Status
+    Route::post('/update-booking-status','TourpackagesController@updateBookingStatus');
+
+    //Admin Users Route
+Route::get('/view-users', 'UsersController@viewUsers');
 });
 
 
@@ -141,6 +158,12 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::match(['get','post'],'/tour-review','TourpackagesController@tourReview');
     //Place Package
     Route::match(['get','post'],'/place-package','TourpackagesController@placePackage');
+    //Thanks Page
+    Route::get('/thanks', 'TourpackagesController@thanks');
+    //User Bookings Page
+    Route::get('/Bookings', 'TourpackagesController@userBookings');
+    //User Booked Package Page
+    Route::get('/Bookings/{id}', 'TourpackagesController@userBookingDetails');
 
 });
 

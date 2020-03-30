@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Support\Str;
 use App\Tourpackages;
@@ -36,7 +37,12 @@ class TourpackagesController extends Controller
         if($request->isMethod('post')){
             $data = $request->all();
              //echo "<pre>"; print_r($data); die;
-             if(empty($data['Status'])){
+             if(empty($data['featured_tour'])){
+                $featured_tour = 0;
+            }else{
+                $featured_tour = 1;
+            }
+            if(empty($data['Status'])){
                 $Status = 0;
             }else{
                 $Status = 1;
@@ -59,6 +65,7 @@ class TourpackagesController extends Controller
             }
             $tourpackages->PackagePrice = $data['PackagePrice'];
             $tourpackages->Status = $Status;
+            $tourpackages->featured_tour = $featured_tour;
 
              //upload image
              if($request->hasFile('Imageaddress')){
@@ -114,6 +121,12 @@ class TourpackagesController extends Controller
                 $Status = 1;
             }
 
+            if(empty($data['featured_tour'])){
+                $featured_tour = 0;
+            }else{
+                $featured_tour = 1;
+            }
+
             if(empty($data['Category_id'])){
                 return redirect()->back()->with('flash_message_error', 'Select Under category option!');
             }
@@ -146,6 +159,7 @@ class TourpackagesController extends Controller
                 'Description'=>$data['Description'],
                 'PackagePrice'=>$data['PackagePrice'],
                 'Status'=>$Status,
+                'featured_tour'=>$featured_tour,
                 'Imageaddress'=>$filename
 
             ]);
@@ -489,6 +503,16 @@ class TourpackagesController extends Controller
         return view('tour.package')->with(compact('tourpackagecategory','categoryDetails', 'tourpackagesAll'));
     }
 
+    public function searchTour(Request $request){
+        $data = $request->all();
+        $tourpackagecategory = Tourpackagecategory::with('tourcategories')->where($id=null)->get();
+        $search_tour = $data['tour'];
+        $tourpackagesAll = Tourpackages::where('PackageName', 'like','%'.$search_tour.'%')->orwhere('PackageCode',$search_tour)->where('Status',1)->get();
+
+        return view('tour.package')->with(compact('tourpackagecategory','search_tour', 'tourpackagesAll'));
+     }
+
+
 
     public function tours($id = null)
     {
@@ -506,11 +530,11 @@ class TourpackagesController extends Controller
 
 
        $tourAltImage = Packageimages::where('Package_id',$id)->get();
-    //    $tourAltImage = json_decode(json_encode($tourAltImage));
-    //    echo "<pre>"; print_r($tourAltImage); die;
+        //    $tourAltImage = json_decode(json_encode($tourAltImage));
+        //    echo "<pre>"; print_r($tourAltImage); die;
 
-    $total_availability = TourType::where('Package_id',$id)->sum('TourTypeSize');
-    //dd( $tourpackagesDetails);
+        $total_availability = TourType::where('Package_id',$id)->sum('TourTypeSize');
+        //dd( $tourpackagesDetails);
         return view('tour.details')->with(compact('tourpackagesDetails','tourAltImage','relatedTour','total_availability'));
     }
 
@@ -542,13 +566,17 @@ class TourpackagesController extends Controller
     }
 
     public function addtocart(Request $request){
+        Session::forget('CouponAmount');
+        Session::forget('CouponCode');
         $data = $request->all();
 
 
         //echo "<pre>"; print_r($data); die;
 
-        if (empty($data['UserEmail'])){
+        if(empty(Auth::user()->UserEmail)){
             $data['UserEmail'] = '';
+        }else{
+            $data['UserEmail'] = Auth::user()->UserEmail;
         }
         if (empty($data['TransportCost'])){
             $data['TransportCost'] = '';
@@ -604,8 +632,13 @@ class TourpackagesController extends Controller
 
     public function cart()
     {
+        if(Auth::check()){
+            $UserEmail = Auth::user()->UserEmail;
+            $userCart = DB::table('carts')->where(['UserEmail'=>$UserEmail])->get();
+        }else{
             $Session_id = Session::get('Session_id');
             $userCart = DB::table('carts')->where(['Session_id'=>$Session_id])->get();
+        }
 
         foreach($userCart as $key =>$tourpackages){
             $tourpackagesDetails = Tourpackages::where('id', $tourpackages->Package_id)->first();
@@ -805,6 +838,7 @@ class TourpackagesController extends Controller
             $booking->State = $travellingDetails->State;
             $booking->Country = $travellingDetails->Country;
             $booking->Mobile = $travellingDetails->Mobile;
+            $booking->OtherContact = $travellingDetails->OtherContact;
             $booking->CouponCode = $CouponCode;
             $booking->Amount = $Amount;
             $booking->Status = "new";
@@ -812,9 +846,7 @@ class TourpackagesController extends Controller
             $booking->Grand_total = $data['Grand_total'];
             $booking->save();
 
-            //DB::table()->insert($data);
             $Booking_id = DB::getPdo()->lastInsertId();
-            //return Response()->json(array('success'=>true, 'lat_insert_id'=>$booking->id),200);
             $cartPackages = DB::table('carts')->where(['UserEmail'=>$UserEmail])->get();
             foreach($cartPackages as$pro){
                 $cartPro = new BookingsPackage;
@@ -829,6 +861,84 @@ class TourpackagesController extends Controller
                 $cartPro->TransportName = $pro->TransportName;
                 $cartPro->save();
             }
+            Session::put('Booking_id',$Booking_id);
+            Session::put('Grand_total',$data['Grand_total']);
+
+            $tourpackagesDetails = Booking::with('bookings')->where('id', $Booking_id)->first();
+            $tourpackagesDetails = json_decode(json_encode($tourpackagesDetails),true);
+            //dd($tourpackagesDetails);
+
+            $userDetails = User::where('id', $user_id)->first();
+            $userDetails = json_decode(json_encode($userDetails),true);
+            //dd($userDetails);
+            /*Code for Booking Email starts*/
+            $UserEmail = $UserEmail;
+            $messageData = [
+                'UserEmail'=>$UserEmail,
+                'SurName'=>$travellingDetails->SurName,
+                'OtherNames'=>$travellingDetails->OtherNames,
+                'Booking_id'=>$Booking_id,
+                'tourpackagesDetails' =>$tourpackagesDetails,
+                'userDetails'=>$userDetails
+            ];
+            Mail::send('emails.booking', $messageData, function($message) use($UserEmail){
+                $message->to($UserEmail)->subject('Booking Placed - GhanaTrek');
+            });
+            return redirect('/thanks');
         }
     }
+
+    public function thanks(Request $request){
+        $UserEmail = Auth::user()->UserEmail;
+        DB::table('carts')->where('UserEmail', $UserEmail)->delete();
+        return view('booking.thanks');
+    }
+
+    public function userBookings(){
+        $user_id =Auth::user()->id;
+        $bookings = Booking::with('Bookings')->where('user_id', $user_id)->orderBy('id','DESC')->get();
+
+        return view('booking.users_bookings')->with(compact('bookings'));
+    }
+
+    public function userBookingDetails($Booking_id){
+        $user_id = Auth::user()->id;
+        $bookingDetails = Booking::with('bookings')->where('id',$Booking_id)->first();
+        $bookingDetails = json_decode(json_encode($bookingDetails));
+
+        return view('booking.users_bookings_details')->with(compact('bookingDetails'));
+    }
+
+    public function viewBookings(){
+        $bookings = Booking::with('bookings')->orderBy('id', 'DESC')->get();
+        $bookings = json_decode(json_encode($bookings));
+
+        return view('admin.bookings.view_bookings')->with(compact('bookings'));
+    }
+
+    public function viewBookingDetails($Booking_id){
+        $bookingDetails = Booking::with('bookings')->where('id',$Booking_id)->first();
+        $bookingDetails =json_decode(json_encode($bookingDetails));
+        $user_id = $bookingDetails->user_id;
+        $userDetails = User::where('id', $user_id)->first();
+        return view('admin.bookings.booking_details')->with(compact('bookingDetails','userDetails'));
+    }
+
+    public function viewBookingInvoice($Booking_id){
+        $bookingDetails = Booking::with('bookings')->where('id',$Booking_id)->first();
+        $bookingDetails =json_decode(json_encode($bookingDetails));
+        $user_id = $bookingDetails->user_id;
+        $userDetails = User::where('id', $user_id)->first();
+        return view('admin.bookings.booking_invoice')->with(compact('bookingDetails','userDetails'));
+    }
+
+    public  function updateBookingStatus(Request $request){
+        if($request->isMethod('post')){
+            $data = $request->all();
+            Booking::where('id',$data['Booking_id'])->update(['Status'=>$data['Status']]);
+            return redirect()->back()->with('flash_message_success', 'Booking Status has been updated successfully!');
+        }
+    }
+
+
 }

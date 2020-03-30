@@ -5,13 +5,13 @@
   <div id="content-header">
     <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#">Tour Packages</a> <a href="#" class="current">Edit Tour Package</a> </div>
     <h1>Tour Packages</h1>
-     @if (Session::has('flash_message_error'))    
+     @if (Session::has('flash_message_error'))
             <div class="alert alert-error alert-block">
                 <button type="button" class="close" data-dismiss='alert'></button>
                 <strong>{!! session('flash_message_error') !!}</strong>
             </div>
-        @endif 
-        @if (Session::has('flash_message_success'))    
+        @endif
+        @if (Session::has('flash_message_success'))
             <div class="alert alert-success alert-block">
                 <button type="button" class="close" data-dismiss='alert'></button>
                 <strong>{!! session('flash_message_success') !!}</strong>
@@ -25,7 +25,7 @@
           <div class="widget-title"> <span class="icon"> <i class="icon-info-sign"></i> </span>
             <h5>Edit Tour Package</h5>
           </div>
-          
+
           <div class="widget-content nopadding">
             <form enctype="multipart/form-data" class="form-horizontal" method="post" action="{{ url('/admin/edit-tour/'.$tourpackagesDetails->id) }}" name="edit_tour" id="edit_tour" novalidate="novalidate">
                 @csrf
@@ -72,13 +72,19 @@
                     </div>
                 </div>
                 <div class="control-group">
-                <label class="control-label">Enable</label>
-                <div class="controls">
-                  <input type="checkbox" name="Status" id="Status" @if($tourpackagesDetails->Status=="1") checked @endif value="1">
+                    <label class="control-label">Feature Item</label>
+                    <div class="controls">
+                        <input type="checkbox" name="featured_tour" id="featured_tour" @if($tourpackagesDetails->featured_tour=="1") checked @endif value="1">
+                    </div>
                 </div>
-              </div>
+                <div class="control-group">
+                    <label class="control-label">Enable</label>
+                    <div class="controls">
+                        <input type="checkbox" name="Status" id="Status" @if($tourpackagesDetails->Status=="1") checked @endif value="1">
+                    </div>
+                </div>
 
-              
+
               <div class="form-actions">
                 <input type="submit" value="Edit Tour Package" class="btn btn-success">
               </div>

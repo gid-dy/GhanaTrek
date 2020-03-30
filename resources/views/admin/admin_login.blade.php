@@ -2,24 +2,24 @@
 <html lang="en">
 
 <head>
-        <title>Ghana Trek</title><meta charset="UTF-8" />
+        <title>GhanaTrek Admin</title><meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" href="{{ asset('css/backend_css/bootstrap.min.css') }}" />
 		<link rel="stylesheet" href="{{ asset('css/backend_css/bootstrap-responsive.min.css') }}" />
         <link rel="stylesheet" href="{{ asset('css/backend_css/matrix-login.css') }}" />
-        <link href="{{ asset('fonts/backend_fonts/font-awesome.css') }}" rel="stylesheet" />
+        <link href="{{ asset('fonts/backend_fonts/css/font-awesome.css') }}" rel="stylesheet" />
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
 
     </head>
     <body>
         <div id="loginbox">
-            @if (Session::has('flash_message_error'))    
+            @if (Session::has('flash_message_error'))
                 <div class="alert alert-error alert-block">
                     <button type="button" class="close" data-dismiss='alert'></button>
                     <strong>{!! session('flash_message_error') !!}</strong>
                 </div>
-            @endif 
-            @if (Session::has('flash_message_success'))    
+            @endif
+            @if (Session::has('flash_message_success'))
                 <div class="alert alert-success alert-block">
                     <button type="button" class="close" data-dismiss='alert'></button>
                     <strong>{!! session('flash_message_success') !!}</strong>
@@ -27,7 +27,7 @@
             @endif
             <form id="" role="form" class="form-vertical" method="POST" action="{{ url('admin/login') }}">
                 @csrf
-				 <div class="control-group normal_text"> <h3><img src="{{ asset('/images/backend_images/logo.png') }}" alt="Logo" /></h3></div>
+				 <div class="control-group normal_text"> <h4>GHANA<span style="color: #fafd44;">TREK</span></h4>  Admin</div>
                 <div class="control-group">
                     <div class="controls">
                         <div class="main_input_box">

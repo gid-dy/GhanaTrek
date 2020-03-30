@@ -24,6 +24,7 @@ class CreateBookingsTable extends Migration
             $table->string('State');
             $table->string('Country');
             $table->string('Mobile', 15);
+            $table->string('OtherContact', 15);
             $table->string('CouponCode', 20);
 			$table->decimal('Amount', 20, 2);
             $table->string('Status', 25);

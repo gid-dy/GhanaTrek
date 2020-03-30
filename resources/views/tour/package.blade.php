@@ -2,7 +2,7 @@
     @section('content')
 
 @include('layouts.frontLayout.user_topbar')
-  
+
 @include('layouts.frontLayout.user_header')
   <section>
       <div class="carousel-inner">
@@ -44,7 +44,13 @@
       <div class="container">
                <div class="col-xl-6 mx-auto text-center">
                   <div class="section-title mb-100">
-                     <h4>{{ $categoryDetails->CategoryName }}</h4>
+                     <h4>
+                        @if(!empty($search_tour))
+                            {{ $search_tour }}
+                        @else
+                            {{ $categoryDetails->CategoryName }}
+                        @endif
+                    </h4>
                   </div>
             </div>
         <div>
