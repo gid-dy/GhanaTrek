@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="{{ asset('css/backend_css/matrix-media.css') }}" />
 <link href="font-awesome/{{ asset('fonts/backend_fonts/css/font-awesome.css') }}" />
 <link rel="stylesheet" href="{{ asset('css/backend_css/jquery.gritter.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/backend_css/bootstrap-wysihtml5.css') }}" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.css">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css' />
@@ -39,6 +40,9 @@
 <script src="{{ asset('js/backend_js/matrix.form_validation.js') }}"></script>
 <script src="{{ asset('js/backend_js/matrix.tables.js') }}"></script>
 <script src="{{ asset('js/backend_js/matrix.popover.js') }}"></script>
+<script src="{{ asset('js/backend_js/wysihtml5-0.3.0.js') }}"></script>
+<script src="{{ asset('js/backend_js/bootstrap-wysihtml5.js') }}"></script>
+{{-- <script src="{{ asset('js/app.js') }}"></script> --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
@@ -48,8 +52,11 @@
         minDate: 0,
         dateFormat:'yy-mm-dd'
         });
-  } );
+    });
   </script>
+  <script>
+    $('.textarea_editor').wysihtml5();
+</script>
 
 
 

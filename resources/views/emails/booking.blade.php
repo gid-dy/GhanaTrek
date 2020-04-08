@@ -69,6 +69,9 @@
                                         <td>{{ $userDetails['State'] }}</td>
                                     </tr>
                                     <tr>
+                                        <td>{{ $userDetails['ZipCode'] }}</td>
+                                    </tr>
+                                    <tr>
                                         <td>{{ $userDetails['Mobile'] }}</td>
                                     </tr>
                                     <tr>
@@ -95,6 +98,9 @@
                                     </tr>
                                     <tr>
                                         <td>{{ $tourpackagesDetails['State'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ $tourpackagesDetails['ZipCode'] }}</td>
                                     </tr>
                                     <tr>
                                         <td>{{ $tourpackagesDetails['Mobile'] }}</td>

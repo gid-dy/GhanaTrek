@@ -1,23 +1,6 @@
 @extends('layouts.frontLayout.userdesign')
     @section('content')
 
-@include('layouts.frontLayout.user_topbar')
-<header class="header">
-          <div class="container">
-            <div class="site-header clearfix">
-              <div class="col-lg-3 col-md-3 col-sm-12 title-area">
-                <div class="site-title" id="title">
-                  <a href="index.html" title="">
-                    <h4>GHANA<span>TREK</span></h4>
-                  </a>
-                </div>
-              </div>
-            </div>
-            <!-- site header -->
-          </div>
-          <!-- end container -->
-        </header>
-        <!-- end header -->
         <section class="post-wrapper-top">
           <div class="container">
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -34,13 +17,13 @@
 
         <section class="section1">
           <div class="container clearfix">
-           @if (Session::has('flash_message_error'))    
+           @if (Session::has('flash_message_error'))
                 <div class="alert alert-error alert-block" style="background-color: #f2dfd0">
                     <button type="button" class="close" data-dismiss='alert'></button>
                     <strong>{!! session('flash_message_error') !!}</strong>
                 </div>
-            @endif 
-            @if (Session::has('flash_message_success'))    
+            @endif
+            @if (Session::has('flash_message_success'))
                 <div class="alert alert-success alert-block">
                     <button type="button" class="close" data-dismiss='alert'></button>
                     <strong>{!! session('flash_message_success') !!}</strong>
@@ -85,7 +68,7 @@
                       </div>
                       <div class="col-md-6">
                           <div class="checkout-form-list">
-                              <label>Mobile</label>              
+                              <label>Mobile</label>
                               <input id="Mobile" type="text"  name="Mobile" placeholder="Mobile" required />
                           </div>
                       </div>
@@ -106,7 +89,7 @@
                               <input type="submit" class="button" value="register">
                           </div>
                       </div>
-                                   
+
                 </form>
 
               </div>
@@ -117,10 +100,6 @@
           <!-- end container -->
         </section>
         <!-- end section -->
-        @include('layouts.frontLayout.user_footer')
-        
-
- 
 @endsection
 
 

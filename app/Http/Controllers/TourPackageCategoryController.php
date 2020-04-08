@@ -36,9 +36,21 @@ class TourpackagecategoryController extends Controller
             }else{
                 $CategoryStatus = 1;
             }
+            if(empty($data['meta_title'])){
+                $data['meta_title'] = "";
+            }
+            if(empty($data['meta_description'])){
+                $data['meta_description'] = "";
+            }
+            if(empty($data['meta_keywords'])){
+                $data['meta_keywords'] = "";
+            }
             $tourpackagecategory = new Tourpackagecategory;
             $tourpackagecategory->CategoryName = $data['CategoryName'];
             $tourpackagecategory->CategoryDescription = $data['CategoryDescription'];
+            $tourpackagecategory->meta_title = $data['meta_title'];
+            $tourpackagecategory->meta_description = $data['meta_description'];
+            $tourpackagecategory->meta_keywords = $data['meta_keywords'];
             $tourpackagecategory->CategoryStatus = $CategoryStatus;
             //upload image
             if($request->hasFile('Imageaddress')){
@@ -97,6 +109,15 @@ class TourpackagecategoryController extends Controller
             }else{
                 $CategoryStatus = 1;
             }
+            if(empty($data['meta_title'])){
+                $data['meta_title'] = "";
+            }
+            if(empty($data['meta_description'])){
+                $data['meta_description'] = "";
+            }
+            if(empty($data['meta_keywords'])){
+                $data['meta_keywords'] = "";
+            }
 
             if($request->hasFile('Imageaddress')){
                 $Imageaddress_tmp = $request->file('Imageaddress');
@@ -116,6 +137,9 @@ class TourpackagecategoryController extends Controller
             Tourpackagecategory::where(['id'=>$id])->update([
                 'CategoryName'=>$data['CategoryName'],
                 'CategoryDescription'=>$data['CategoryDescription'],
+                'meta_title'=>$data['meta_title'],
+                'meta_description'=>$data['meta_description'],
+                'meta_keywords'=>$data['meta_keywords'],
                 'CategoryStatus'=>$CategoryStatus,
                 'Imageaddress'=>$filename
             ]);
@@ -160,37 +184,4 @@ class TourpackagecategoryController extends Controller
         return redirect()->back()->with('flash_message_success', 'Category Image has been deleted successfully!');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    // public function deleteCategory($id = null)
-    // {
-    //     if(!empty($id)){
-    //         Category::where(['id'=>$id])->delete();
-    //         return redirect()->back()->with('flash_message_success', 'Category deleted Successfully!');
-    //     }
-    // }
 }

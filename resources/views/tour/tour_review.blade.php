@@ -1,16 +1,11 @@
 @extends('layouts.frontLayout.userdesign')
     @section('content')
-
-@include('layouts.frontLayout.user_topbar')
-  
-@include('layouts.frontLayout.user_header')
-
-
+    <?php use App\Tourpackages; ?>
   <section>
     <!-- checkout-area start -->
         <div class="checkout-area ptb-100">
             <div class="container">
-                <div class="row col-md-6">
+                <div class="row col-md-12">
                     <div class="col-md-5">
                         <div class="billing-details">
                             <h3>Billing Details</h3>
@@ -38,7 +33,10 @@
                             <div class="form-group">
                                 {{ $userDetails->State}}
                             </div>
-                        </div>               
+                            <div class="form-group">
+                                {{ $userDetails->ZipCode}}
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-2"></div>
                     <div class="col-md-5">
@@ -52,7 +50,7 @@
                             </div>
                             <div class="form-group">
                                 {{ $travellingDetails->Country }}
-                            </div> 
+                            </div>
                             <div class="form-group">
                                 {{ $travellingDetails->Mobile }}
                             </div>
@@ -67,13 +65,16 @@
                             </div>
                             <div class="form-group">
                                 {{ $travellingDetails->State }}
-                            </div> 
-                        </div>           
+                            </div>
+                            <div class="form-group">
+                                {{ $travellingDetails->ZipCode }}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="container">
-                <div class="table-responsive"> 
+                <div class="table-responsive">
                     <table class="table table-hover your-order">
                         <thead style="background-color:yellow;">
                             <tr>
@@ -95,11 +96,14 @@
                                         <p>  {{ $cart->TransportName }}</p>
                                     </td>
                                     <td><h4><small>{{ $cart->TourTypeName }}</small></h4></td>
-                                    <td><h4>GHS {{ $cart->PackagePrice }}</h4></td>
+                                    <td>
+                                        <?php $PackagePrice = Tourpackages::getPackagePrice($cart->Package_id, $cart->TourTypeName); ?>
+                                        <p>GHS {{ $PackagePrice }}</p>
+                                    </td>
                                     <td><h4><small>{{ $cart->Travellers }}</small></h4></td>
-                                    <td><p class="">GHS {{ $cart->PackagePrice*$cart->Travellers }}.00</td>
+                                    <td><p class="">GHS {{ $PackagePrice*$cart->Travellers }}.00</td>
                                 </tr>
-                                <?php $total_amount = $total_amount + ($cart->PackagePrice*$cart->Travellers);.00?>
+                                <?php $total_amount = $total_amount + ($PackagePrice*$cart->Travellers);.00 ?>
                             @endforeach
                             <tr>
                                 <td colspan="4">&nbsp;</td>
@@ -113,21 +117,32 @@
                                             <td>Discount Amount (-)</td>
                                             <td>@if(!empty(Session::get('CouponAmount')))
                                                 GHS {{ Session::get('CouponAmount') }}
-                                                @else GHS 0
+                                                @else
+                                                    GHS 0
                                                 @endif
-                                                </td>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>Grand Total</td>
-                                            <td ><span class="button">GHS {{ $Grand_total = $total_amount - Session::get('CouponAmount')  }}</span></td>
-                                        </tr> 
+                                                <?php
+                                                    $Grand_total = $total_amount - Session::get('CouponAmount');
+                                                    $getCurrencyRates = Tourpackages::getCurrencyRates($total_amount); ?>
+                                            <td ><span class="button" data-toggle="tooltip" data-html="true" title="USD {{ $getCurrencyRates['USD_Rate'] }}<br>
+                                                GBP {{ $getCurrencyRates['GBP_Rate'] }}<br>
+                                                EUR {{ $getCurrencyRates['EUR_Rate'] }}<br>
+                                                FRF {{ $getCurrencyRates['FRF_Rate'] }}<br>
+                                                BRL {{ $getCurrencyRates['BRL_Rate'] }}">GHS {{ $Grand_total  }}</span>
+                                            </td>
+                                        </tr>
                                     </table>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
                 <form name="paymentform" id="paymentform" action="{{ url('/place-package') }}" method="post">
                     @csrf
-                    <input type="hidden" name="Grand_total" value="{{ $Grand_total }}">
+                    <input type="text" name="Grand_total" value="{{ $Grand_total }}">
                     <div class="payment-method">
                         <div class="panel-group">
                             <span>Select Payment Method:</strong></label></span>
@@ -137,7 +152,7 @@
                                 Master or Visa Card <img src="{{ asset('images/frontend_images/payment.png') }}"></label>
                         </span>
                         <span class="col-md-4">
-                            <label><input type="radio" id="MobileMoney" name="Payment_method" value="MobileMoneyl">
+                            <label><input type="radio" id="MobileMoney" name="Payment_method" value="MobileMoney">
                                 Mobile Mobile <img src="{{ asset('images/frontend_images/mobile.jpeg') }}"></label>
                         </span>
                         <span class="col-md-4">
@@ -146,13 +161,12 @@
                         </span>
                         <div class="order-button-payment">
                             <input type="submit" onclick="return selectPaymentMethod();" value="Proceed to Payment" />
-                        </div>  
+                        </div>
                     </div>
-                </form> 
+                </form>
             </div>
             <hr>
-            
+
         </div>
   </section>
-  @include('layouts.frontLayout.user_footer')
 @endsection

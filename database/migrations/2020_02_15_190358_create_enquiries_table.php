@@ -15,10 +15,11 @@ class CreateEnquiriesTable extends Migration
     {
         Schema::create('enquiries', function (Blueprint $table) {
             $table->bigIncrements('id');
-			$table->string('Name')->nullable();
-			$table->string('EnquiryEmail', 30);
+            $table->string('SurName');
+            $table->string('OtherNames');
+			$table->string('UserEmail');
 			$table->string('Subject', 50)->nullable();
-			$table->string('Message', 18);
+			$table->string('comment', 255);
             $table->timestamps();
         });
     }

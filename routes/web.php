@@ -35,6 +35,9 @@ Route::get('/', 'IndexController@index')->name('index');
 //category listing page
 Route::get('/tour/{CategoryName}','TourpackagesController@tour');
 
+//tour filter
+Route::match(['get','post'],'/tour-filter','TourpackagesController@filter');
+
 //tour detail page
 Route::get('/tours/{id}','TourpackagesController@tours');
 
@@ -44,10 +47,15 @@ Route::match(['get','post'],'/add-cart', 'TourpackagesController@addtocart')->na
 
 //cart page
 Route::match(['get','post'],'/cart', 'TourpackagesController@cart');
+//wishlist page
+Route::match(['get','post'],'/wishlist', 'TourpackagesController@wishlist');
 
 //Route::get('/cart', 'TourpackagesController@cart');
 
-//delete otur from cart
+//delete tour from cart
+Route::get('/wishlist/delete-tourpackage/{id}', 'TourpackagesController@deletewishlistPackage');
+
+//delete tour from wishlist
 Route::get('/cart/delete-tourpackage/{id}', 'TourpackagesController@deleteCartPackage');
 
 Route::get('/get-tourpackage-Price','TourpackagesController@getTourpackagePrice');
@@ -62,6 +70,7 @@ Route::post('/cart/apply-coupon', 'TourpackagesController@applyCoupon');
 Route::get('/login', 'UsersController@ShowLoginForm')->middleware('guest');
 Route::post('/login', 'UsersController@login')->name('login');
 Route::get('/logout', 'UsersController@logout');
+Route::match(['get','post'],'forgot-password','UsersController@forgotPassword');
 
 
 Route::get('/register', 'UsersController@showRegistrationForm')->name('register');
@@ -71,6 +80,12 @@ Route::post('/register', 'UsersController@register');
 Route::get('/confirm/{code}', 'UsersController@confirmAccount');
 //Search Tour
 Route::post('/search-tour', 'TourpackagesController@searchTour');
+//check-subscriber-email
+Route::post('/check-subscriber-email','NewsletterController@checkSubscriber');
+//add-subscriber-email
+Route::post('/add-subscriber-email','NewsletterController@addSubscriber');
+
+
 
 
 
@@ -136,11 +151,48 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function() {
 
     //Booking Invoice
     Route::get('/view-invoice/{id}', 'TourpackagesController@viewBookingInvoice');
+    //Booking Invoice
+    Route::get('/view-pdf/{id}', 'TourpackagesController@viewPDFInvoice');
     //Update Booking Status
     Route::post('/update-booking-status','TourpackagesController@updateBookingStatus');
 
     //Admin Users Route
-Route::get('/view-users', 'UsersController@viewUsers');
+    Route::get('/view-users', 'UsersController@viewUsers');
+    // Get Enquiries
+    Route::get('/get-enquiries','CmsController@getEnquiries');
+    // Get contact
+    Route::get('/get-contact','CmsController@getContact');
+    Route::get('/delete-contact/{id}', 'CmsController@deleteContact');
+
+	// View Enquiries
+	Route::get('/view-enquiries','CmsController@viewEnquiries');
+
+    //currency route
+    //add currency
+    Route::match(['get','post'],'add-currency', 'CurrencyController@addCurrency')->name('admin.add-currency');
+    //Edit currency
+    Route::match(['get','post'],'edit-currency/{id}', 'CurrencyController@editCurrency')->name('admin.edit-currency');
+    //view currency
+    Route::get('view-currencies','CurrencyController@viewCurrency');
+
+    //Delete Route
+
+    Route::get('/delete-currency/{id}', 'CurrencyController@deleteCurrency');
+
+    //view NewsletterSubscriber
+    Route::get('/view-newsletter-subscribers','NewsletterController@viewSubscriber');
+    //Update Newsletter StatusSubscriber
+    Route::get('/update-newsletter-status/{id}/{Status}','NewsletterController@updateNewsletterStatus');
+    //Delete Newsletter Email
+    Route::get('/delete-newsletter-email/{id}', 'NewsletterController@deleteNewsletterEmail');
+
+
+    //Export Newsletter Emails
+    Route::get('/export-newsletter-email','NewsletterController@exportNewsletterEmails');
+    //Export Users
+    Route::get('/export-users','UsersController@exportUsers');
+    Route::get('/export-tourpackages','TourpackagesController@exportTourpackages');
+
 });
 
 
@@ -166,6 +218,18 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::get('/Bookings/{id}', 'TourpackagesController@userBookingDetails');
 
 });
+//Auth::routes();
+
+//display Contact Page
+Route::match(['get','post'],'/page/contact', 'CmsController@contact');
+
+// Display Post Page (for Vue.js)
+Route::match(['get','post'],'/page/post','CmsController@addPost');
 
 
 
+
+
+//Auth::routes();
+
+//Route::get('/home', 'HomeController@index')->name('home');

@@ -5,18 +5,21 @@
     <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#">Tours</a> <a href="#" class="current">View Tours</a> </div>
     <h1>Tours</h1>
     @if (Session::has('flash_message_error'))
-            <div class="alert alert-error alert-block">
-                <button type="button" class="close" data-dismiss='alert'></button>
-                <strong>{!! session('flash_message_error') !!}</strong>
-            </div>
-        @endif
-        @if (Session::has('flash_message_success'))
-            <div class="alert alert-success alert-block">
-                <button type="button" class="close" data-dismiss='alert'></button>
-                <strong>{!! session('flash_message_success') !!}</strong>
-            </div>
-        @endif
+        <div class="alert alert-error alert-block">
+            <button type="button" class="close" data-dismiss='alert'></button>
+            <strong>{!! session('flash_message_error') !!}</strong>
+        </div>
+    @endif
+    @if (Session::has('flash_message_success'))
+        <div class="alert alert-success alert-block">
+            <button type="button" class="close" data-dismiss='alert'></button>
+            <strong>{!! session('flash_message_success') !!}</strong>
+        </div>
+    @endif
   </div>
+  <div style="margin-left:20px;">
+    <a href="{{ url('/admin/export-tourpackages') }}" class="btn btn-primary btn-mini">Export</a>
+</div>
   <div class="container-fluid">
     <hr>
     <div class="row-fluid">
@@ -48,7 +51,7 @@
                             <td>{{ $tourpackages->CategoryName }}</td>
                             <td>{{ $tourpackages->PackageName }}</td>
                             <td>{{ $tourpackages->PackageCode }}</td>
-                            <td>{{ $tourpackages->PackagePrice }}</td>
+                            <td>GHS {{ $tourpackages->PackagePrice }}</td>
                             <td>
                                 @if(!empty($tourpackages->Imageaddress))
                                     <img src="{{ asset ('/images/backend_images/tours/large/'.$tourpackages->Imageaddress) }}" style= "width:70px;">

@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Ghana-Trek</title>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <meta content="" name="keywords">
-  <meta content="" name="description">
-  <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>@if(!empty($meta_title)) {{ $meta_title }} @else Home | Ghana-Trek @endif </title>
+    @if(!empty($meta_description))
+        <meta name="description" content="{{ $meta_description }}">
+    @endif
 
+    @if(!empty($meta_keywords))
+        <meta name="keywords" content="{{ $meta_keywords }}">
+    @endif
   <!-- Favicons -->
   <link rel="shortcut icon" href="{{ asset('images/frontend_images/icon.png') }}" type="image/x-icon">
   <link rel="icon" href="{{ asset('images/frontend_images/icon.png') }}" type="image/x-icon">
@@ -32,9 +38,15 @@
   <link rel="stylesheet" href="{{ asset('css/frontend_css/colors/blue.css') }}">
   <link rel="stylesheet" href="{{ asset('css/frontend_css/shop.css') }}">
   <link rel="stylesheet" href="{{ asset('css/frontend_css/passtrength.css') }}">
+  <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5e8d2b907daa0a0012e7bee3&product=inline-share-buttons&cms=website' async='async'></script>
 </head>
 </body>
+
+    @include('layouts.frontlayout.user_topbar')
+    @include('layouts.frontlayout.user_header')
     @yield('content')
+    @include('layouts.frontlayout.user_subscription')
+    @include('layouts.frontlayout.user_footer')
 {{--  <!-- JavaScript Libraries -->  --}}
     <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('lib/bootstrap/js/bootstrap.min.js') }}"></script>
@@ -49,9 +61,9 @@
     <script src="{{ asset('lib/animate-enhanced/animate-enhanced.min.js') }}"></script>
     <script src="{{ asset('lib/jigowatt/jigowatt.js') }}"></script>
     <script src="{{ asset('lib/easypiechart/easypiechart.min.js') }}"></script>
-    
+
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false" type="text/javascript"></script>
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script> --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 
 
     {{--  <!-- Template Main Javascript File -->  --}}
@@ -59,6 +71,15 @@
     <script src="{{ asset('js/frontend_js/jquery.validate.js') }}"></script>
     <script src="{{ asset('js/frontend_js/easyzoom.js') }}"></script>
     <script src="{{ asset('js/frontend_js/passtrength.js') }}"></script>
+    {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
+
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+
+
 
 </body>
 </html>

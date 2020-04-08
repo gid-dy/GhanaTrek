@@ -1,10 +1,6 @@
 @extends('layouts.frontLayout.userdesign')
     @section('content')
 
-@include('layouts.frontLayout.user_topbar')
-
-@include('layouts.frontLayout.user_header')
-
 
     <section>
         <div class="container">
@@ -19,7 +15,6 @@
         </div>
     </section>
 
-@include('layouts.frontLayout.user_footer')
 @endsection
 <?php
 Session::forget('Grand_total');

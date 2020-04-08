@@ -1,41 +1,13 @@
 @extends('layouts.frontLayout.userdesign')
     @section('content')
 
-@include('layouts.frontLayout.user_topbar')
-      <header class="header">
-        <div class="container">
-          <div class="site-header clearfix">
-            <div class="col-lg-3 col-md-3 col-sm-12 title-area">
-              <div class="site-title" id="title">
-                <a href="{{ url('/index') }}" title="">
-                  <h4>GHANA<span>TREK</span></h4>
-                </a>
-              </div>
-            </div>
-          </div>
-          <!-- site header -->
-        </div>
-        <!-- end container -->
-      </header>
-      <!-- end header -->
+
 
       <section class="post-wrapper-top">
-      @if (Session::has('flash_message_error'))    
-                <div class="alert alert-error alert-block" style="background-color: #f2dfd0">
-                    <button type="button" class="close" data-dismiss='alert'></button>
-                    <strong>{!! session('flash_message_error') !!}</strong>
-                </div>
-            @endif 
-            @if (Session::has('flash_message_success'))    
-                <div class="alert alert-success alert-block">
-                    <button type="button" class="close" data-dismiss='alert'></button>
-                    <strong>{!! session('flash_message_success') !!}</strong>
-                </div>
-            @endif
         <div class="container">
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <ul class="breadcrumb">
-              <li><a href="{{ url('/index') }}">{{ __('Home') }}</a></li>
+              <li><a href="{{ url('/') }}">{{ __('Home') }}</a></li>
               <li>{{ __('Login') }}</li>
             </ul>
             <h2>{{ __('LOGIN') }}</h2>
@@ -43,7 +15,20 @@
         </div>
       </section>
       <!-- end post-wrapper-top -->
-
+        <div class="container">
+            @if (Session::has('flash_message_error'))
+        <div class="alert alert-error alert-block" style="background-color: #f2dfd0">
+            <button type="button" class="close" data-dismiss='alert'></button>
+            <strong>{!! session('flash_message_error') !!}</strong>
+        </div>
+    @endif
+    @if (Session::has('flash_message_success'))
+        <div class="alert alert-success alert-block">
+            <button type="button" class="close" data-dismiss='alert'></button>
+            <strong>{!! session('flash_message_success') !!}</strong>
+        </div>
+    @endif
+        </div>
       <section class="section1">
         <div class="container clearfix">
           <div class="content col-lg-12 col-md-12 col-sm-12 clearfix">
@@ -59,13 +44,10 @@
                   <form method="POST" action="{{ url('/login') }}">
                         @csrf
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-                                <input id="UserEmail" type="email" class="form-control @error('UserEmail') is-invalid @enderror" name="UserEmail" value="{{ old('UserEmail') }}" required autocomplete="email" autofocus>
-
+                        <div class="col-md-12">
+                            <div class="checkout-form-list">
+                                <label>Email</label>
+                                <input id="UserEmail" type="email"  name="UserEmail" placeholder="UserEmail" required/>
                                 @error('UserEmail')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -74,46 +56,19 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                <input id="Password" type="password" class="form-control @error('Password') is-invalid @enderror" name="Password" required autocomplete="current-password">
-
-                                @error('Password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                        <div class="col-md-12">
+                            <div class="checkout-form-list">
+                                <label>Password</label>
+                                <input id="Password" type="password"  name="Password" placeholder="password" required/>
                             </div>
                         </div>
 
 
-
-                        <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                            <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-    
-                                        <label class="form-check-label" for="remember">
-                                            {{ __('Remember Me') }}
-                                        </label>
-                                    </div>
-                              </div>
-                        </div>
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <span class="pull-right">
-                                    <input type="submit" class="button" value="Login">
-                                </span>
-                            </div>
-                            <div>
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
+                        <div class="col-md-6">
+                            <div class="checkout-form-list">
+                                <input type="submit" class="button" value="login"><br>
+                                <a href="{{ url('/forgot-password') }}">forgot Password?</a>
                             </div>
                         </div>
                   </form>
@@ -125,7 +80,7 @@
         <!-- end container -->
       </section>
       {{--  < end section >  --}}
-      @include('layouts.frontLayout.user_footer')
+
   @endsection
 
 

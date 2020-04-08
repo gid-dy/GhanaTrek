@@ -36,6 +36,7 @@ jQuery(document).ready(function($) {
             e.preventDefault();
         });
 
+
         $tabSelect.on('change', function() {
             var target = $(this).val(),
                 targetSelectNum = $(this).prop('selectedIndex');
@@ -44,6 +45,7 @@ jQuery(document).ready(function($) {
             $tabButtonItem.eq(targetSelectNum).addClass(activeClass);
             $tabContents.hide();
             $(target).show();
+
         });
     });
 
@@ -52,7 +54,7 @@ jQuery(document).ready(function($) {
     $(document).ready(function() {
         $(".btn-pref .btn").click(function() {
             $(".btn-pref .btn").removeClass("btn-primary").addClass("btn-default");
-            // $(".tab").addClass("active"); // instead of this do the below 
+            // $(".tab").addClass("active"); // instead of this do the below
             $(this).removeClass("btn-default").addClass("btn-primary");
         });
     });
@@ -201,132 +203,9 @@ jQuery(document).ready(function($) {
         $('#ship-box-info').slideToggle(1000);
     });
 
-    //payment
-    /* Create token */
-    var $form = $('#payment-form');
-    $form.find('.pay').on('click', payWithStripe);
 
-    /* If you're using Stripe for payments */
-    function payWithStripe(e) {
-        e.preventDefault();
 
-        /* Abort if invalid form data */
-        if (!validator.form()) {
-            return;
-        }
 
-        /* Visual feedback */
-        $form.find('.pay').html('Validating <i class="fa fa-spinner fa-pulse"></i>').prop('disabled', true);
-
-        var PublishableKey = 'pk_test_6pRNASCoBOKtIshFeQd4XMUh'; // Replace with your API publishable key
-        Stripe.setPublishableKey(PublishableKey);
-
-        /* Create token */
-        var expiry = $form.find('[name=cardExpiry]').payment('cardExpiryVal');
-        var ccData = {
-            number: $form.find('[name=cardNumber]').val().replace(/\s/g, ''),
-            cvc: $form.find('[name=cardCVC]').val(),
-            exp_month: expiry.month,
-            exp_year: expiry.year
-        };
-
-        Stripe.card.createToken(ccData, function stripeResponseHandler(status, response) {
-            if (response.error) {
-                /* Visual feedback */
-                $form.find('.pay').html('Try again').prop('disabled', false);
-                /* Show Stripe errors on the form */
-                $form.find('.payment-errors').text(response.error.message);
-                $form.find('.payment-errors').closest('.row').show();
-            } else {
-                /* Visual feedback */
-                $form.find('.pay').html('Processing <i class="fa fa-spinner fa-pulse"></i>');
-                /* Hide Stripe errors on the form */
-                $form.find('.payment-errors').closest('.row').hide();
-                $form.find('.payment-errors').text("");
-                // response contains id and card, which contains additional card details            
-                console.log(response.id);
-                console.log(response.card);
-                var token = response.id;
-                // AJAX - you would send 'token' to your server here.
-                $.post('/account/stripe_card_token', {
-                        token: token
-                    })
-                    // Assign handlers immediately after making the request,
-                    .done(function(data, textStatus, jqXHR) {
-                        $form.find('.pay').html('Payment successful <i class="fa fa-check"></i>');
-                    })
-                    .fail(function(jqXHR, textStatus, errorThrown) {
-                        $form.find('.pay').html('There was a problem').removeClass('success').addClass('error');
-                        /* Show Stripe errors on the form */
-                        $form.find('.payment-errors').text('Try refreshing the page and trying again.');
-                        $form.find('.payment-errors').closest('.row').show();
-                    });
-            }
-        });
-    }
-    /* Fancy restrictive input formatting via jQuery.payment library*/
-    // $('input[name=cardNumber]').payment('formatCardNumber');
-    // $('input[name=cardCVC]').payment('formatCardCVC');
-    // $('input[name=cardExpiry').payment('formatCardExpiry');
-
-    /* Form validation using Stripe client-side validation helpers */
-    // jQuery.validator.addMethod("cardNumber", function(value, element) {
-    //     return this.optional(element) || Stripe.card.validateCardNumber(value);
-    // }, "Please specify a valid credit card number.");
-
-    // jQuery.validator.addMethod("cardExpiry", function(value, element) {
-    //     /* Parsing month/year uses jQuery.payment library */
-    //     value = $.payment.cardExpiryVal(value);
-    //     return this.optional(element) || Stripe.card.validateExpiry(value.month, value.year);
-    // }, "Invalid expiration date.");
-
-    // jQuery.validator.addMethod("cardCVC", function(value, element) {
-    //     return this.optional(element) || Stripe.card.validateCVC(value);
-    // }, "Invalid CVC.");
-
-    // validator = $form.validate({
-    //     rules: {
-    //         cardNumber: {
-    //             required: true,
-    //             cardNumber: true
-    //         },
-    //         cardExpiry: {
-    //             required: true,
-    //             cardExpiry: true
-    //         },
-    //         cardCVC: {
-    //             required: true,
-    //             cardCVC: true
-    //         }
-    //     },
-    //     highlight: function(element) {
-    //         $(element).closest('.form-control').removeClass('success').addClass('error');
-    //     },
-    //     unhighlight: function(element) {
-    //         $(element).closest('.form-control').removeClass('error').addClass('success');
-    //     },
-    //     errorPlacement: function(error, element) {
-    //         $(element).closest('.form-group').append(error);
-    //     }
-    // });
-
-    paymentFormReady = function() {
-        if ($form.find('[name=cardNumber]').hasClass("success") &&
-            $form.find('[name=cardExpiry]').hasClass("success") &&
-            $form.find('[name=cardCVC]').val().length > 1) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    $form.find('.pay').prop('disabled', true);
-    var readyInterval = setInterval(function() {
-        if (paymentFormReady()) {
-            $form.find('.pay').prop('disabled', false);
-            clearInterval(readyInterval);
-        }
-    }, 250);
 
 
     // Hover and Carousel
@@ -545,7 +424,7 @@ jQuery(document).ready(function($) {
 
     //tour price
     $(document).ready(function(){
-        
+
         $("#SelType").change(function(){
             var idTourTypeName = $(this).val();
             if(idTourTypeName == ""){
@@ -569,7 +448,8 @@ jQuery(document).ready(function($) {
                 success:function(resp){
                     //alert(resp); return false;
                     var arr = resp.split('#');
-                    $("#getPackagePrice").html("GHS " +arr[0]);
+                    var arr1 =arr[0].split('-');
+                    $("#getPackagePrice").html("GHS " +arr1[0]+"<br><h4>USD "+arr1[1]+"<br>GBP "+arr1[2]+"<br>EUR "+arr1[3]+"</h4>");
                     $("#PackagePrice").val(arr[0]);
                     if(arr[1]==0){
                         $("#cartbutton").hide();
@@ -588,7 +468,7 @@ jQuery(document).ready(function($) {
 
     //transport price
     $(document).ready(function(){
-        
+
         $("#SelTran").change(function(){
             var idTransportName = $(this).val();
             if(idTransportName == " "){
@@ -599,7 +479,7 @@ jQuery(document).ready(function($) {
                 url:'/get-transport-Cost',
                 data:{idTransportName:idTransportName},
                 success:function(resp){
-                    console.log(resp); 
+                    console.log(resp);
                     var el = $("#getTransportCost")
                     el.removeAttr('hidden')
                     el.html("GHS " +resp);
@@ -744,6 +624,7 @@ $().ready(function(){
             $("#travelling_Address").val($("#billing_Address").val());
             $("#travelling_City").val($("#billing_City").val());
             $("#travelling_State").val($("#billing_State").val());
+            $("#travelling_ZipCode").val($("#billing_ZipCode").val());
         }else{
             $("#travelling_SurName").val('');
             $("#travelling_OtherNames").val('');
@@ -753,9 +634,10 @@ $().ready(function(){
             $("#travelling_Address").val('');
             $("#travelling_City").val('');
             $("#travelling_State").val('');
+            $("#travelling_ZipCode").val('');
         }
     });
-    
+
 });
 
 function selectPaymentMethod(){
@@ -765,9 +647,9 @@ function selectPaymentMethod(){
         alert("Please select Payment Method");
         return false;
     }
-    
+
 }
-    
+
 
 // // Instantiate EasyZoom instances
 // 		var $easyzoom = $('.easyzoom').easyZoom();
@@ -799,4 +681,4 @@ function selectPaymentMethod(){
 // 			}
 // 		});
 
-  
+

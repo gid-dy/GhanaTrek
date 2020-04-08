@@ -1,85 +1,96 @@
 @extends('layouts.frontLayout.userdesign')
     @section('content')
-
-@include('layouts.frontLayout.user_topbar')
-  
-@include('layouts.frontLayout.user_header')
+<?php use App\Tourpackages; ?>
     <section>
         <div class="container">
             <div class="card">
                 <div class="container-fliud">
-                    <div class="wrapper row">
-                        <div class="preview col-md-6">
+                    <div class="wrapper row col-md-12">
+                        <div class="preview col-md-5">
                             <div class="preview-pic tab-content">
-                                <div class="tab-pane active" id="pic-1"><img class="mainImage" src="{{ asset('images/backend_images/tours/large/'.$tourpackagesDetails->Imageaddress) }}" /></div>
+                                <img class="mainImage" src="{{ asset('images/backend_images/tours/large/'.$tourpackagesDetails->Imageaddress) }}" />
                                     <div>
                                         @foreach($tourAltImage as $altimage)
                                             <img class="changeImage" src="{{ asset('images/backend_images/tours/large/'.$altimage->Image) }}" style="width:80px; display:inline;float:left;margin-top:20px; padding-right:10px; cursor:pointer;" />
                                         @endforeach
                                     </div>
                                 </div>
-                            
-
                             </div>
-                            <div class="details col-md-6">
-                                @if (Session::has('flash_message_error'))    
+
+                            <div class="details col-md-7">
+                                @if (Session::has('flash_message_error'))
                                     <div class="alert alert-error alert-block" style="background-color: #f2dfd0">
                                         <button type="button" class="close" data-dismiss='alert'></button>
                                         <strong>{!! session('flash_message_error') !!}</strong>
                                     </div>
-                                @endif 
+                                @endif
+                                @if (Session::has('flash_message_success'))
+                                    <div class="alert alert-success alert-block">
+                                        <button type="button" class="close" data-dismiss='alert'></button>
+                                        <strong>{!! session('flash_message_success') !!}</strong>
+                                    </div>
+                                @endif
                                 <form name="addtocartform" id="addtocartform" action="{{ url('add-cart') }}" method="post">
                                     @csrf
                                     <input type="hidden" name="Package_id" value="{{ $tourpackagesDetails->id }}">
                                     <input type="hidden" name="PackageName" value="{{ $tourpackagesDetails->PackageName }}">
                                     <input type="hidden" name="PackagePrice" id="PackagePrice" value="{{ $tourpackagesDetails->PackagePrice }}">
                                     <input type="hidden" name="PackageCode" id="PackageCode" value="{{ $tourpackagesDetails->PackageCode }}">
-                                    
+
                                     <div class="tour-details">
                                         <h3 class="product-title">{{ $tourpackagesDetails->PackageName}}</h3>
                                         <p>Tour Code: {{ $tourpackagesDetails->PackageCode}}</p>
+                                    <div class="col-md-6">
                                         <p>
                                             <select id="SelType" name="TourTypeName">
                                                 <option value="">Select Tour Type</option>
                                                 @foreach($tourpackagesDetails->tourtypes as $tourtype)
                                                 <option value="{{ $tourpackagesDetails->id }}-{{ $tourtype->TourTypeName }}">{{ $tourtype->TourTypeName }}</option>
                                                 @endforeach
-                                                </select>
+                                            </select>
                                         </p>
 
-                                        <h4 class="price">current price: <span id="getPackagePrice">GHS {{ $tourpackagesDetails->PackagePrice}}</span></h4>
-                                        
-                                        <p>
-                                            <select id="SelTran" name="TransportName">
-                                                <option value="">Select Transportation</option>
-                                                @foreach($tourpackagesDetails->tourtransports as $tourtransportation)
-                                                <option value="{{ $tourpackagesDetails->id }}-{{ $tourtransportation->TransportName }}">{{ $tourtransportation->TransportName }}</option>
-                                                @endforeach
+                                        <span>
+                                            <?php $getCurrencyRates =Tourpackages::getCurrencyRates($tourpackagesDetails->PackagePrice); ?>
+                                            <span id="getPackagePrice">GHS {{ $tourpackagesDetails->PackagePrice }}<br>
+                                                <h4>
+                                                    USD {{ $getCurrencyRates['USD_Rate'] }}<br>
+                                                    GBP {{ $getCurrencyRates['GBP_Rate'] }}<br>
+                                                    EUR {{ $getCurrencyRates['EUR_Rate'] }}<br>
+                                                </h4>
+                                            </span>
+                                            <p>
+                                                <select id="SelTran" name="TransportName">
+                                                    <option value="">Select Transportation</option>
+                                                    @foreach($tourpackagesDetails->tourtransports as $tourtransportation)
+                                                    <option value="{{ $tourpackagesDetails->id }}-{{ $tourtransportation->TransportName }}">{{ $tourtransportation->TransportName }}</option>
+                                                    @endforeach
                                                 </select>
-                                        </p>
-
-                                        <h4 class="price">cost: <span id="getTransportCost" hidden>GHS  0</span></h4>
-                                        
-                                            <p><b>Availability:</b> <span id="Availability"> @if($total_availability>0) Available @else Sold Out @endif </span></p>
-                                        <div class="form-control>"
+                                            </p>
+                                            <h4 class="price">cost: <span id="getTransportCost" hidden>GHS  0</span></h4>
+                                                <p><b>Availability:</b> <span id="Availability"> @if($total_availability>0) Available @else Sold Out @endif </span></p>
+                                                <div>
+                                                    <p><i class="fa fa-check" aria-hidden="true"></i>Free Cancellation up to 24 hours in advance</p>
+                                                    <p><i class="fa fa-check" aria-hidden="true"></i>Low Price Guarantee</p>
+                                                    <p><i class="fa fa-check" aria-hidden="true"></i>Reserve Now & Pay Later</p>
+                                                </div>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <span>
                                             <label>Number of Travellers</label>
                                             <input id="nt" type="number"  min="1" max="1"  name="Travellers" value="1" />
-                                            @if($total_availability>0)
-                                                <button class="add-to-cart btn btn-default" id="cartbutton" type="submit">add to cart</button>
-                                            @endif
-                                            <button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button>
-                                        </div>
+                                        </span>
+                                    </div>
+                                    @if($total_availability>0)
+                                            <button class="add-to-cart btn btn-default" id="cartbutton" type="submit" name="cartbutton " value="Add to cart">add to cart</button>
+                                        @endif
 
-                                        <div>
-                                            <p><i class="fa fa-check" aria-hidden="true"></i>Free Cancellation up to 24 hours in advance</p>
-                                            <p><i class="fa fa-check" aria-hidden="true"></i>Low Price Guarantee</p>
-                                            <p><i class="fa fa-check" aria-hidden="true"></i>Reserve Now & Pay Later</p>
-                                        </div>
-
-                                        
+                                        <button class="like btn btn-default pull-right"  id="wishlistbutton" type="submit" name="wishlistbutton" value="Add to wishlist">Add to wishlist <span class="fa fa-heart"></span></button>
+                                        <div class="sharethis-inline-share-buttons" style="margin-top:10px;"></div>
                                     </div>
                                 </form>
-                            </div>       
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -649,7 +660,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 @endforeach
                             </div>
                             <?php $count++; ?>
@@ -660,7 +671,5 @@
 
         </div>
     </section>
-@include('layouts.frontLayout.user_subscription')
 
-@include('layouts.frontLayout.user_footer')
 @endsection

@@ -1,31 +1,15 @@
 @extends('layouts.frontLayout.userdesign')
     @section('content')
 
-@include('layouts.frontLayout.user_topbar')
-<header class="header">
-          <div class="container">
-            <div class="site-header clearfix">
-              <div class="col-lg-3 col-md-3 col-sm-12 title-area">
-                <div class="site-title" id="title">
-                  <a href="index.html" title="">
-                    <h4>GHANA<span>TREK</span></h4>
-                  </a>
-                </div>
-              </div>
-            </div>
-            <!-- site header -->
-          </div>
-          <!-- end container -->
-        </header>
-        <!-- end header -->
+
         <section class="post-wrapper-top">
           <div class="container">
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
               <ul class="breadcrumb">
-                <li><a href="index.html">Home</a></li>
+                <li><a href="{{ url('/') }}">Home</a></li>
                 <li>Account</li>
               </ul>
-              <h2>Udate Account</h2>
+              <h2>Update Account</h2>
             </div>
 
           </div>
@@ -33,28 +17,26 @@
         <!-- end post-wrapper-top -->
 
         <section class="section1">
-          <div class="container clearfix">
                 <div class="container clearfix">
-                    <ul id="jetmenu" class="jetmenu blue">
-                      <li class="active"><a href="settings.html"><i class="fa fa-user"></i> Setting</a></li>
-                      <li><a href="wishlist.html"><i class="fa fa-star"></i> Wishlist</a></li>
-                      <li><a href="history.html"><i class="fa fa-shopping-cart"></i> History</a></li>
-                        
+                    <ul style="list-style-type:none; display:inline-flex; float-left;">
+                      <li class="active" style="margin-right:30px; color:red"><a href="settings.html"><i class="fa fa-user"></i> Setting</a></li>
+                      <li style="margin-right:30px;"><a href="{{ url('wishlist') }}"><i class="fa fa-star"></i> Wishlist</a></li>
+                      <li style="margin-right:30px;"><a href="{{ url('Bookings') }}"><i class="fa fa-shopping-cart"></i> {{ __('Recent Activities') }}</a></li>
                     </ul>
-                </div>
-                @if (Session::has('flash_message_error'))    
-                <div class="alert alert-error alert-block" style="background-color: #f2dfd0">
-                    <button type="button" class="close" data-dismiss='alert'></button>
-                    <strong>{!! session('flash_message_error') !!}</strong>
-                </div>
-            @endif 
-            @if (Session::has('flash_message_success'))    
-                <div class="alert alert-success alert-block">
-                    <button type="button" class="close" data-dismiss='alert'></button>
-                    <strong>{!! session('flash_message_success') !!}</strong>
-                </div>
-            @endif     
-                <div class="contact-container">       
+
+                @if (Session::has('flash_message_error'))
+                    <div class="alert alert-error alert-block" style="background-color: #f2dfd0">
+                        <button type="button" class="close" data-dismiss='alert'></button>
+                        <strong>{!! session('flash_message_error') !!}</strong>
+                    </div>
+                @endif
+                @if (Session::has('flash_message_success'))
+                    <div class="alert alert-success alert-block">
+                        <button type="button" class="close" data-dismiss='alert'></button>
+                        <strong>{!! session('flash_message_success') !!}</strong>
+                    </div>
+                @endif
+                <div class="contact-container">
                     <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
                         <div class="btn-group" role="group">
                             <button type="button" id="stars" style="padding:40px; border-radius: 50%;" href="#tab1" data-toggle="tab"><span class="fa fa-user" aria-hidden="true"></span>
@@ -73,8 +55,7 @@
                             <div class="tab-pane fade in active" id="tab1">
                                 <h2>Profile Details</h2>
                                 <hr>
-                                
-                                    <div class="row">
+                                <div class="row">
                                     <form id="" name="accountform" method="post" action="{{ url('/account') }}">
                                         @csrf
                                         <div class="col-md-12">
@@ -106,18 +87,18 @@
                                                     @foreach($countries as $country)
                                                     <option value="{{ $country->Country }}" @if($country->Country == $userDetails->Country)selected @endif>{{ $country->Country }}</option>
                                                     @endforeach
-                                                </select>                     
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="checkout-form-list">
-                                                <label>Mobile</label>              
+                                                <label>Mobile</label>
                                                 <input value="{{ $userDetails->Mobile }}" id="Mobile" type="text"  name="Mobile" placeholder="Mobile" required />
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="checkout-form-list">
-                                                <label>Other Contact</label>              
+                                                <label>Other Contact</label>
                                                 <input value="{{ $userDetails->OtherContact }}" id="OtherContact" type="text"  name="OtherContact" placeholder="Other Contact"  />
                                             </div>
                                         </div>
@@ -135,18 +116,23 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="checkout-form-list">
-                                                <label>State</label>                   
+                                                <label>State</label>
                                                 <input value="{{ $userDetails->State}}" id="State" type="text"  name="State" placeholder="State" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="checkout-form-list">
+                                                <label>Postal/Zip Code</label>
+                                                <input value="{{ $userDetails->ZipCode}}" id="ZipCode" type="text"  name="ZipCode" placeholder="Zip Code" />
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="checkout-form-list">
                                                 <input type="submit" class="button" value="Update Account">
                                             </div>
-                                        </div> 
-                                    </form>               
-                                    </div>
-                                
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                             <div class="tab-pane fade in" id="tab2">
                                 <h2>Change Password</h2>
@@ -157,36 +143,37 @@
                                         <div class="col-md-12">
                                             <label>Current Password</label>
                                             <span id="chkPwd"></span>
-                                            <div class="form-group"> 
-                                                <input type="password" class="form-control"  name="current_pwd" id="current_pwd" placeholder="Current Password"> 
+                                            <div class="form-group">
+                                                <input type="password" class="form-control"  name="current_pwd" id="current_pwd" placeholder="Current Password">
                                             </div>
                                         </div>
-                                        
-                                        <div class="col-md-12"> 
+
+                                        <div class="col-md-12">
                                             <label>New Password</label>
-                                            <div class="form-group"> 
-                                                <input type="password" class="form-control"  name="new_pwd"  id="new_pwd" placeholder="New Password"> 
-                                            </div> 
+                                            <div class="form-group">
+                                                <input type="password" class="form-control"  name="new_pwd"  id="new_pwd" placeholder="New Password">
+                                            </div>
                                         </div>
                                         <div class="col-md-12">
                                             <label>Confirm Password</label>
-                                            <div class="form-group"> 
-                                                <input type="password" class="form-control"   name="confirm_pwd"  id="confirm_pwd" placeholder="Confirm Password"> 
+                                            <div class="form-group">
+                                                <input type="password" class="form-control"   name="confirm_pwd"  id="confirm_pwd" placeholder="Confirm Password">
                                             </div>
-                                        </div>  
+                                        </div>
                                         <div class="col-md-12">
                                             <div class="checkout-form-list">
                                                 <input type="submit" class="button" value="change Password">
                                             </div>
                                         </div>
-                                    </form>         
-                                </div>               
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <hr>
-      
+                </div>
+
   </section>
   {{-- <section id="subs" class="subscribe">
 
@@ -212,10 +199,10 @@
       </div>
     </form>
 </section> --}}
-        @include('layouts.frontLayout.user_footer')
-        
 
- 
+
+
+
 @endsection
 
 

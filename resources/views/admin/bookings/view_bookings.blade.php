@@ -56,12 +56,15 @@
                                     <br>
                                 @endforeach
                             </td>
-                            <td class="center">{{ $booking->Grand_total }}</td>
+                            <td class="center">GHS {{ $booking->Grand_total }}</td>
                             <td class="center">{{ $booking->Status }}</td>
                             <td class="center">{{ $booking->Payment_method }}</td>
                             <td class="center">
-                              <a target="_blank" href="{{ url('admin/view-bookings/'.$booking->id) }}"  class="btn btn-success btn-mini">view booking details</a><br><br>
-                              <a target="_blank" href="{{ url('admin/view-invoice/'.$booking->id) }}"  class="btn btn-success btn-mini">view booking invoice</a>
+                                    <a target="_blank" href="{{ url('admin/view-bookings/'.$booking->id) }}"  class="btn btn-success btn-mini">view details</a><br><br>
+                                    @if($booking->Status == "Delivered" || $booking->Status == "Paid")
+                                    <a target="_blank" href="{{ url('admin/view-invoice/'.$booking->id) }}"  class="btn btn-warning btn-mini">view invoice</a><br><br>
+                                    <a target="_blank" href="{{ url('admin/view-pdf/'.$booking->id) }}"  class="btn btn-primary btn-mini">PDF invoice</a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

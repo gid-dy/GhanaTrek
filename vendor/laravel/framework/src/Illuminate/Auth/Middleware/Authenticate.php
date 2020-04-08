@@ -91,6 +91,6 @@ class Authenticate
      */
     protected function redirectTo($request)
     {
-        
+        //
     }
 }

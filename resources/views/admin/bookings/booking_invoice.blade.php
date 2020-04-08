@@ -40,8 +40,8 @@
                         </div>
 
                         <div class="col-md-6 text-right">
-                            <p class="font-weight-bold mb-1">Booking #{{ $bookingDetails->id }}</p>
-                            <p class="text-muted">Due to: 4 Dec, 2019</p>
+                            <p class="pull-right font-weight-bold mb-1">Booking #{{ $bookingDetails->id }}</p>
+                            <span style="float:right"><?php echo DNS1D::getBarcodeHTML($bookingDetails->id, "C39"); ?></span>
                         </div>
                     </div>
 
@@ -55,6 +55,7 @@
                                 {{ $userDetails->Address}}</br>
                                 {{ $userDetails->City}}</br>
                                 {{ $userDetails->State}}</br>
+                                {{ $userDetails->ZipCode}}</br>
                                 {{ $userDetails->Mobile}}</br>
                                 {{ $userDetails->OtherContact }}
                         </div>
@@ -62,11 +63,12 @@
 
                         <div class="col-md-6 text-right">
                             <p class="font-weight-bold mb-4">Travelling Details</p>
-                                {{ $bookingDetails->SurName}} {{ $userDetails->OtherNames}}</br>
+                                {{ $bookingDetails->SurName}} {{ $bookingDetails->OtherNames}}</br>
                                 {{ $bookingDetails->Country}}</br>
                                 {{ $bookingDetails->Address}}</br>
                                 {{ $bookingDetails->City}}</br>
                                 {{ $bookingDetails->State}}</br>
+                                {{ $bookingDetails->ZipCode}}</br>
                                 {{ $bookingDetails->Mobile}}</br>
                                 {{ $bookingDetails->OtherContact }}
                         </div>
@@ -109,7 +111,7 @@
                                                 <?php $Subtotal = 0; ?>
                                                 @foreach($bookingDetails->bookings as $pro)
                                                 <tr>
-                                                    <td class="text-left">{{ $pro->PackageCode }}</td>
+                                                    <td class="text-left">{{ $pro->PackageCode }}<?php echo DNS1D::getBarcodeHTML($bookingDetails->id, "C39"); ?></td>
                                                     <td class="text-center">{{ $pro->PackageName }}</td>
                                                     <td class="text-center">{{ $pro->TourTypeName }}</td>
                                                     <td class="text-center">GHS {{ $pro->PackagePrice }}</td>

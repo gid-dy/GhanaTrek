@@ -19,7 +19,7 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('example-component', require('./components/ExampleComponent.vue'));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -29,4 +29,43 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 const app = new Vue({
     el: '#app',
+    data:{
+        testmsg:'CONTACT US',
+         responsemsg:'',
+         search:'',
+         enquiries:[],
+    },
+     ready:function(){
+         this.created();
+     },
+     created(){
+         axios.get('/admin/get-enquiries')
+         .then(response => {
+             this.enquiries = response.data;
+         })
+        .catch(function (error){
+            console.log(error);
+        });
+     },
+     computed:{
+         filteredEnquiries(){
+             return this.enquiries.filter(enquiry => {
+                 return enquiry.SurName.toLowerCase().includes(this.search.toLowerCase())
+             })
+         }
+     },
+    methods:{
+        addPost() {
+            axios.post('/page/post', {SurName: this.SurName, OtherNames: this.OtherNames, UserEmail: this.UserEmail, Subject: this.Subject, message: this.message})
+            .then(function (response){
+                            app.responsemsg = response.data;
+                        })
+        // addPost(){
+        //     axios.post('/page/post', {SurName: this.SurName, OtherNames: this.OtherNames, UserEmail: this.UserEmail, Subject: this.Subject, message: this.message})
+        //         .then(function (response){
+        //             app.responsemsg = response.data;
+        //         })
+        // }
+    },
+    }
 });

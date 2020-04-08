@@ -1,27 +1,24 @@
+
 @extends('layouts.frontLayout.userdesign')
     @section('content')
-
-@include('layouts.frontLayout.user_topbar')
-  
-@include('layouts.frontLayout.user_header')
-
+    <?php use App\Tourpackages; ?>
 
     <section>
         <div class="container">
-            @if (Session::has('flash_message_error'))    
+            @if (Session::has('flash_message_error'))
                 <div class="alert alert-error alert-block" style="background-color: #f2dfd0">
                     <button type="button" class="close" data-dismiss='alert'></button>
                     <strong>{!! session('flash_message_error') !!}</strong>
                 </div>
-            @endif 
-            @if (Session::has('flash_message_success'))    
+            @endif
+            @if (Session::has('flash_message_success'))
                 <div class="alert alert-success alert-block">
                     <button type="button" class="close" data-dismiss='alert'></button>
                     <strong>{!! session('flash_message_success') !!}</strong>
                 </div>
             @endif
             <div class="row" style="margin-top: 30px;">
-            
+
                 <div class="col-md-8">
                 <table class="table table-hover your-order">
                         <thead style="background-color:yellow;">
@@ -46,17 +43,20 @@
                                     <p>  {{ $cart->TransportName }}</p>
                                 </td>
                                 <td><h4><small>{{ $cart->TourTypeName }}</small></h4></td>
-                                <td><p>GHS {{ $cart->PackagePrice }}</p></td>
+                                <td>
+                                    <?php $PackagePrice = Tourpackages::getPackagePrice($cart->Package_id, $cart->TourTypeName); ?>
+                                    <p>GHS {{ $PackagePrice }}</p>
+                                </td>
                                 <td><h4><small>{{ $cart->Travellers }}</small></h4></td>
-                                <td><p class="">GHS {{ $cart->PackagePrice*$cart->Travellers }}.00</td>
+                                <td><p class="">GHS {{ $PackagePrice*$cart->Travellers }}.00</td>
                                 <td class="product-removal">
                                     <a class ="cart_quantity_delete button" href="{{ url('/cart/delete-tourpackage/'.$cart->id) }}"><i class="fa fa-trash"></i> </a>
                                 </td>
                             </tr>
-                            
+
                         </div>
                         <hr>
-                      <?php $total_amount = $total_amount + ($cart->PackagePrice*$cart->Travellers);.00?>
+                      <?php $total_amount = $total_amount + ($PackagePrice*$cart->Travellers);.00?>
                       @endforeach
                       </tbody>
                       </table>
@@ -64,22 +64,33 @@
                           @csrf
                               <input type="text" name="CouponCode" placeholder="Coupon code" />
                               <input type="submit" value="Apply Coupon" class="button" />
-                          
+
                       </form>
-                      
+
                 </div>
-                
+
                 <div class="col-md-4" style="background-color: white;">
                     <div class="text">
                     @if(!empty(Session::get('CouponAmount')))
                         <p class="heading">Sub Total <span class="pull-right">GHS <?php echo $total_amount; ?>.00</span></p>
                         <p class="heading">Coupon Discount <span class=" pull-right">GHS <?php echo Session::get('CouponAmount'); ?></span></p>
-                        <p class="heading">Grand Total <span class="price pull-right">GHS <?php echo $total_amount-Session::get('CouponAmount'); ?>.00</span></p>
+                        <?php
+                        $total_amount = $total_amount-Session::get('CouponAmount');
+                        $getCurrencyRates = Tourpackages::getCurrencyRates($total_amount); ?>
+                        <p class="heading">Grand Total <span class=" pull-right" data-toggle="tooltip" data-html="true" title="USD {{ $getCurrencyRates['USD_Rate'] }}<br>
+                            GBP {{ $getCurrencyRates['GBP_Rate'] }}<br>
+                            EUR {{ $getCurrencyRates['EUR_Rate'] }}<br>
+                            FRF {{ $getCurrencyRates['FRF_Rate'] }}<br>
+                            BRL {{ $getCurrencyRates['BRL_Rate'] }}">GHS <?php echo $total_amount; ?>.00</span></p>
                     @else
-
-                        <p class="heading">Grand Total <span class=" pull-right">GHS <?php echo $total_amount; ?>.00</span></p>
+                        <?php $getCurrencyRates = Tourpackages::getCurrencyRates($total_amount); ?>
+                        <p class="heading">Grand Total <span class=" pull-right" data-toggle="tooltip" data-html="true" title="USD {{ $getCurrencyRates['USD_Rate'] }}<br>
+                                                GBP {{ $getCurrencyRates['GBP_Rate'] }}<br>
+                                                EUR {{ $getCurrencyRates['EUR_Rate'] }}<br>
+                                                FRF {{ $getCurrencyRates['FRF_Rate'] }}<br>
+                                                BRL {{ $getCurrencyRates['BRL_Rate'] }}">GHS <?php echo $total_amount; ?>.00</span></p>
                     @endif
-                  
+
                     </div>
                     <hr>
                     <div class="row">
@@ -95,15 +106,12 @@
                     <div class="cart-section col-md-12" style="font-size: 16px;margin-top: 30px;">
                         <a href="{{ url('register') }}">Create Account</a> or <a href="{{ url('login') }}">login</a> for faster booking
                     </div>
-                
+
                 </div>
-                
-                    
+
+
             </div>
         </div>
     </section>
-   @include('layouts.frontLayout.user_subscription')
-
-@include('layouts.frontLayout.user_footer')
 @endsection
 

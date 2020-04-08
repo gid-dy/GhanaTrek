@@ -1,3 +1,7 @@
+<?php
+use App\Tourpackages;
+$cartCount = Tourpackages::cartCount();
+?>
 <header class="header">
     <div class="container">
         <div class="site-header clearfix">
@@ -15,8 +19,7 @@
                         <ul id="jetmenu" class="jetmenu blue">
                             <li class="active"><a href="{{ url('/') }}">{{ __('Home') }}</a></li>
                             <li><a href="{{ url('wishlist') }}"><i class="fa fa-star"></i> {{ __('Wishlist') }}</a></li>
-                            <li><a href="{{ url('cart') }}"><i class="fa fa-shopping-cart"></i> {{ __('Cart') }}</a></li>
-                            <li><a href="{{ url('Bookings') }}"><i class="fa fa-shopping-cart"></i> {{ __('Bookings') }}</a></li>
+                            <li><a href="{{ url('cart') }}"><i class="fa fa-shopping-cart"></i> {{ __('Cart') }}({{ $cartCount }})</a></li>
                             <li><a href="#">USA</a>
                                 <ul class="dropdown">
                                     <li><a href="#">Canada</a></li>
@@ -29,10 +32,10 @@
                                     <li><a href="#">Pound</a></li>
                                 </ul>
                             </li>
-                            <li style="padding-top:10px; padding-left:20px;">
+                            <li style="padding-top:10px; ">
                                 <form class="form-inline ml-auto" action="{{ url('/search-tour') }}" method="post">
                                     @csrf
-                                    <input class="form-control mr-sm-2" placeholder="Search Tour" name="tour" />
+                                    <input class="form-control " placeholder="Search Tour" name="tour" />
                                         <button class="btn btn-outline-success bg-success button" style="border=0px;" type="submit"><i class="fa fa-search"></i></button>
                                 </form>
                             </li>

@@ -29,9 +29,25 @@
     </li>
 
     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>Users</span> <span class="label label-important">1</span></a>
-      <ul>
-        <li><a href="{{ url('/admin/view-users') }}">View Users</a></li>
-      </ul>
+        <ul>
+            <li><a href="{{ url('/admin/view-users') }}">View Users</a></li>
+        </ul>
+    </li>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>Enquiries</span> <span class="label label-important">1</span></a>
+        <ul>
+            <li><a href="{{ url('/admin/get-contact') }}">View Enquiries</a></li>
+        </ul>
+    </li>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>Currencies</span> <span class="label label-important">2</span></a>
+        <ul>
+          <li><a href="{{ url('/admin/add-currency') }}">Add Currency</a></li>
+          <li><a href="{{ url('/admin/view-currencies') }}">View Currencies</a></li>
+        </ul>
+      </li>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>Newsletter Subscribers</span> <span class="label label-important">1</span></a>
+        <ul>
+            <li><a href="{{ url('/admin/view-newsletter-subscribers') }}">View Newsletter</a></li>
+        </ul>
     </li>
 
     {{--  <li> <a href="charts.html"><i class="icon icon-signal"></i> <span>Charts &amp; graphs</span></a> </li>

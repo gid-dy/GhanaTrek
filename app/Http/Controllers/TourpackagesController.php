@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redirect;
+use App\Exports\tourpackagesExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Support\Str;
 use App\Tourpackages;
@@ -22,8 +25,10 @@ use App\TravelAddress;
 use Auth;
 use Image;
 use App\Tourpackagecategory;
+use Dompdf\Dompdf;
 use Session;
 use DB;
+use Carbon\Carbon;
 
 class TourpackagesController extends Controller
 {
@@ -221,11 +226,6 @@ class TourpackagesController extends Controller
         return redirect()->back()->with('flash_message_success', 'Tour type has been deleted successfully!');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
 
     public function tourtype(Request $request, $id = null)
     {
@@ -380,8 +380,9 @@ class TourpackagesController extends Controller
             $data = $request->all();
             //echo "<pre>"; print_r($data); die;
             foreach($data['idTransport'] as $key => $transport){
-                Tourtransportation::where(['id' =>$data['idTransport'][$key]])->update(
-                    ['TransportCost'=>$data['TransportCost'][$key]]);
+                Tourtransportation::where(['id' =>$data['idTransport'][$key]])->update([
+                    'TransportCost'=>$data['TransportCost'][$key]
+                    ]);
             }
             return redirect()->back()->with('flash_message_success', 'Tour Transport has been updated successfully');
         }
@@ -451,12 +452,6 @@ class TourpackagesController extends Controller
         return redirect()->back()->with('flash_message_success', 'Accommodation has been deleted successfully!');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function location(Request $request, $id = null)
     {
         $tourpackagesDetails = Tourpackages::where(['id'=>$id])->first();
@@ -483,12 +478,7 @@ class TourpackagesController extends Controller
 
 
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function tour($CategoryName = null)
     {
         $countCategory = Tourpackagecategory::where(['CategoryName'=>$CategoryName, 'CategoryStatus'=>1])->count();
@@ -499,16 +489,33 @@ class TourpackagesController extends Controller
         $categoryDetails = Tourpackagecategory::where(['CategoryName'=>$CategoryName])->first();
 
 
-        $tourpackagesAll = Tourpackages::where(['Category_id' => $categoryDetails->id ])->get();
-        return view('tour.package')->with(compact('tourpackagecategory','categoryDetails', 'tourpackagesAll'));
+        $tourpackagesAll = Tourpackages::where(['Category_id' => $categoryDetails->id ])->paginate(3);
+
+        $TourTypeNameArray = TourType::select('TourTypeName')->groupBy('TourTypeName')->get();
+        $TourTypeNameArray =array_flatten(json_decode(json_encode($TourTypeNameArray),true));
+
+
+        //meta
+        $meta_title = $categoryDetails->meta_title;
+        $meta_description = $categoryDetails->meta_description;
+        $meta_keywords = $categoryDetails->meta_keywords;
+        return view('tour.package')->with(compact('tourpackagecategory','categoryDetails', 'tourpackagesAll','meta_title','meta_description','meta_keywords','CategoryName','TourTypeNameArray'));
+    }
+
+    public function filter(Request $request){
+        $data = $request->all;
+        echo "<pre>"; print_r($data); die;
     }
 
     public function searchTour(Request $request){
         $data = $request->all();
         $tourpackagecategory = Tourpackagecategory::with('tourcategories')->where($id=null)->get();
         $search_tour = $data['tour'];
-        $tourpackagesAll = Tourpackages::where('PackageName', 'like','%'.$search_tour.'%')->orwhere('PackageCode',$search_tour)->where('Status',1)->get();
+        // $tourpackagesAll = Tourpackages::where('PackageName', 'like','%'.$search_tour.'%')->orwhere('PackageCode',$search_tour)->where('Status',1)->get();
 
+        $tourpackagesAll = Tourpackages::where(function($query) use($search_tour){
+            $query->where('PackageName','like','%'.$search_tour.'%')->orwhere('PackageCode','like','%'.$search_tour.'%');
+        })->where('Status',1)->get();
         return view('tour.package')->with(compact('tourpackagecategory','search_tour', 'tourpackagesAll'));
      }
 
@@ -535,7 +542,13 @@ class TourpackagesController extends Controller
 
         $total_availability = TourType::where('Package_id',$id)->sum('TourTypeSize');
         //dd( $tourpackagesDetails);
-        return view('tour.details')->with(compact('tourpackagesDetails','tourAltImage','relatedTour','total_availability'));
+
+
+        //meta
+        $meta_title = $tourpackagesDetails->PackageName;
+        $meta_description = $tourpackagesDetails->Description;
+        $meta_keywords = $tourpackagesDetails->PackageName;
+        return view('tour.details')->with(compact('tourpackagesDetails','tourAltImage','relatedTour','total_availability','meta_title','meta_description','meta_keywords'));
     }
 
 
@@ -547,7 +560,8 @@ class TourpackagesController extends Controller
         //echo $tourArr[0]; echo $tourArr[1]; die;
 
         $tourtypeAtt = Tourtype::where(['Package_id' => $tourArr[0], 'TourTypeName' => $tourArr[1]])->first();
-        echo $tourtypeAtt->PackagePrice;
+        $getCurrencyRates = Tourpackages::getCurrencyRates($tourtypeAtt->PackagePrice);
+        echo $tourtypeAtt->PackagePrice."-".$getCurrencyRates['USD_Rate']."-".$getCurrencyRates['GBP_Rate']."-".$getCurrencyRates['EUR_Rate']."-".$getCurrencyRates['FRF_Rate']."-".$getCurrencyRates['BRL_Rate'];
         echo "#";
         echo $tourtypeAtt->TourTypeSize;
     }
@@ -569,63 +583,138 @@ class TourpackagesController extends Controller
         Session::forget('CouponAmount');
         Session::forget('CouponCode');
         $data = $request->all();
+          //echo "<pre>"; print_r($data); die;
 
 
-        //echo "<pre>"; print_r($data); die;
+        if(!empty($data['wishlistbutton']) && $data['wishlistbutton']=="Add to wishlist"){
+            // echo"Wish list selected";die;
 
-        if(empty(Auth::user()->UserEmail)){
-            $data['UserEmail'] = '';
-        }else{
-            $data['UserEmail'] = Auth::user()->UserEmail;
-        }
-        if (empty($data['TransportCost'])){
-            $data['TransportCost'] = '';
-        }
-
-        if (empty($data['TransportName'])) {
-            $data['TransportName']= '';
-        }
-
-
-        $Session_id = Session::get('Session_id');
-        if(empty($Session_id)){
-            $Session_id = str::random(40);
-            Session::put('Session_id',$Session_id);
-        }
-
-        if (empty($data['TransportName'])){
-            $data['TransportName'] = '';
-        }
-
-
-        $TourTypeNameArr = explode("-", $data['TourTypeName']);
-        $TransportNameArr = explode("-", $data['TransportName']);
-
-        if(empty($data['TourTypeName'])){
-            return redirect()->back()->with('flash_message_error', 'Select Tour type !');
-        }
-
-        $countTourpackages = DB::table('carts')->where([
-            'Package_id'=>$data['Package_id'],
-            'PackageName'=>$data['PackageName'],
-            'TourTypeName'=>$TourTypeNameArr[1],
-            'Session_id'=>$Session_id])->count();
-        if($countTourpackages>0){
-            return redirect()->back()->with('flash_message_error',  'Tour Package already exist in cart!');
-        }else{
-            $getSKU =Tourtype::select('SKU')->where(['Package_id' =>$data['Package_id'],'TourTypeName'=>$TourTypeNameArr[1]])->first();
-            DB::table('carts')->insert([
-                'Package_id'=>$data['Package_id'],
-                'PackageName'=>$data['PackageName'],
-                'PackageCode'=>$getSKU->SKU,
-                'PackagePrice'=>$data['PackagePrice'],
-                'Travellers'=>$data['Travellers'],
-                'TourTypeName'=>$TourTypeNameArr[1],
-                'TransportName'=>$TransportNameArr[1],
-                'UserEmail'=>$data['UserEmail'],
-                'Session_id'=>$Session_id]);
+            if(!Auth::check()){
+                return redirect()->back()->with('flash_message_error','Please login to add to your wishlist');
             }
-        return redirect('cart')->with('flash_message_success','tour added to cart');
+
+            //check size is selected
+            if(empty($data['TourTypeName'])){
+                return redirect()->back()->with('flash_message_error','Please select Tour Type to add to your wishlist');
+            }
+
+            //Get Tour Type
+            $TourTypeNameArr = explode("-", $data['TourTypeName']);
+            $TourTypeName = $TourTypeNameArr[1];
+            //Get Tour package price
+            $tourPrice = TourType::where(['Package_id'=>$data['Package_id'], 'TourTypeName'=>$TourTypeName])->first();
+            $PackagePrice = $tourPrice->PackagePrice;
+
+
+            if (empty($data['TransportName'])){
+                $data['TransportName'] = '';
+            }
+
+            $TransportNameArr = explode("-", $data['TransportName']);
+            $TransportName = $TransportNameArr[1];
+
+
+            //Get User Email
+            $UserEmail = Auth::user()->UserEmail;
+
+            //Set Travellers as 1
+            //$Travellers =1;
+
+            //Get current date
+            $created_at = Carbon::now();
+
+            $wishlistCount = DB::table('wishlist')->where(['UserEmail'=>$UserEmail,'Package_id'=>$data['Package_id'],'PackageName'=>$data['PackageName'],'PackageCode'=>$data['PackageCode'],'TourTypeName'=>$TourTypeName,'TransportName'=>$TransportName])->count();
+
+            if($wishlistCount>0){
+                return redirect()->back()->with('flash_message_error','Tour package already exists in wishlist');
+            }else{
+                DB::table('wishlist')->insert(['Package_id'=>$data['Package_id'],'PackageName'=>$data['PackageName'],'PackageCode'=>$data['PackageCode'],'PackagePrice'=>$PackagePrice,'TourTypeName'=>$TourTypeName,'TransportName'=>$TransportName,'Travellers'=>$data['Travellers'],'UserEmail'=>$UserEmail,'created_at'=>$created_at]);
+            return redirect()->back()->with('flash_message_success','Tour packages has been added to your wishlist');
+
+            }
+
+
+        }else{
+            if (!empty($data['cartbutton']) && $data['cartbutton']=="Add-to-wishlist") {
+                // $data['Travellers'] =1;
+            }
+            //checking tour package availability
+            $TourTypeName = explode("-", $data['TourTypeName']);
+            //echo $data['Travellers']; die;
+            $getTourSize = TourType::where(['Package_id'=>$data['Package_id'],'TourTypeName'=>$TourTypeName[1]])->first();
+
+
+            if($getTourSize->TourTypeSize<$data['Travellers']){
+                return redirect()->back()->with('flash_message_error','Required Number of travellers is not available');
+            }
+
+
+
+            if(empty(Auth::user()->UserEmail)){
+                $data['UserEmail'] = '';
+            }else{
+                $data['UserEmail'] = Auth::user()->UserEmail;
+            }
+            if (empty($data['TransportCost'])){
+                $data['TransportCost'] = '';
+            }
+
+
+            $Session_id = Session::get('Session_id');
+            if(empty($Session_id)){
+                $Session_id = str::random(40);
+                Session::put('Session_id',$Session_id);
+            }
+
+            if (empty($data['TransportName'])){
+                $data['TransportName'] = '';
+            }
+
+
+            $TourTypeNameArr = explode("-", $data['TourTypeName']);
+            $TourTypeName = $TourTypeNameArr[1];
+
+            $TransportNameArr = explode("-", $data['TransportName']);
+            $TransportName = $TransportNameArr[1];
+
+            if(empty($data['TourTypeName'])){
+                return redirect()->back()->with('flash_message_error', 'Select Tour type !');
+            }
+            if(empty(Auth::check())){
+                $countTourpackages = DB::table('carts')->where([
+                    'Package_id'=>$data['Package_id'],
+                    'PackageName'=>$data['PackageName'],
+                    'TourTypeName'=>$TourTypeName,
+                    'Session_id'=>$Session_id])->count();
+                if($countTourpackages>0){
+                    return redirect()->back()->with('flash_message_error',  'Tour Package already exist in cart!');
+                }
+            }else{
+                $countTourpackages = DB::table('carts')->where([
+                    'Package_id'=>$data['Package_id'],
+                    'PackageName'=>$data['PackageName'],
+                    'TourTypeName'=>$TourTypeName,
+                    'UserEmail'=>$data['UserEmail']])->count();
+                if($countTourpackages>0){
+                    return redirect()->back()->with('flash_message_error',  'Tour Package already exist in cart!');
+                }
+            }
+
+
+                $getSKU =Tourtype::select('SKU')->where(['Package_id' =>$data['Package_id'],'TourTypeName'=>$TourTypeNameArr[1]])->first();
+                DB::table('carts')->insert([
+                    'Package_id'=>$data['Package_id'],
+                    'PackageName'=>$data['PackageName'],
+                    'PackageCode'=>$getSKU->SKU,
+                    'PackagePrice'=>$data['PackagePrice'],
+                    'Travellers'=>$data['Travellers'],
+                    'TourTypeName'=>$TourTypeName,
+                    'TransportName'=>$TransportName,
+                    'UserEmail'=>$data['UserEmail'],
+                    'Session_id'=>$Session_id]);
+
+            return redirect('cart')->with('flash_message_success','tour added to cart');
+        }
 
     }
 
@@ -644,8 +733,32 @@ class TourpackagesController extends Controller
             $tourpackagesDetails = Tourpackages::where('id', $tourpackages->Package_id)->first();
             $userCart[$key]->Imageaddress = $tourpackagesDetails->Imageaddress;
         }
-         //echo "<pre>"; print_r($userCart); die;
-        return view('tour.cart')->with(compact('userCart'));
+        $meta_title = "Booking Cart - GhanaTrek";
+        $meta_description = "View Booking Cart of GhanaTrek";
+        $meta_keywords = "Booking cart, GhanaTrek";
+        return view('tour.cart')->with(compact('userCart','meta_title','meta_description','meta_keywords'));
+    }
+    public function wishlist(){
+        if(Auth::check()){
+            $UserEmail = Auth::user()->UserEmail;
+        $userwishlist = DB::table('wishlist')->where('UserEmail',$UserEmail)->get();
+        foreach($userwishlist as $key => $tourpackage){
+            $tourpackagesDetails = Tourpackages::where('id',$tourpackage->Package_id)->first();
+            $userwishlist[$key]->Imageaddress =$tourpackagesDetails->Imageaddress;
+            }
+        }else{
+            $userwishlist = array();
+
+        }
+        $meta_title = "Wishlist - GhanaTrek";
+        $meta_description = "View wishlist of GhanaTrek";
+        $meta_keywords = "Wishlist, GhanaTrek";
+        return view('tour.wishlist')->with(compact('userwishlist','meta_title','meta_description','meta_keywords'));
+    }
+
+    public function deletewishlistPackage($id = null){
+        DB::table('wishlist')->where('id', $id)->delete();
+        return redirect('wishlist')->with('flash_message_success', 'Tour Package has been deleted from wishlist!');
     }
 
     public function deleteCartPackage($id = null){
@@ -735,10 +848,10 @@ class TourpackagesController extends Controller
             //return to checkout page if any of the field is empty
             if(empty($data['billing_SurName']) || empty($data['billing_OtherNames']) ||
               empty($data['billing_Country']) || empty($data['billing_Mobile']) || empty($data['billing_OtherContact']) ||
-              empty($data['billing_Address']) || empty($data['billing_City']) || empty($data['billing_State']) ||
+              empty($data['billing_Address']) || empty($data['billing_City']) || empty($data['billing_State']) || empty($data['billing_ZipCode']) ||
               empty($data['travelling_SurName']) || empty($data['travelling_OtherNames']) ||
               empty($data['travelling_Country']) || empty($data['travelling_Mobile']) || empty($data['travelling_OtherContact']) ||
-              empty($data['travelling_Address']) || empty($data['travelling_City']) || empty($data['travelling_State'])){
+              empty($data['travelling_Address']) || empty($data['travelling_City']) || empty($data['travelling_State']) || empty($data['travelling_ZipCode'])){
 
 
                   return redirect()->back()->with('flash_message_error', 'Please fill all fields to Checkout!');
@@ -752,6 +865,7 @@ class TourpackagesController extends Controller
                   'Address'=>$data['billing_Address'],
                   'City'=>$data['billing_City'],
                   'State'=>$data['billing_State'],
+                  'ZipCode'=>$data['billing_ZipCode'],
                   'OtherContact'=>$data['billing_OtherContact'],
               ]);
 
@@ -765,6 +879,7 @@ class TourpackagesController extends Controller
                     'Address'=>$data['travelling_Address'],
                     'City'=>$data['travelling_City'],
                     'State'=>$data['travelling_State'],
+                    'ZipCode'=>$data['travelling_ZipCode'],
                     'OtherContact'=>$data['travelling_OtherContact']
                 ]);
               }else{
@@ -780,13 +895,14 @@ class TourpackagesController extends Controller
                   $travelling->Address=$data['travelling_Address'];
                   $travelling->City=$data['travelling_City'];
                   $travelling->State=$data['travelling_State'];
+                  $travelling->ZipCode=$data['travelling_ZipCode'];
                   $travelling->save();
               }
               return redirect('/tour-review');
 
         }
-
-        return view('tour.billing')->with(compact('userDetails','countries','travellingDetails'));
+        $meta_title = "Checkout - GhanaTrek";
+        return view('tour.billing')->with(compact('userDetails','countries','travellingDetails','meta_title'));
     }
 
 
@@ -803,7 +919,8 @@ class TourpackagesController extends Controller
             $userCart[$key]->Imageaddress = $tourpackagesDetails->Imageaddress;
         }
 
-        return view('tour.tour_review')->with(compact('userDetails','travellingDetails','userCart'));
+        $meta_title = "Booking review - GhanaTrek";
+        return view('tour.tour_review')->with(compact('userDetails','travellingDetails','userCart','meta_title'));
     }
 
 
@@ -813,6 +930,40 @@ class TourpackagesController extends Controller
             $data= $request->all();
             $user_id = Auth::user()->id;
             $UserEmail = Auth::user()->UserEmail;
+
+            //Prevent Sold out Packages from Booking
+            $userCart = DB::table('carts')->where('UserEmail', $UserEmail)->get();
+            foreach($userCart as $cart){
+
+                $getTourTypeCount =Tourpackages::getTourTypeCount($cart->Package_id,$cart->TourTypeName);
+                if($getTourTypeCount ==0){
+                    Tourpackages::deleteCartPackage($cart->Package_id,$UserEmail);
+                    return redirect('/cart')->with('flash_message_error', ' Tour Type is not available! Please check again another time');
+                }
+
+                $toursize = Tourpackages::getTourSize($cart->Package_id,$cart->TourTypeName);
+                if($toursize ==0){
+                    Tourpackages::deleteCartPackage($cart->Package_id,$UserEmail);
+                    return redirect('/cart')->with('flash_message_error', ' Tour package is sold out and removed from Cart! Please check again another time');
+                }
+                if($cart->Travellers>$toursize){
+                    return redirect('/cart')->with('flash_message_error', 'Required number of travellers is not availalable now! Please try again later');
+                }
+                $tourStatus = Tourpackages::getPackageStatus($cart->Package_id);
+                if($tourStatus==0){
+                    Tourpackages::deleteCartPackage($cart->Package_id,$UserEmail);
+                    return redirect('/cart')->with('flash_message_error', ' Disabled Tour package removed from Cart! Please check again another time');
+                }
+                $getCatgoryId = Tourpackages::select('Category_id')->where('id', $cart->Package_id)->first();
+                //echo $getCatgoryId->Category_id; die;
+                $categoryStatus = Tourpackages::getCategoryStatus($getCatgoryId->Category_id);
+                if($categoryStatus==0){
+                    Tourpackages::deleteCartPackage($cart->Package_id,$UserEmail);
+                    return redirect('/cart')->with('flash_message_error', ' One of the tour packages category is disabled! Please try again');
+                }
+
+            }
+
             //Get travelling Address of User
             $travellingDetails =TravelAddress::where(['UserEmail' => $UserEmail])->first();
 
@@ -828,6 +979,13 @@ class TourpackagesController extends Controller
                 $Amount = Session::get('CouponAmount');
             }
 
+
+            $Grand_total = Tourpackages::getGrandTotal();
+            // $Grand_total = 0;
+            // echo Tourpackages::getGrandTotal();
+            // echo $Grand_total; die;
+
+
             $booking = new Booking;
             $booking->user_id = $user_id;
             $booking->UserEmail = $UserEmail;
@@ -836,6 +994,7 @@ class TourpackagesController extends Controller
             $booking->Address = $travellingDetails->Address;
             $booking->City = $travellingDetails->City;
             $booking->State = $travellingDetails->State;
+            $booking->ZipCode = $travellingDetails->ZipCode;
             $booking->Country = $travellingDetails->Country;
             $booking->Mobile = $travellingDetails->Mobile;
             $booking->OtherContact = $travellingDetails->OtherContact;
@@ -857,11 +1016,25 @@ class TourpackagesController extends Controller
                 $cartPro->PackageCode = $pro->PackageCode;
                 $cartPro->TourTypeName = $pro->TourTypeName;
                 $cartPro->Travellers = $pro->Travellers;
-                $cartPro->PackagePrice = $pro->PackagePrice;
+                $PackagePrice = Tourpackages::getPackagePrice($pro->Package_id, $pro->TourTypeName);
+                $cartPro->PackagePrice = $PackagePrice;
                 $cartPro->TransportName = $pro->TransportName;
                 $cartPro->save();
+
+                //reduce TourSize
+                $getTourSize = TourType::where('SKU', $pro->PackageCode)->first();
+                //  echo "Original Size: " .$getTourSize->TourTypeSize;
+                //  echo "TourTypeSize to reduce: " .$pro->Travellers;
+                 $newSize = $getTourSize->TourTypeSize - $pro->Travellers;
+                 if($newSize<0){
+                     $newSize = 0;
+                 }
+                 TourType::where('SKU',$pro->PackageCode)->update(['TourTypeSize'=>$newSize]);
+
+
             }
             Session::put('Booking_id',$Booking_id);
+           // Session::put('Grand_total',$Grand_total);
             Session::put('Grand_total',$data['Grand_total']);
 
             $tourpackagesDetails = Booking::with('bookings')->where('id', $Booking_id)->first();
@@ -932,12 +1105,262 @@ class TourpackagesController extends Controller
         return view('admin.bookings.booking_invoice')->with(compact('bookingDetails','userDetails'));
     }
 
+    public function viewPDFInvoice($Booking_id){
+        $bookingDetails = Booking::with('bookings')->where('id', $Booking_id)->first();
+        $bookingDetails =json_decode(json_encode($bookingDetails));
+        $user_id = $bookingDetails->user_id;
+        $userDetails = User::where('id', $user_id)->first();
+
+        $output = '<!DOCTYPE html>
+        <html lang="en">
+          <head>
+            <meta charset="utf-8">
+            <title>Example 1</title>
+            <link rel="stylesheet" href="style.css" media="all" />
+            <style>
+            .clearfix:after {
+                content: "";
+                display: table;
+                clear: both;
+              }
+
+              a {
+                color: #5D6975;
+                text-decoration: underline;
+              }
+
+              body {
+                position: relative;
+                width: 21cm;
+                height: 29.7cm;
+                margin: 0 auto;
+                color: #001028;
+                background: #FFFFFF;
+                font-family: Arial, sans-serif;
+                font-size: 12px;
+                font-family: Arial;
+              }
+
+              header {
+                padding: 10px 0;
+                margin-bottom: 30px;
+              }
+
+              #logo {
+                text-align: center;
+                margin-bottom: 10px;
+              }
+
+              #logo img {
+                width: 90px;
+              }
+
+              h1 {
+                border-top: 1px solid  #5D6975;
+                border-bottom: 1px solid  #5D6975;
+                color: #5D6975;
+                font-size: 2.4em;
+                line-height: 1.4em;
+                font-weight: normal;
+                text-align: center;
+                margin: 0 0 20px 0;
+                background: url(dimension.png);
+              }
+
+              #project {
+                float: left;
+              }
+
+              #project span {
+                color: #5D6975;
+                text-align: right;
+                width: 52px;
+                margin-right: 10px;
+                display: inline-block;
+                font-size: 0.8em;
+              }
+
+              #company {
+                float: right;
+                text-align: right;
+              }
+
+              #project div,
+              #company div {
+                white-space: nowrap;
+              }
+
+              table {
+                width: 100%;
+                border-collapse: collapse;
+                border-spacing: 0;
+                margin-bottom: 20px;
+              }
+
+              table tr:nth-child(2n-1) td {
+                background: #F5F5F5;
+              }
+
+              table th,
+              table td {
+                text-align: center;
+              }
+
+              table th {
+                padding: 5px 20px;
+                color: #5D6975;
+                border-bottom: 1px solid #C1CED9;
+                white-space: nowrap;
+                font-weight: normal;
+              }
+
+              table .service,
+              table .desc {
+                text-align: left;
+              }
+
+              table td {
+                padding: 20px;
+                text-align: right;
+              }
+
+              table td.service,
+              table td.desc {
+                vertical-align: top;
+              }
+
+              table td.unit,
+              table td.qty,
+               {
+                font-size: 1.2em;
+              }
+
+              table td.grand {
+                border-top: 1px solid #5D6975;;
+              }
+
+              #notices .notice {
+                color: #5D6975;
+                font-size: 1.2em;
+              }
+
+              footer {
+                color: #5D6975;
+                width: 100%;
+                position: absolute;
+                bottom: 0;
+                border-top: 1px solid #C1CED9;
+                padding: 8px 0;
+                text-align: center;
+              }
+            </style>
+          </head>
+          <body>
+            <header class="clearfix">
+                <div id="logo">
+                    <h2>GHANA<span style="color: #fafd44;">TREK</span></h2>
+                </div>
+                <h1>Booking #'. $bookingDetails->id.'
+                <span style="float:right"><?php echo DNS1D::getBarcodeHTML($bookingDetails->id, "PHARMA2T"); ?></span></h1>
+                <div id="project" class="clearfix">
+                    <h2 class="to"><strong>Billing Address:</strong></h2>
+                    <div><span>Name</span>  '. $userDetails->SurName.' '. $userDetails->OtherNames.'</div>
+                    <div><span>Country</span>   '. $userDetails->Country.'</div>
+                    <div><span>Address</span>   '. $userDetails->Address.'</div>
+                    <div><span>City</span>  '. $userDetails->City.'</div>
+                    <div><span>State</span> '. $userDetails->State.'</div>
+                    <div><span>ZipCode</span> '. $userDetails->ZipCode.'</div>
+                    <div><span>Mobile</span>    '. $userDetails->Mobile.'</div>
+                    <div><span>OtherContact</span>  '. $userDetails->OtherContact .'</div>
+                    <h2>Info</h2>
+                    <div><span>Payment Method</span>   '. $bookingDetails->Payment_method.'</div>
+                    <div><span>Booking Status</span>   '. $bookingDetails->Status.'</div>
+                    <div><span>Booking Date</span>   '. $bookingDetails->created_at.'</div>
+                </div>
+                <div id="project" style="float:right">
+                    <h2 class="to"><strong>Travelling Address:</strong></h2>
+                    <div><span>Name</span>  '. $bookingDetails->SurName.' '. $bookingDetails->OtherNames.'</div>
+                    <div><span>Country</span>   '. $bookingDetails->Country.'</div>
+                    <div><span>Address</span>   '. $bookingDetails->Address.'</div>
+                    <div><span>City</span>  '. $bookingDetails->City.'</div>
+                    <div><span>State</span> '. $bookingDetails->State.'</div>
+                    <div><span>ZipCode</span> '. $bookingDetails->ZipCode.'</div>
+                    <div><span>Mobile</span>    '. $bookingDetails->Mobile.'</div>
+                    <div><span>OtherContact</span>  '. $bookingDetails->OtherContact .'</div>
+                </div>
+            </header>
+            <main>
+              <table>
+                <thead>
+                  <tr>
+                  <td><strong>PackageCode</strong></td>
+                  <td class="text-center"><strong>PackageName</strong></td>
+                  <td class="text-center"><strong>TourTypeName</strong></td>
+                  <td class="text-center"><strong>PackagePrice</strong></td>
+                  <td class="text-center"><strong>Travellers</strong></td>
+                  <td class="text-right"><strong>Total</strong></td>
+                  </tr>
+                </thead>
+                <tbody>';
+                    $Subtotal = 0;
+                    foreach ($bookingDetails->bookings as $pro) {
+                    $output .='<tr>
+                                <td style="text-align: center">'. $pro->PackageCode .'</td>
+                                <td style="text-align: center">'. $pro->PackageName .'</td>
+                                <td style="text-align: center">'. $pro->TourTypeName .'</td>
+                                <td style="text-align: center">GHS '. $pro->PackagePrice .'</td>
+                                <td style="text-align: center">'. $pro->Travellers .'</td>
+                                <td style="text-align: center">GHS '. $pro->PackagePrice * $pro->Travellers .'</td>
+                            </tr>';
+
+                    $Subtotal = $Subtotal + ($pro->PackagePrice * $pro->Travellers);
+                }
+
+            $output .='<tr>
+                    <td colspan="5">SUBTOTAL</td>
+                    <td class="total">GHS '. $Subtotal .'</td>
+                  </tr>
+                  <tr>
+                    <td colspan="5">Coupon Discount (-)</td>
+                    <td class="total">GHS '. $bookingDetails->Amount .'</td>
+                  </tr>
+                  <tr>
+                    <td colspan="5" class="grand total">GRAND TOTAL</td>
+                    <td class="grand total">GHS '. $bookingDetails->Grand_total .'</td>
+                  </tr>
+                </tbody>
+              </table>
+            </main>
+            <footer>
+              Invoice was created on a computer and is valid without the signature and seal.
+            </footer>
+          </body>
+        </html>';
+
+            // instantiate and use the dompdf class
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($output);
+
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'landscape');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+        $dompdf->stream();
+    }
+
     public  function updateBookingStatus(Request $request){
         if($request->isMethod('post')){
             $data = $request->all();
             Booking::where('id',$data['Booking_id'])->update(['Status'=>$data['Status']]);
             return redirect()->back()->with('flash_message_success', 'Booking Status has been updated successfully!');
         }
+    }
+
+    public function exportTourpackages(){
+        return Excel::download(new tourpackagesExport,'tourpackages.xlsx');
     }
 
 

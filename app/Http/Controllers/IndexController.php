@@ -10,10 +10,16 @@ class IndexController extends Controller
 {
     public function index()
     {
-
-        $tourpackagesAll = Tourpackages::InRandomOrder()->where('Status',1)->where('featured_tour',1)->get();
-        $tourpackagesAll = json_decode(json_encode($tourpackagesAll));
+        //Get all tour packages
+        $tourpackagesAll = Tourpackages::InRandomOrder()->where('Status',1)->where('featured_tour',1)->paginate(6);
+        // $tourpackagesAll = json_decode(json_encode($tourpackagesAll));
+        //get all categories
         $tourpackagecategory = Tourpackagecategory::with('tourcategories')->where($id=null)->get();
-        return view('index')->with(compact('tourpackagesAll','tourpackagecategory'));
+
+        //Meta tags
+        $meta_title = "GhanaTrek";
+        $meta_description = "Online Booking WebApp for tourism";
+        $meta_keywords = "GhanaTrek, Onilne Booking Site";
+        return view('index')->with(compact('tourpackagesAll','tourpackagecategory','meta_title','meta_description','meta_keywords'));
     }
 }

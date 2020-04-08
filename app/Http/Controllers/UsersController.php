@@ -10,6 +10,8 @@ use Auth;
 use Session;
 use Hash;
 use Illuminate\Support\Facades\Mail;
+use App\Exports\usersExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UsersController extends Controller
 {
@@ -33,7 +35,8 @@ class UsersController extends Controller
      * @return \Illuminate\Http\Response
      */
      public function showRegistrationForm(){
-        return view('user.register');
+        $meta_title ="User Register - GhanaTrek";
+        return view('user.register')->with(compact('meta_title'));
     }
 
      public function register(Request $request)
@@ -90,7 +93,8 @@ class UsersController extends Controller
 
 
      public function showLoginForm(Request $request){
-         return view('user.login');
+        $meta_title ="User Login - GhanaTrek";
+         return view('user.login')->with(compact('meta_title'));
      }
 
      public function login(Request $request) {
@@ -123,6 +127,44 @@ class UsersController extends Controller
      }
 
 
+     public function forgotPassword(Request $request){
+        $meta_title ="Forgot password - GhanaTrek";
+         if($request->isMethod('post')){
+             $data = $request->all();
+             $UserCount = User::where('UserEmail',$data['UserEmail'])->count();
+             if($UserCount == 0){
+                 return redirect()->back()->with('flash_message_error', 'Email does not exists!');
+             }
+             $userDetails = User::where('UserEmail', $data['UserEmail'])->first();
+
+             //Generate random password
+             $random_password = str_random(8);
+
+             //Encode/ Secure Password
+             $new_password = bcrypt($random_password);
+
+             //Update password
+             User::where('UserEmail', $data['UserEmail'])->update(['Password'=>$new_password]);
+
+             //Send forgot Password Email Code
+             $UserEmail = $data['UserEmail'];
+             $SurName =$userDetails->SurName;
+             $OtherNames =$userDetails->OtherNames;
+             $messageData=[
+                 'UserEmail'=>$UserEmail,
+                 'SurName'=>$SurName,
+                 'OtherNames'=>$OtherNames,
+                 'Password'=>$random_password
+             ];
+             Mail::send('emails.forgotpassword', $messageData, function($message)use($UserEmail){
+                 $message->to($UserEmail)->subject('New Password - GhanaTrek');
+             });
+             return redirect('/login')->with('flash_message_success','Please check your email for new password');
+         }
+         return view('user.forgot_password')->with(compact('meta_title'));
+     }
+
+
      public function confirmAccount($UserEmail){
          $UserEmail = base64_decode($UserEmail);
          $UserCount = User::where('UserEmail', $UserEmail)->count();
@@ -147,7 +189,7 @@ class UsersController extends Controller
 
      public function account(Request $request)
      {
-
+        $meta_title ="User Update Account - GhanaTrek";
             $user_id = Auth::user()->id;
             $userDetails = User::find($user_id);
             $countries = Country::get();
@@ -191,7 +233,7 @@ class UsersController extends Controller
         $user->save();
         return redirect()->back()->with('flash_message_success', 'Your account details has been successfully updated!');
         }
-         return view('user.account')->with(compact('countries','userDetails'));
+         return view('user.account')->with(compact('countries','userDetails','meta_title'));
 
      }
 
@@ -234,41 +276,8 @@ class UsersController extends Controller
         $users = User::get();
         return view('admin.users.view_users')->with(compact('users'));
     }
+
+    public function exportUsers(){
+        return Excel::download(new usersExport(), 'users.xlsx','Html');
+    }
 }
-
-
-// if($request->isMethod('post')){
-//     $data = $request->all();
-//     //echo"<pre>"; print_r($data);die;
-
-//     //check if user already exists
-//     $UserCount = User::where('UserEmail',$data['UserEmail'])->count();
-//     if($UserCount>0){
-//         return redirect()->back()->with('flash_message_error', 'Email already exists!');
-//     }else{
-//         $user = new User;
-//         $user->SurName = $data['SurName'];
-//         $user->OtherNames = $data['OtherNames'];
-//         $user->UserEmail = $data['UserEmail'];
-//         $user->CountryId = $data['CountryId'];
-//         $user->Address = $data['Address'];
-//         $user->City = $data['City'];
-//         $user->State = $data['State'];
-//         $user->Mobile = $data['Mobile'];
-//         $user->OtherPhoneContact = $data['OtherPhoneContact'];
-//         $user->UserRoleId = 2;
-//         $user->password = bcrypt($data['password']);
-//         $user->save();
-//         if(Auth::attempt(['UserEmail' =>$data['UserEmail'], 'password' => $data['password']])){
-//             return redirect('cart');
-//         }
-//     }
-// }
-// $countries = Country::get();
-// $countries_dropdown ="<option value='' selected disabled>Select</option>";
-// foreach ($countries as $country) {
-//     $countries_dropdown .= "<option value='".$country->CountryId."'>".$country->name."</option>";
-// }
-
-// return view('user.register')->with(compact('countries_dropdown'));
-// }

@@ -49516,7 +49516,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]);
+Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue"));
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -49524,7 +49524,52 @@ Vue.component('example-component', __webpack_require__(/*! ./components/ExampleC
  */
 
 var app = new Vue({
-  el: '#app'
+  el: '#app',
+  data: {
+    testmsg: 'CONTACT US',
+    responsemsg: '',
+    search: '',
+    enquiries: []
+  },
+  ready: function ready() {
+    this.created();
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.get('/admin/get-enquiries').then(function (response) {
+      _this.enquiries = response.data;
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  },
+  computed: {
+    filteredEnquiries: function filteredEnquiries() {
+      var _this2 = this;
+
+      return this.enquiries.filter(function (enquiry) {
+        return enquiry.SurName.toLowerCase().includes(_this2.search.toLowerCase());
+      });
+    }
+  },
+  methods: {
+    addPost: function addPost() {
+      axios.post('/page/post', {
+        SurName: this.SurName,
+        OtherNames: this.OtherNames,
+        UserEmail: this.UserEmail,
+        Subject: this.Subject,
+        message: this.message
+      }).then(function (response) {
+        app.responsemsg = response.data;
+      }); // addPost(){
+      //     axios.post('/page/post', {SurName: this.SurName, OtherNames: this.OtherNames, UserEmail: this.UserEmail, Subject: this.Subject, message: this.message})
+      //         .then(function (response){
+      //             app.responsemsg = response.data;
+      //         })
+      // }
+    }
+  }
 });
 
 /***/ }),
@@ -49661,8 +49706,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\GhanaTrek\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\GhanaTrek\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\GhanaTrek\GhanaTrek\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\GhanaTrek\GhanaTrek\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

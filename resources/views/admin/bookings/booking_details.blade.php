@@ -67,6 +67,7 @@
                                 {{ $userDetails->Address}}</br>
                                 {{ $userDetails->City}}</br>
                                 {{ $userDetails->State}}</br>
+                                {{ $userDetails->ZipCode}}</br>
                                 {{ $userDetails->Mobile}}</br>
                                 {{ $userDetails->OtherContact }}
                             </div>
@@ -148,6 +149,7 @@
                                 {{ $bookingDetails->Address}}</br>
                                 {{ $bookingDetails->City}}</br>
                                 {{ $bookingDetails->State}}</br>
+                                {{ $bookingDetails->ZipCode}}</br>
                                 {{ $bookingDetails->Mobile}}</br>
                                 {{ $bookingDetails->OtherContact }}
                             </div>

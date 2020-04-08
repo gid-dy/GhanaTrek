@@ -17,6 +17,9 @@
             </div>
         @endif
   </div>
+    <div style="margin-left:20px;">
+        <a href="{{ url('/admin/export-users') }}" class="btn btn-primary btn-mini">Export</a>
+    </div>
   <div class="container-fluid">
     <hr>
     <div class="row-fluid">
@@ -25,22 +28,23 @@
           <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
             <h5>users</h5>
           </div>
+
           <div class="widget-content nopadding">
             <table class="table table-bordered data-table">
                 <thead>
                     <tr>
-                    <th>User Id</th>
-                    <th>SurName</th>
-                    <th>OtherNames</th>
-                    <th>Email</th>
-                    <th>Country</th>
-                    <th>Address</th>
-                    <th>City</th>
-                    <th>State</th>
-                    <th>Status</th>
-                    <th>Mobile</th>
-                    <th>OtherContact</th>
-                    <th>Registered on</th>
+                        <th>User Id</th>
+                        <th>SurName</th>
+                        <th>OtherNames</th>
+                        <th>Email</th>
+                        <th>Country</th>
+                        <th>Address</th>
+                        <th>City</th>
+                        <th>State</th>
+                        <th>Status</th>
+                        <th>Mobile</th>
+                        <th>OtherContact</th>
+                        <th>Registered on</th>
                     </tr>
                 </thead>
                 <tbody>
