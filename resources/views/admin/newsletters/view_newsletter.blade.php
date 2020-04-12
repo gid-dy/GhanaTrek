@@ -46,9 +46,9 @@
                             <td class="center">{{ $newsletter->UserEmail }}</td>
                             <td class="center">
                                 @if($newsletter->Status==1)
-                                    <a href="{{ url('admin/update-newsletter-status/'.$newsletter->id.'/0') }}"><span style="color:green">Active</span>
+                                    <a href="{{ url('admin/update-newsletter-status/'.$newsletter->id.'/0') }}"><span class="btn btn-success btn-mini">Active</span>
                                 @else
-                                <a href="{{ url('admin/update-newsletter-status/'.$newsletter->id.'/1') }}"><span style="color:red">Inactive</span></a>
+                                <a href="{{ url('admin/update-newsletter-status/'.$newsletter->id.'/1') }}"><span class="btn btn-danger btn-mini">Inactive</span></a>
                                 @endif
                             </td>
                             <td class="center">{{ $newsletter->created_at }}</td>

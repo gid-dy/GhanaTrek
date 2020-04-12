@@ -549,6 +549,7 @@ class ComposerStaticInit4bf874800f164de7b67cf491dc938a4f
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Country' => __DIR__ . '/../..' . '/app/Country.php',
         'App\\Coupon' => __DIR__ . '/../..' . '/app/Coupon.php',
+        'App\\Csmpages' => __DIR__ . '/../..' . '/app/Csmpages.php',
         'App\\Currency' => __DIR__ . '/../..' . '/app/Currency.php',
         'App\\Enquiry' => __DIR__ . '/../..' . '/app/Enquiry.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',

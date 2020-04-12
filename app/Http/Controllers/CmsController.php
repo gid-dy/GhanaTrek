@@ -4,10 +4,89 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use App\Cmspages;
 use App\Enquiry;
 
 class CmsController extends Controller
 {
+    public function addCsmPage(Request $request){
+        if($request->isMethod('post')){
+            $data = $request->all();
+
+            $cmspage = new Cmspages;
+            $cmspage->Title = $data['Title'];
+            $cmspage->URL = $data['URL'];
+            $cmspage->Description = $data['Description'];
+            if(empty($data['Status'])){
+                $Status = 0;
+            }else{
+                $Status =1;
+            }
+            $cmspage->Status = $Status;
+            $cmspage->save();
+            return redirect()->back()->with('flash_message_success', 'CSM Page has been added successfully!');
+        }
+        return view('admin.pages.add_cms_page');
+    }
+
+    public function EditCsmPages(Request $request, $id){
+        $cmspageDetails = Cmspages::where(['id'=>$id])->first();
+        if($request->isMethod('post')){
+            $data = $request->all();
+
+            if(empty($data['Status'])){
+                $Status = 0;
+            }else{
+                $Status =1;
+            }
+            Cmspages::where('id',$id)->update([
+                'Title'=>$data['Title'],
+                'URL'=>$data['URL'],
+                'Description'=>$data['Description'],
+                'Status'=>$Status
+            ]);
+            return redirect()->back()->with('flash_message_success', 'Cms Page has been updated Successfully!');
+        }
+        return view('admin.pages.edit_cms_page')->with(compact('cmspageDetails'));
+    }
+
+
+
+    public function viewCsmPages(){
+        $cmspage = Cmspages::get();
+        $cmspage = json_decode(json_encode($cmspage));
+        return view('admin.pages.view_cms_pages')->with(compact('cmspage'));
+    }
+
+    public function detailsCsmPages(Request $request, $id = null){
+        $cmspageDetails = Cmspages::where(['id'=>$id])->first();
+        // $cmspage = Cmspages::get();
+        // $cmspage = json_decode(json_encode($cmspage));
+        return view('admin.pages.detail_cms_page')->with(compact('cmspageDetails'));
+    }
+
+
+
+    public function deleteCmsPage($id){
+        Cmspages::where('id',$id)->delete();
+        return redirect('/admin/view-cms-pages')->with('flash_message_success', 'Cms Page has been deleted successfully!');
+    }
+
+    public function cmsPage($URL){
+        //redirect to 404
+        $cmsPageCount = CmsPages::where(['URL'=>$URL, 'Status'=>1])->count();
+        if($cmsPageCount>0){
+
+            //Get cms Page Details
+            $cmsPagesDetails = Cmspages::where('URL',$URL)->first();
+        }else{
+            abort(404);
+        }
+
+        return view('pages.cms_page')->with(compact('cmsPagesDetails'));
+    }
+
+
     public function contact(Request $request){
         if($request->isMethod('post')){
             $data = $request->all();

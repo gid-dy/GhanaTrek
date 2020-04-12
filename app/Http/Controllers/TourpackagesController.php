@@ -1363,5 +1363,15 @@ class TourpackagesController extends Controller
         return Excel::download(new tourpackagesExport,'tourpackages.xlsx');
     }
 
+    public function viewBookingsChart(){
+        $current_month_booking =Booking::whereYear('created_at', Carbon::now()->year)
+                                ->whereMonth('created_at', Carbon::now()->month)->count();
+        $last_month_booking =Booking::whereYear('created_at', Carbon::now()->year)
+                                ->whereMonth('created_at', Carbon::now()->subMonth(1))->count();
+        $last_to_last_month_booking =Booking::whereYear('created_at', Carbon::now()->year)
+                                ->whereMonth('created_at', Carbon::now()->subMonth(2))->count();
+        return view('admin.tour.view_booking_chart')->with(compact('current_month_booking','last_month_booking','last_to_last_month_booking'));
+    }
+
 
 }

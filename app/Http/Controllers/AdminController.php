@@ -16,7 +16,7 @@ class AdminController extends Controller
         // if(!Auth::user())
         //     return redirect(url('admin/login'));
 
-        $this->middleware('auth');  
+        $this->middleware('auth');
 
         $user = Auth::user();
 
@@ -75,4 +75,5 @@ class AdminController extends Controller
         Session::flush();
         return redirect('/admin/login')->with('flash_message_success','logged out successfull');
     }
+
 }

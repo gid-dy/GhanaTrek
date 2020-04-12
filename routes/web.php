@@ -95,7 +95,7 @@ Route::post('admin/login', 'AdminLoginController@login');
 
 Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function() {
 
-    Route::get('/dashboard', 'AdminController@dashboard')->name('admin.dashboard');
+    Route::get('/dashboard', 'AdminController@dashboard');
     Route::get('/settings', 'AdminController@settings')->name('admin.settings');
     Route::get('/check-pwd', 'AdminController@chkPassword');
     Route::match(['get','post'],'/update-pwd', 'AdminController@updatePassword');
@@ -158,6 +158,22 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function() {
 
     //Admin Users Route
     Route::get('/view-users', 'UsersController@viewUsers');
+    //Users chart
+    Route::get('/view-users-chart', 'UsersController@viewUsersChart');
+    //Booking chart
+    Route::get('/view-bookings-chart', 'TourpackagesController@viewBookingsChart');
+    //Booking chart
+    Route::get('/view-users-countries-chart', 'UsersController@viewUsersCountriesChart');
+    //Add CMS Pages
+    Route::match(['get','post'], '/add-cms-page', 'CmsController@addCsmPage')->name('admin.add-cms-page');
+    //View CSM Pages
+    Route::get('/view-cms-pages','CmsController@viewCsmPages');
+    //Details
+    Route::match(['get','post'],'/detail-cms/{id}', 'CmsController@detailsCsmPages')->name('admin.detail-cmspage');
+    //Edit CMS Page
+    Route::match(['get','post'],'/edit-cms/{id}', 'CmsController@EditCsmPages')->name('admin.edit-cms');
+    //Delete Csm Pages
+    Route::get('/delete-cms-page/{id}', 'CmsController@deleteCmsPage');
     // Get Enquiries
     Route::get('/get-enquiries','CmsController@getEnquiries');
     // Get contact
@@ -226,6 +242,8 @@ Route::match(['get','post'],'/page/contact', 'CmsController@contact');
 // Display Post Page (for Vue.js)
 Route::match(['get','post'],'/page/post','CmsController@addPost');
 
+//Display Cms Pages
+Route::match(['get','post'],'/page/{URL}','CmsController@cmsPage');
 
 
 

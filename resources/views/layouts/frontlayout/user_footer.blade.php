@@ -11,9 +11,9 @@
         <h4 class="title">Support</h4>
         <ul class="recent_posts">
           <li><a href="{{ url('page/contact') }}"> {{ __('Contact Us') }}</a></li>
-          <li><a href="{{ url('privacy_policy') }}"> {{ __('Privacy Policy') }}</a></li>
-          <li><a href="{{ url('help') }}">{{ __('Help') }}</a></li>
-          <li><a href="{{ url('about_us') }}">{{ __('About Us') }}</a></li>
+          <li><a href="{{ url('page/privacy-policy') }}"> {{ __('Privacy Policy') }}</a></li>
+          <li><a href="{{ url('page/help') }}">{{ __('Help') }}</a></li>
+          <li><a href="{{ url('page/about-us') }}">{{ __('About Us') }}</a></li>
         </ul>
         <!-- recent posts -->
       </div>

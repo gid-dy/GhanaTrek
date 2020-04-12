@@ -12,6 +12,8 @@ use Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Exports\usersExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
+use DB;
 
 class UsersController extends Controller
 {
@@ -280,4 +282,23 @@ class UsersController extends Controller
     public function exportUsers(){
         return Excel::download(new usersExport(), 'users.xlsx','Html');
     }
+
+    public function viewUsersChart(){
+        $current_month_users =User::whereYear('created_at', Carbon::now()->year)
+                                ->whereMonth('created_at', Carbon::now()->month)->count();
+        $last_month_users =User::whereYear('created_at', Carbon::now()->year)
+                                ->whereMonth('created_at', Carbon::now()->subMonth(1))->count();
+        $last_to_last_month_users =User::whereYear('created_at', Carbon::now()->year)
+                                ->whereMonth('created_at', Carbon::now()->subMonth(2))->count();
+        return view('admin.users.view_users_chart')->with(compact('current_month_users','last_month_users','last_to_last_month_users'));
+    }
+
+    public function viewUsersCountriesChart(){
+        $getUserCountries = User::select('Country',DB::raw('count(Country) as count'))->groupBy('Country')->get();
+        $getUserCountries = json_decode(json_encode($getUserCountries),true);
+        // dd($getUserCountries[0]['Country']);
+        return view('admin.users.view_users_countries_chart')->with(compact('getUserCountries'));
+
+    }
+
 }

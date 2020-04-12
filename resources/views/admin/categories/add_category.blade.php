@@ -1,7 +1,7 @@
 @extends('layouts.adminLayout.admin_design')
 @section('content')
 
-<div id="content">
+<div id="content" class="col-md-12">
   <div id="content-header">
     <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#">Categories</a> <a href="#" class="current">Add Category</a> </div>
     <h1>Categories</h1>
@@ -37,7 +37,7 @@
                 <div class="control-group">
                     <label class="control-label">Description</label>
                     <div class="controls">
-                        <textarea name="CategoryDescription" class="textarea_editor span12"></textarea>
+                        <textarea name="CategoryDescription" id="editor"></textarea>
                     </div>
                 </div>
                 <div class="control-group">

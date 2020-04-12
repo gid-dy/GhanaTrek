@@ -46,7 +46,7 @@
                   <td>{{ $contact->Subject }}</td>
                   <td>{{ $contact->message }}</td>
 
-                    <td class="center"><a href="{{ url('admin/delete-contact/'.$contact->id.'') }}" >Delete</a></td>
+                    <td class="center"><a href="{{ url('admin/delete-contact/'.$contact->id.'') }}" class="btn btn-danger btn-mini" >Delete</a></td>
 
                 </tr>
                 @endforeach

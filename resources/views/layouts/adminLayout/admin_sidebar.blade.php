@@ -1,7 +1,7 @@
 {{-- sidebar-menu --}}
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> Dashboard</a>
   <ul>
-    <li class="active"><a href="{{ route('admin.dashboard') }}"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
+    <li class="active"><a href="{{ url('admin/dashboard') }}"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>Categories</span> <span class="label label-important">2</span></a>
       <ul>
         <li><a href="{{ url('/admin/add-category') }}">Add Category</a></li>
@@ -25,14 +25,22 @@
     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>Bookings</span> <span class="label label-important">1</span></a>
         <ul>
           <li><a href="{{ url('/admin/view-bookings') }}">View Bookings</a></li>
+          <li><a href="{{ url('/admin/view-bookings-chart') }}">View Booking Chart</a></li>
         </ul>
     </li>
 
     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>Users</span> <span class="label label-important">1</span></a>
         <ul>
             <li><a href="{{ url('/admin/view-users') }}">View Users</a></li>
+            <li><a href="{{ url('/admin/view-users-chart') }}">View Users Chart</a></li>
         </ul>
     </li>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>CMS Pages</span> <span class="label label-important">2</span></a>
+        <ul>
+          <li><a href="{{ url('/admin/add-cms-page') }}">Add CMS Page</a></li>
+          <li><a href="{{ url('/admin/view-cms-pages') }}">View CMS Pages</a></li>
+        </ul>
+      </li>
     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>Enquiries</span> <span class="label label-important">1</span></a>
         <ul>
             <li><a href="{{ url('/admin/get-contact') }}">View Enquiries</a></li>

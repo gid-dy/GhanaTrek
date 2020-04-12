@@ -1,6 +1,6 @@
 @extends('layouts.adminLayout.admin_design')
 @section('content')
-<div id="content">
+<div id="content" class="col-lg-12">
   <div id="content-header">
     <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#">Users</a> <a href="#" class="current">View Users</a> </div>
     <h1>Users</h1>
@@ -60,9 +60,9 @@
                             <td class="center">{{ $user->State }}</td>
                             <td class="center">
                                 @if($user->Status==1)
-                                    <span style="color:green">Active</span>
+                                    <span class="btn btn-success btn-mini">Active</span>
                                 @else
-                                    <span style="color:red">Inactive</span>
+                                    <span class="btn btn-danger btn-mini">Inactive</span>
                                 @endif
                             </td>
                             <td class="center">{{ $user->Mobile }}</td>

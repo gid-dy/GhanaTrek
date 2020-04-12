@@ -13,6 +13,7 @@ return array(
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Country' => $baseDir . '/app/Country.php',
     'App\\Coupon' => $baseDir . '/app/Coupon.php',
+    'App\\Csmpages' => $baseDir . '/app/Csmpages.php',
     'App\\Currency' => $baseDir . '/app/Currency.php',
     'App\\Enquiry' => $baseDir . '/app/Enquiry.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
