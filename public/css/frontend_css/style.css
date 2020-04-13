@@ -474,7 +474,8 @@ textarea {
 }
 
 .review-block-description {
-    font-size: 13px;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif ;
 }
 
 .modal-dialog {

@@ -35,6 +35,11 @@
             <li><a href="{{ url('/admin/view-users-chart') }}">View Users Chart</a></li>
         </ul>
     </li>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>Feedbacks</span> <span class="label label-important">1</span></a>
+        <ul>
+            <li><a href="{{ url('/admin/view-feedbacks') }}">View Feedbacks</a></li>
+        </ul>
+    </li>
     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>CMS Pages</span> <span class="label label-important">2</span></a>
         <ul>
           <li><a href="{{ url('/admin/add-cms-page') }}">Add CMS Page</a></li>

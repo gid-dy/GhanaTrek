@@ -40,6 +40,7 @@ Route::match(['get','post'],'/tour-filter','TourpackagesController@filter');
 
 //tour detail page
 Route::get('/tours/{id}','TourpackagesController@tours');
+Route::get('/feedback','TourpackagesController@getfeedback');
 
 
 //add to cart
@@ -91,6 +92,7 @@ Route::post('/add-subscriber-email','NewsletterController@addSubscriber');
 
 Route::get('admin/login', 'AdminLoginController@ShowLoginForm')->middleware('guest');
 Route::post('admin/login', 'AdminLoginController@login');
+Route::get('admin/logout', 'AdminLoginController@logout');
 
 
 Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function() {
@@ -99,7 +101,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function() {
     Route::get('/settings', 'AdminController@settings')->name('admin.settings');
     Route::get('/check-pwd', 'AdminController@chkPassword');
     Route::match(['get','post'],'/update-pwd', 'AdminController@updatePassword');
-    Route::get('logout', 'AdminLoginController@logout');
+
 
     //category route
     Route::match(['get','post'],'/add-category', 'TourpackagecategoryController@addCategory')->name('admin.add-category');
@@ -209,6 +211,13 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function() {
     Route::get('/export-users','UsersController@exportUsers');
     Route::get('/export-tourpackages','TourpackagesController@exportTourpackages');
 
+    //view feedbacks
+    Route::get('/view-feedbacks', 'FeedbackController@viewFeedback');
+    //Update Feedback Status
+    Route::get('/update-feedback/{id}/{Status}','FeedbackController@updateFeedbackStatus');
+    //Delete Feedback
+    Route::get('/delete-feedback/{id}', 'FeedbackController@deleteFeedback');
+
 });
 
 
@@ -232,6 +241,8 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::get('/Bookings', 'TourpackagesController@userBookings');
     //User Booked Package Page
     Route::get('/Bookings/{id}', 'TourpackagesController@userBookingDetails');
+    //Feedback Route
+    Route::match(['get','post'], '/feedback', 'FeedbackController@feedback');
 
 });
 //Auth::routes();

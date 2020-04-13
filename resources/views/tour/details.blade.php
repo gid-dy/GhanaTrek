@@ -1,6 +1,7 @@
 @extends('layouts.frontLayout.userdesign')
     @section('content')
 <?php use App\Tourpackages; ?>
+<?php use App\Feedback; ?>
     <section>
         <div class="container">
             <div class="card">
@@ -444,31 +445,7 @@
                     </div>
 
 
-                    {{-- <form>
-                        <fieldset class="row">
-                            <div class="col-sm-6 form-group">
-                                <label>Type</label>
-                                <input type="text" placeholder=" " class="form-control">
-                            </div>
-                            <div class="col-sm-6 form-group">
-                                <label>Date</label>
-                                <div class="input-group input-append date" id="datePicker">
-                                    <input type="text" class="form-control" name="date" />
-                                    <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
-                                </div>
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label for="years">Language*</label>
-                                <select class="form-control input-sm" id="language">
-                                                  <option>-- English</option>
-                                                  <option>French</option>
-                                          </select>
-                            </div>
-                            <div class="col-md-6">
-                                <button type="button" class="button  btn-lg" style="margin-left: 15px;">Book Now</button>
-                            </div>
-                        </fieldset>
-                    </form> --}}
+
                 </div>
             </div>
         </div>
@@ -476,11 +453,12 @@
 
 
     <section>
+
         <div class="container" style="margin-top: 40px;">
             <div class="row">
                 <!-- Nav tabs -->
                 <div class="col-xs-12">
-                    <ul class="pro-info-tab-list section">
+                    <ul class="pro-info-tab-list longbar section">
                         <li class="active"><a href="#more-info" data-toggle="tab">Description</a></li>
                         <li><a href="#data-sheet" data-toggle="tab">All You need to know</a></li>
                         <li><a href="#reviews" data-toggle="tab">Reviews</a></li>
@@ -534,65 +512,59 @@
                             <h3 class="reviews">Leave your comment</h3>
                         </div>
                         <div class=" col-md-12">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <hr/>
-                                    <div class="review-block">
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <img src="http://dummyimage.com/60x60/666/ffffff&text=No+Image" class="img-rounded">
-                                            </div>
-                                            <div class="col-sm-9">
-                                                <h2>nktailor</h2>
-                                                <div class="review-block-title">this was nice in buy</div>
-                                                <div class="review-block-description">this was nice in buy. this was nice in buy. this was nice in buy. this was nice in buy this was nice in buy this was nice in buy this was nice in buy this was nice in buy this was nice in buy. this was nice
-                                                    in buy.</div>
+                            <div class="review-block">
 
+                                <?php $feedbacks =DB::table('feedback')->get(); ?>
 
-                                                <div class="review-block-date pull-right">January 29, 2016<br/>1 day ago</div>
-                                            </div>
+                                @foreach ($feedbacks as $feedback)
+                                @if($feedback->Status=="1")
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <h2 class="circle-name">{{ $feedback->SurName }} {{ $feedback->OtherNames }}</h2><br>
+                                            <div class="review-block-date">{{date('H:i', strtotime($feedback->created_at)) }} <span style="margin:10px; color:orange">{{date('F j, Y', strtotime($feedback->created_at)) }}</span></div>
                                         </div>
-                                        <hr/>
+                                        <div class="col-sm-9">
+                                            <div class="review-block-description">{{ $feedback->Message }}</div>
+                                        </div>
                                     </div>
-                                </div>
+                                    <hr/><br>
+                                @endif
+                                @endforeach
+
                             </div>
                         </div>
                         <div class="col-md-12 col-xl-12 mb-4">
                             <div class="card">
                                 <div class="card-body">
-                                    <form class="form-horizontal" method="post" action="#">
+                                    <form class="form-horizontal" method="post" action="{{ url('/feedback') }}">
+                                        @csrf
+                                        <input type="hidden" name="Package_id" value="{{ $tourpackagesDetails->id }}" />
                                         <div class="col-md-6">
-                                            <label for="name" class="cols-sm-2 control-label">First Name</label>
+                                            <label for="name" class="cols-sm-2 control-label">SurName</label>
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-                                                <input type="text" class="form-control" name="fname" id="fname" placeholder="Enter your First Name" />
+                                                <input type="text" class="form-control" name="SurName" id="SurName" placeholder="Enter your SurName" />
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <label for="name" class="cols-sm-2 control-label">Last Name</label>
+                                            <label for="name" class="cols-sm-2 control-label">Other Names</label>
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-                                                <input type="text" class="form-control" name="name" id="name" placeholder="Enter your Last Name" />
+                                                <input type="text" class="form-control" name="OtherNames" id="v" placeholder="Enter your Other names" />
                                             </div>
                                         </div>
 
-                                        <div class="col-md-6">
+                                        <div class="col-md-12">
                                             <label for="name" class="cols-sm-2 control-label">Email</label>
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-                                                <input type="text" class="form-control" name="email" id="email" placeholder="Enter your Email" />
+                                                <input type="text" class="form-control" name="UserEmail" id="UserEmail" placeholder="Enter your Email" />
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <label for="name" class="cols-sm-2 control-label">Subject</label>
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><i class="fa fa-commenting-o fa" aria-hidden="true"></i></span>
-                                                <input type="text" class="form-control" name="subject" id="subject" placeholder="Enter your Subject" />
-                                            </div>
-                                        </div>
+
                                         <div class="col-md-12">
                                             <label for="name" class="cols-sm-2 control-label">Message</label>
-                                            <textarea placeholder="message" cols="30" rows="10"></textarea>
+                                            <textarea placeholder="message" name="Message" cols="30" rows="10"></textarea>
 
                                         </div>
                                         <div class="col-md-12">
