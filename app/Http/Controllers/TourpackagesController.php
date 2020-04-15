@@ -1260,8 +1260,7 @@ class TourpackagesController extends Controller
                 <div id="logo">
                     <h2>GHANA<span style="color: #fafd44;">TREK</span></h2>
                 </div>
-                <h1>Booking #'. $bookingDetails->id.'
-                <span style="float:right"><?php echo DNS1D::getBarcodeHTML($bookingDetails->id, "PHARMA2T"); ?></span></h1>
+                <h1>Booking #'. $bookingDetails->id.'</h1>
                 <div id="project" class="clearfix">
                     <h2 class="to"><strong>Billing Address:</strong></h2>
                     <div><span>Name</span>  '. $userDetails->SurName.' '. $userDetails->OtherNames.'</div>

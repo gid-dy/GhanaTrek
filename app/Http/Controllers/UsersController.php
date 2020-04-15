@@ -41,57 +41,61 @@ class UsersController extends Controller
         return view('user.register')->with(compact('meta_title'));
     }
 
-     public function register(Request $request)
-     {
-            $request->validate([
-                'SurName' => 'required',
-                'OtherNames' => 'required',
-                'UserEmail' => 'required',
-                'Mobile' => 'required',
-                'Password' => 'required|confirmed'
-            ]);
+    public function register(Request $request){
+        $request->validate([
+            'SurName' => 'required',
+            'OtherNames' => 'required',
+            'UserEmail' => 'required',
+            'Mobile' => 'required',
+            'Password' => 'required|confirmed'
+        ]);
 
-          //if($request->isMethod('post')){
-             $data = $request->all();
+      //if($request->isMethod('post')){
+         $data = $request->all();
 
-             //check if user already exists
-             $UserCount = User::where('UserEmail',$data['UserEmail'])->count();
-             if($UserCount>0){
-                 return redirect()->back()->with('flash_message_error', 'Email already exists!');
-             }else{
-                $user = new User;
-                $user->SurName = $data['SurName'];
-                $user->OtherNames = $data['OtherNames'];
-                $user->UserEmail = $data['UserEmail'];
-                $user->Mobile = $data['Mobile'];
-                $user->UserRole_id = 2;
-                $user->Password = bcrypt($data['Password']);
-                $user->save();
+         //check if user already exists
+         $UserCount = User::where('UserEmail',$data['UserEmail'])->count();
+         if($UserCount>0){
+             return redirect()->back()->with('flash_message_error', 'Email already exists!');
+         }else{
+            $user = new User;
+            $user->SurName = $data['SurName'];
+            $user->OtherNames = $data['OtherNames'];
+            $user->UserEmail = $data['UserEmail'];
+            $user->Mobile = $data['Mobile'];
+            $user->Password = bcrypt($data['Password']);
+            $user->save();
 
-                //Send Register Email
-                // $UserEmail = $data['UserEmail'];
-                // $messageData = ['UserEmail'=>$data['UserEmail'],'SurName'=>$data['SurName']];
-                // Mail::send('emails.register', $messageData,function($message) use($UserEmail){
-                //     $message->to($UserEmail)->subject('Registration with Ghanatrek');
-                // });
+            //Send Register Email
+            // $UserEmail = $data['UserEmail'];
+            // $messageData = ['UserEmail'=>$data['UserEmail'],'SurName'=>$data['SurName']];
+            // Mail::send('emails.register', $messageData,function($message) use($UserEmail){
+            //     $message->to($UserEmail)->subject('Registration with Ghanatrek');
+            // });
 
-                //Send Confirmation Email
-                $UserEmail = $data['UserEmail'];
-                $messageData = ['UserEmail'=>$data['UserEmail'], 'SurName'=>$data['SurName'], 'code'=>base64_encode($data['UserEmail'])];
-                Mail::send('emails.confirmation', $messageData,function($message) use($UserEmail){
-                    $message->to($UserEmail)->subject('E-mail confirmation');
-                });
-                return redirect()->back()->with('flash_message_success', 'Confirm your email to activate your account');
+            //Send Confirmation Email
+            $UserEmail = $data['UserEmail'];
+            $messageData = ['UserEmail'=>$data['UserEmail'], 'SurName'=>$data['SurName'], 'code'=>base64_encode($data['UserEmail'])];
+            Mail::send('emails.confirmation', $messageData,function($message) use($UserEmail){
+                $message->to($UserEmail)->subject('E-mail confirmation');
+            });
+            return redirect()->back()->with('flash_message_success', 'Confirm your email to activate your account');
 
-                Auth::login($user->fresh());
+            if(Auth::attempt(['UserEmail' => $data['UserEmail'], 'Password' => $data['Password']])){
+                Session::put('frontSession', $data['UserEmail']);
 
+                if(!empty(Session::get('Session_id'))){
+                    $Session_id = Session::get('Session_id');
+                    DB::table('carts')->where('Session_id', $Session_id)->update(['UserEmail', $data['UserEmail']]);
+                }
                 return redirect('/cart');
-
-
             }
-             //}
+
 
         }
+         //}
+
+    }
 
 
      public function showLoginForm(Request $request){
@@ -112,10 +116,11 @@ class UsersController extends Controller
             if($user->Status == 0){
                 return redirect()->back()->with('flash_message_error','Your account is not activated!');
             }
+            Session::put('frontSession', $data['UserEmail']);
             Auth::login($user);
             //if($user->Status == 1)
 
-            if(!empty(Session::get('Sessionid'))){
+            if(!empty(Session::get('Session_id'))){
                 $Session_id = Session::get('Session_id');
                 DB::table('carts')->where('Session_id', $Session_id)->update(['UserEmail', $data['UserEmail']]);
             }

@@ -82,7 +82,7 @@
                             <td width="50%">
                                 <table>
                                     <tr>
-                                        <td><strong>Billing Address:-</strong></td>
+                                        <td><strong>Travelling Address:-</strong></td>
                                     </tr>
                                     <tr>
                                         <td>{{ $tourpackagesDetails['SurName'] }} {{ $tourpackagesDetails['OtherNames'] }}</td>

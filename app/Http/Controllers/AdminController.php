@@ -6,26 +6,13 @@ use Illuminate\Http\Request;
 use Session;
 use Hash;
 use App\User;
+use App\Admin;
 use Auth;
 
 class AdminController extends Controller
 {
 
-    public function __construct()
-    {
-        // if(!Auth::user())
-        //     return redirect(url('admin/login'));
 
-        $this->middleware('auth');
-
-        $user = Auth::user();
-
-        // if($user->UserRole_id != 1) {
-        //     Auth::logout();
-
-        //     return redirect('admin/login');
-        // }
-    }
 
     public function dashboard()
     {

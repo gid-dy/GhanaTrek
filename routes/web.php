@@ -15,9 +15,9 @@
 //     return view('welcome');
 // });
 
-//   Auth::routes();
+    Auth::routes();
 
- Route::get('/home', 'HomeController@index')->name('home');
+  Route::get('/home', 'HomeController@index')->name('home');
 
 // Auth::routes();
 
@@ -68,7 +68,7 @@ Route::post('/cart/apply-coupon', 'TourpackagesController@applyCoupon');
 
 
 
-Route::get('/login', 'UsersController@ShowLoginForm')->middleware('guest');
+Route::get('/login', 'UsersController@ShowLoginForm');
 Route::post('/login', 'UsersController@login')->name('login');
 Route::get('/logout', 'UsersController@logout');
 Route::match(['get','post'],'forgot-password','UsersController@forgotPassword');
@@ -90,12 +90,12 @@ Route::post('/add-subscriber-email','NewsletterController@addSubscriber');
 
 
 
-Route::get('admin/login', 'AdminLoginController@ShowLoginForm')->middleware('guest');
+Route::get('admin/login', 'AdminLoginController@ShowLoginForm');
 Route::post('admin/login', 'AdminLoginController@login');
 Route::get('admin/logout', 'AdminLoginController@logout');
 
 
-Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function() {
+Route::group(['prefix' => 'admin', 'middleware' => ['adminlogin']], function() {
 
     Route::get('/dashboard', 'AdminController@dashboard');
     Route::get('/settings', 'AdminController@settings')->name('admin.settings');
@@ -225,7 +225,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function() {
 
 //Route::get('/register', 'UserController@createrUser');
 
-Route::middleware(['auth', 'user'])->group(function () {
+Route::group(['middleware' => ['frontlogin']], function() {
     Route::match(['get','post'],'/account', 'UsersController@account');
     Route::post('/check-user-pwd', 'UsersController@chkUserPassword');
     Route::post('/update-user-pwd', 'UsersController@updatePassword');

@@ -17,7 +17,7 @@ class Adminlogin
     public function handle($request, Closure $next)
     {
         if(empty(Session::has('adminSession'))){
-            return redirect('/admin/login');
+            return redirect('admin/login');
         }
         return $next($request);
     }

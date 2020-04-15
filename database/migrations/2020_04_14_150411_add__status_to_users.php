@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserrolesTable extends Migration
+class AddStatusToUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateUserrolesTable extends Migration
      */
     public function up()
     {
-        Schema::create('userroles', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('UserRoleName', 30)->unique('UserRoleName');
-            $table->string('UserRoleLevel', 30);
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->tinyInteger('Status')->after('Password');
         });
     }
 
@@ -28,6 +25,8 @@ class CreateUserrolesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('userroles');
+        Schema::table('users', function (Blueprint $table) {
+            //
+        });
     }
 }
