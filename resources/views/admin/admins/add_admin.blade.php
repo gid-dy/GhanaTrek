@@ -3,8 +3,8 @@
 
 <div id="content" class="col-md-12">
     <div id="content-header">
-        <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#">Categories</a> <a href="#" class="current">Add Category</a> </div>
-        <h1>Categories</h1>
+        <div id="breadcrumb"> <a href="{{ url('admin/dashboard') }}" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#">Admin/Sub-Admin</a> <a href="#" class="current">Add Admin/Sub-Admin</a> </div>
+        <h1>Admin/Sub-Admin</h1>
         @if (Session::has('flash_message_error'))
             <div class="alert alert-error alert-block">
                 <button type="button" class="close" data-dismiss='alert'></button>
@@ -32,57 +32,50 @@
             <div class="span12">
                 <div class="widget-box">
                     <div class="widget-title"> <span class="icon"> <i class="icon-info-sign"></i> </span>
-                        <h5>Add Category</h5>
+                        <h5>Admin/Sub-Admin</h5>
                     </div>
                     <div class="widget-content nopadding">
-                        <form class="form-horizontal" enctype="multipart/form-data" method="post" action="{{ route('admin.add-category') }}" name="add_category" id="add_category" novalidate="novalidate">
+                        <form class="form-horizontal" method="post" action="{{ route('admin.add-admin') }}" name="add_Admin/Sub-Admin" id="add_Admin/Sub-Admin" novalidate="novalidate">
                             @csrf
                             <div class="control-group">
-                                <label class="control-label">Category Name</label>
+                                <label class="control-label">Type</label>
                                 <div class="controls">
-                                    <input type="text" name="CategoryName" id="CategoryName">
+                                    <select name="Type" id="Type" style="width:220px">
+                                        <option value="Admin">Admin</option>
+                                        <option value="Sub-Admin">Sub-Admin</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label class="control-label">Description</label>
+                                <label class="control-label">Email</label>
                                 <div class="controls">
-                                    <textarea name="CategoryDescription" id="editor"></textarea>
+                                    <input type="email" name="UserEmail" id="UserEmail">
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label class="control-label">Meta Title</label>
+                                <label class="control-label">Password</label>
                                 <div class="controls">
-                                    <input type="text" name="meta_title" id="meta_title">
+                                    <input type="password" name="Password" id="Password">
+                                </div>
+                            </div>
+                            <div class="control-group" id="access">
+                                <label class="control-label">Access</label>
+                                <div class="controls">
+                                    <input type="checkbox" name="Categories_access" id="Categories_access" value="1" style="margin-top:-3px">&nbsp;Categories &nbsp;&nbsp;&nbsp;
+                                    <input type="checkbox" name="Tourpackages_access" id="Tourpackages_access" value="1" style="margin-top:-3px">&nbsp;Tourpackages &nbsp;&nbsp;&nbsp;
+                                    <input type="checkbox" name="Bookings_access" id="Bookings_access" value="1" style="margin-top:-3px">&nbsp;Bookings &nbsp;&nbsp;&nbsp;
+                                    <input type="checkbox" name="Users_access" id="Users_access" value="1" style="margin-top:-3px">&nbsp;Users
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label class="control-label">Meta Description</label>
+                                <label class="control-label">Enable</label>
                                 <div class="controls">
-                                    <input type="text" name="meta_description" id="meta_description">
+                                    <input type="checkbox" name="Status" id="Status" value="1">
                                 </div>
                             </div>
-                            <div class="control-group">
-                                <label class="control-label">Meta Keywords</label>
-                                <div class="controls">
-                                    <input type="text" name="meta_keywords" id="meta_keywords">
-                                </div>
+                            <div class="form-actions">
+                                <input type="submit" value="Add Admin" class="btn btn-success">
                             </div>
-
-                        <div class="control-group">
-                            <label class="control-label">Image</label>
-                            <div class="controls">
-                                <input type="file" name="Imageaddress" id="Imageaddress">
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label">Enable</label>
-                            <div class="controls">
-                                <input type="checkbox" name="CategoryStatus" id="CategoryStatus" value="1">
-                            </div>
-                        </div>
-                        <div class="form-actions">
-                            <input type="submit" value="Add Category" class="btn btn-success">
-                        </div>
                         </form>
                     </div>
                 </div>

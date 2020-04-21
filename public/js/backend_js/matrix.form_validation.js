@@ -1,5 +1,14 @@
 
 $(document).ready(function(){
+    $("#access").hide();
+    $("#Type").change(function(){
+        var Type = $("#Type").val();
+        if(Type == "Admin"){
+            $("#access").hide();
+        }else{
+            $("#access").show();
+        }
+    })
 	$("#new_pwd").click(function(){
 		var current_pwd = $("#current_pwd").val();
 		$.ajax({
@@ -18,9 +27,9 @@ $(document).ready(function(){
 			}
 		});
 	});
-	
+
 	$('input[type=checkbox],input[type=radio],input[type=file]').uniform();
-	
+
 	$('select').select2();
 
 	$("#basic_validate").validate({
@@ -51,7 +60,7 @@ $(document).ready(function(){
 			$(element).parents('.control-group').addClass('success');
 		}
 	});
-	
+
 	// Add Category validation
     $("#add_category").validate({
 		rules:{
@@ -100,7 +109,7 @@ $(document).ready(function(){
 	// 	}
 	// });
 
-	
+
 
 	//Add tourPackage
 	$("#add_tour").validate({
@@ -179,7 +188,7 @@ $(document).ready(function(){
 			$(element).parents('.control-group').addClass('success');
 		}
 	});
-	
+
 	$("#number_validate").validate({
 		rules:{
 			min:{
@@ -205,7 +214,7 @@ $(document).ready(function(){
 			$(element).parents('.control-group').addClass('success');
 		}
 	});
-	
+
 	$("#password_validate").validate({
 		rules:{
 			current_pwd:{
@@ -239,17 +248,17 @@ $(document).ready(function(){
 	$("#delCat").click(function(){
 		if(confirm('Are you sure you want to delete this category?')){
 			return true;
-		} 
+		}
         return false;
- 
+
 	});
 
 	// $("#delTour").click(function(){
 	// 	if(confirm('Are you sure you want to delete this tourPackage?')){
 	// 		return true;
-	// 	} 
+	// 	}
     //     return false;
-    
+
 	// });
 
 	$(".deleteRecord").click(function(){
@@ -272,25 +281,25 @@ $(document).ready(function(){
 		function(){
 			window.location.href="/admin/"+deleteFunction+"/"+id;
 		});
-		
+
 	});
 
 		$(document).ready(function(){
 		var maxField = 10; //Input fields increment limitation
 		var addButton = $('.add_button'); //Add button selector
 		var wrapper = $('.field_wrapper'); //Input field wrapper
-		var fieldHTML = '<div class="field_wrapper" style="margin-top:5px;" ><input type="text" name="SKU[]" id="SKU" placeholder="SKU" style="width:120px; margin-left:100px;" /><input type="text" name="TourTypeSize[]" id="TourTypeSize" placeholder="TourTypeSize" style="width:120px; margin-left:3px;" /><input type="text" name="TourTypeName[]" id="TourTypeName" placeholder="TourTypeName" style="width:120px; margin-left:3px;" /><input type="text" name="PackagePrice[]" id="PackagePrice" placeholder="PackagePrice" style="width:120px; margin-left:3px;" /><a href="javascript:void(0);" class="remove_button">Remove</a></div>'; //New input field html 
+		var fieldHTML = '<div class="field_wrapper" style="margin-top:5px;" ><input type="text" name="SKU[]" id="SKU" placeholder="SKU" style="width:120px; margin-left:100px;" /><input type="text" name="TourTypeSize[]" id="TourTypeSize" placeholder="TourTypeSize" style="width:120px; margin-left:3px;" /><input type="text" name="TourTypeName[]" id="TourTypeName" placeholder="TourTypeName" style="width:120px; margin-left:3px;" /><input type="text" name="PackagePrice[]" id="PackagePrice" placeholder="PackagePrice" style="width:120px; margin-left:3px;" /><a href="javascript:void(0);" class="remove_button">Remove</a></div>'; //New input field html
 		var x = 1; //Initial field counter is 1
-		
+
 		//Once add button is clicked
 		$(addButton).click(function(){
 			//Check maximum number of input fields
-			if(x < maxField){ 
+			if(x < maxField){
 				x++; //Increment field counter
 				$(wrapper).append(fieldHTML); //Add field html
 			}
 		});
-		
+
 		//Once remove button is clicked
 		$(wrapper).on('click', '.remove_button', function(e){
 			e.preventDefault();
@@ -304,18 +313,18 @@ $(document).ready(function(){
 		var maxField = 10; //Input fields increment limitation
 		var addButton = $('.add_button_trans'); //Add button selector
 		var wrapper = $('.field_wrapper_transport'); //Input field wrapper
-		var fieldHTML = '<div class="field_wrapper" style="margin-top:5px;" ><input type="text" name="TransportName[]" id="TransportName" placeholder="TransportName" style="width:120px; margin-left:100px;" /><input type="text" name="TransportCost[]" id="TransportCost" placeholder="TransportCost" style="width:120px; margin-left:3px;" /><a href="javascript:void(0);" class="remove_button">Remove</a></div>'; //New input field html 
+		var fieldHTML = '<div class="field_wrapper" style="margin-top:5px;" ><input type="text" name="TransportName[]" id="TransportName" placeholder="TransportName" style="width:120px; margin-left:100px;" /><input type="text" name="TransportCost[]" id="TransportCost" placeholder="TransportCost" style="width:120px; margin-left:3px;" /><a href="javascript:void(0);" class="remove_button">Remove</a></div>'; //New input field html
 		var x = 1; //Initial field counter is 1
-		
+
 		//Once add button is clicked
 		$(addButton).click(function(){
 			//Check maximum number of input fields
-			if(x < maxField){ 
+			if(x < maxField){
 				x++; //Increment field counter
 				$(wrapper).append(fieldHTML); //Add field html
 			}
 		});
-		
+
 		//Once remove button is clicked
 		$(wrapper).on('click', '.remove_button', function(e){
 			e.preventDefault();
@@ -329,18 +338,18 @@ $(document).ready(function(){
 		var maxField = 10; //Input fields increment limitation
 		var addButton = $('.add_button_include'); //Add button selector
 		var wrapper = $('.field_wrapper_include'); //Input field wrapper
-		var fieldHTML = '<div class="field_wrapper" style="margin-top:5px;" ><input type="text" name="IncludeName[]" id="IncludeName" placeholder="IncludeName" style="width:120px; margin-left:100px;" /><input type="text" name="TourIncludeInfo[]" id="TourIncludeInfo" placeholder="TourIncludeInfo" style="width:120px; margin-left:3px;" /><input type="text" name="TourExcludeName[]" id="TourExcludeName" placeholder="TourExcludeName" style="width:120px; margin-left:3px;" /><a href="javascript:void(0);" class="remove_button">Remove</a></div>'; //New input field html 
+		var fieldHTML = '<div class="field_wrapper" style="margin-top:5px;" ><input type="text" name="IncludeName[]" id="IncludeName" placeholder="IncludeName" style="width:120px; margin-left:100px;" /><input type="text" name="TourIncludeInfo[]" id="TourIncludeInfo" placeholder="TourIncludeInfo" style="width:120px; margin-left:3px;" /><input type="text" name="TourExcludeName[]" id="TourExcludeName" placeholder="TourExcludeName" style="width:120px; margin-left:3px;" /><a href="javascript:void(0);" class="remove_button">Remove</a></div>'; //New input field html
 		var x = 1; //Initial field counter is 1
-		
+
 		//Once add button is clicked
 		$(addButton).click(function(){
 			//Check maximum number of input fields
-			if(x < maxField){ 
+			if(x < maxField){
 				x++; //Increment field counter
 				$(wrapper).append(fieldHTML); //Add field html
 			}
 		});
-		
+
 		//Once remove button is clicked
 		$(wrapper).on('click', '.remove_button', function(e){
 			e.preventDefault();

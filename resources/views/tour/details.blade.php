@@ -513,7 +513,15 @@
                         </div>
                         <div class=" col-md-12">
                             <div class="review-block">
-
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li style="list-style-type:none;">{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
                                 <?php $feedbacks =DB::table('feedback')->get(); ?>
 
                                 @foreach ($feedbacks as $feedback)
@@ -538,7 +546,7 @@
                                 <div class="card-body">
                                     <form class="form-horizontal" method="post" action="{{ url('/feedback') }}">
                                         @csrf
-                                        <input type="hidden" name="Package_id" value="{{ $tourpackagesDetails->id }}" />
+                                        <input type="text" name="Package_id" <?php $Package_id =DB::table('feedback')->get(); ?> value="{{ $tourpackagesDetails->id }}" />
                                         <div class="col-md-6">
                                             <label for="name" class="cols-sm-2 control-label">SurName</label>
                                             <div class="input-group">

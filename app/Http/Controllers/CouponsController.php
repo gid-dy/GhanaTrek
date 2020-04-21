@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Coupon;
+use Validator;
 
 class CouponsController extends Controller
 {
@@ -22,7 +23,7 @@ class CouponsController extends Controller
             }else{
                 $Status = 1;
             }
-            
+
             $coupon = new Coupon;
             $coupon->CouponCode = $data['CouponCode'];
             $coupon->Amount = $data['Amount'];
@@ -57,11 +58,11 @@ class CouponsController extends Controller
         }
         $couponDetails = Coupon::where(['id'=>$id])->first();
         return view('admin.coupons.edit_coupon')->with(compact('couponDetails'));
-    
+
         }
 
-    
-    
+
+
         public function viewCoupons()
     {
         $coupons = Coupon::get();

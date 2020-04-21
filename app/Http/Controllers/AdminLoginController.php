@@ -8,6 +8,7 @@ use Session;
 use App\User;
 use App\Admin;
 use Illuminate\Support\Facades\Hash;
+use Validator;
 
 
 class AdminLoginController extends Controller
@@ -25,20 +26,17 @@ class AdminLoginController extends Controller
     {
 
         $data = $request->input();
+        $validator = Validator::make($request->all(), [
+            'UserEmail' => 'required|email',
+            'Password' => 'required',
+        ]);
+        if($validator->fails()){
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
         //echo $adminCount = Admin::where(['UserEmail'=> $data['UserEmail'], 'Password' =>$data['Password'], 'Status'=>1])->count();die;
          $adminCount = Admin::where(['UserEmail'=> $data['UserEmail'],'Password'=>md5($data['Password']),'Status' => 1])->count();
 
-
-        // if ($admin && Hash::check(md5($data['Password']), $admin->Password)){
-
-
-        //     //admin
-        //     if($admin->Status == 1)
-        //         return redirect(url('/admin/dashboard'));
-
-            //user
-            // return redirect(url('cart'));
             if($adminCount>0){
                 Session::put('adminSession', $data['UserEmail']);
                 return redirect(url('/admin/dashboard'));

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\NewsletterSubscriber;
 use App\Exports\subscribersExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Validator;
 
 class NewsletterController extends Controller
 {
@@ -23,6 +24,12 @@ class NewsletterController extends Controller
     public function addSubscriber(Request $request){
         if($request->ajax()){
             $data = $request->all();
+            $validator = Validator::make($request->all(), [
+                'UserEmail' => 'required|email',
+            ]);
+            if($validator->fails()){
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
             // echo "<pre>"; print_r($data); die;
             $subcriberCount = NewsletterSubscriber::where('UserEmail',$data['newsletter_email'])->count();
             if($subcriberCount>0){

@@ -32,7 +32,7 @@
 
 <section class="accordion-section clearfix mt-3" aria-label="Question Accordions">
   <div class="contact-container container-fixed">
-  
+
     <h2><i class="fa fa-question-circle">How can we help?</i> </h2>
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
         <div class="panel panel-default">
@@ -54,7 +54,7 @@
           </div>
           </div>
         </div>
-        
+
         <div class="panel panel-default">
           <div class="panel-heading p-3 mb-3" role="tab" id="heading1">
           <h3 class="panel-title">
@@ -74,7 +74,7 @@
           </div>
           </div>
         </div>
-        
+
         <div class="panel panel-default">
           <div class="panel-heading p-3 mb-3" role="tab" id="heading2">
           <h3 class="panel-title">
@@ -156,18 +156,18 @@
                                   </div>
                                 </div>
                                 <div class="col-xl-12">
-                                    <textarea placeholder="message" cols="30" rows="10"></textarea> 
+                                    <textarea placeholder="message" cols="30" rows="10"></textarea>
                                  </div>
                                 <div class="form-group ">
                                       <button type="button" class="btn btn-primary btn-lg btn-block login-button">Send</button>
                                 </div>
-                          </form> 
+                          </form>
                         </div>
                       </div>
                 </div>
                 </div>
               </div>
-              
+
               <div class="panel panel-default">
                 <div class="panel-heading p-3 mb-3" role="tab" id="heading1">
                 <h3 class="panel-title">
@@ -183,10 +183,10 @@
                 </div>
                 </div>
               </div>
-              
+
           </div>
       </div>
-  
+
   </div>
 </section>
 

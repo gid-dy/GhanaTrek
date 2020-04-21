@@ -14,6 +14,7 @@ use App\Exports\usersExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
 use DB;
+use Validator;
 
 class UsersController extends Controller
 {
@@ -42,16 +43,19 @@ class UsersController extends Controller
     }
 
     public function register(Request $request){
-        $request->validate([
-            'SurName' => 'required',
-            'OtherNames' => 'required',
-            'UserEmail' => 'required',
-            'Mobile' => 'required',
-            'Password' => 'required|confirmed'
-        ]);
-
       //if($request->isMethod('post')){
          $data = $request->all();
+         $validator = Validator::make($request->all(), [
+            'SurName' => 'required|regex:/^[\pL\s\-]+$/u|max:255',
+            'OtherNames' => 'required|regex:/^[\pL\s\-]+$/u|max:255',
+            'UserEmail' => 'required|email',
+            'Mobile' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+            'Password' => 'min:8|required_with:Password_confirmation|same:Password_confirmation',
+            'Password_confirmation' =>'min:8',
+        ]);
+        if($validator->fails()){
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
          //check if user already exists
          $UserCount = User::where('UserEmail',$data['UserEmail'])->count();
@@ -104,10 +108,13 @@ class UsersController extends Controller
      }
 
      public function login(Request $request) {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'UserEmail' => 'required|email',
-            'Password' => 'required'
+            'Password' => 'required',
         ]);
+        if($validator->fails()){
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
         $data = $request->input();
         $user = User::where('UserEmail', $data['UserEmail'])->first();
 
@@ -202,47 +209,66 @@ class UsersController extends Controller
             $countries = Country::get();
 
             if($request->isMethod('post')){
-            $data = $request->all();
-            if(empty($data['SurName'])){
-                return redirect()->back()->with('flash_message_error', 'Please enter your name');
+                $data = $request->all();
+                $validator = Validator::make($request->all(), [
+                    'SurName' => 'required|regex:/^[\pL\s\-]+$/u|max:255',
+                    'OtherNames' => 'required|regex:/^[\pL\s\-]+$/u|max:255',
+                    'UserEmail' => 'required|email',
+                    'Mobile' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+                    'OtherContact' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+                    'Address'=>'',
+                    'City' => 'regex:/^[\pL\s\-]+$/u|max:255',
+                    'State' => 'regex:/^[\pL\s\-]+$/u|max:255',
+                    'ZipCode' =>'regex:/^([0-9\s\-\+\(\)]*)$/|max:3'
+
+                ]);
+                if($validator->fails()){
+                    return redirect()->back()->withErrors($validator)->withInput();
+                }
+                if(empty($data['SurName'])){
+                    return redirect()->back()->with('flash_message_error', 'Please enter your name');
+                }
+
+                if(empty($data['Address'])){
+                    $data['Address']='';
+                }
+
+                if(empty($data['State'])){
+                    $data['State']='';
+                }
+
+                if(empty($data['City'])){
+                    $data['City']='';
+                }
+                if(empty($data['ZipCode'])){
+                    $data['ZipCode']='';
+                }
+
+                if(empty($data['OtherContact'])){
+                    $data['OtherContact']='';
+                }
+
+
+                if(empty($data['Country'])){
+                    $data['Country']='';
+                    }
+                $user = User::find($user_id);
+                $user->SurName = $data['SurName'];
+                $user->OtherNames = $data['OtherNames'];
+                $user->UserEmail = $data['UserEmail'];
+                $user->Address = $data['Address'];
+                $user->Country = $data['Country'];
+                $user->City = $data['City'];
+                $user->ZipCode = $data['ZipCode'];
+                $user->State = $data['State'];
+                $user->Mobile = $data['Mobile'];
+                $user->OtherContact = $data['OtherContact'];
+                $user->save();
+                return redirect()->back()->with('flash_message_success', 'Your account details has been successfully updated!');
             }
+            return view('user.account')->with(compact('countries','userDetails','meta_title'));
 
-        if(empty($data['Address'])){
-            $data['Address']='';
         }
-
-        if(empty($data['State'])){
-            $data['State']='';
-        }
-
-        if(empty($data['City'])){
-            $data['City']='';
-        }
-
-        if(empty($data['OtherContact'])){
-            $data['OtherContact']='';
-        }
-
-
-        if(empty($data['Country'])){
-            $data['Country']='';
-        }
-        $user = User::find($user_id);
-        $user->SurName = $data['SurName'];
-        $user->OtherNames = $data['OtherNames'];
-        $user->UserEmail = $data['UserEmail'];
-        $user->Address = $data['Address'];
-        $user->Country = $data['Country'];
-        $user->City = $data['City'];
-        $user->State = $data['State'];
-        $user->Mobile = $data['Mobile'];
-        $user->OtherContact = $data['OtherContact'];
-        $user->save();
-        return redirect()->back()->with('flash_message_success', 'Your account details has been successfully updated!');
-        }
-         return view('user.account')->with(compact('countries','userDetails','meta_title'));
-
-     }
 
 
      public function chkUserPassword(Request $request) {
@@ -280,15 +306,24 @@ class UsersController extends Controller
     }
 
     public function viewUsers(){
+        if(Session::get('adminDetails')['Users_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         $users = User::get();
         return view('admin.users.view_users')->with(compact('users'));
     }
 
     public function exportUsers(){
+        if(Session::get('adminDetails')['Users_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         return Excel::download(new usersExport(), 'users.xlsx','Html');
     }
 
     public function viewUsersChart(){
+        if(Session::get('adminDetails')['Users_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         $current_month_users =User::whereYear('created_at', Carbon::now()->year)
                                 ->whereMonth('created_at', Carbon::now()->month)->count();
         $last_month_users =User::whereYear('created_at', Carbon::now()->year)
@@ -299,6 +334,9 @@ class UsersController extends Controller
     }
 
     public function viewUsersCountriesChart(){
+        if(Session::get('adminDetails')['Users_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         $getUserCountries = User::select('Country',DB::raw('count(Country) as count'))->groupBy('Country')->get();
         $getUserCountries = json_decode(json_encode($getUserCountries),true);
         // dd($getUserCountries[0]['Country']);

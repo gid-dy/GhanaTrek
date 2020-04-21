@@ -5,7 +5,7 @@ use App\Tourpackages;
     @section('content')
     <section>
         <div class="container">
-            <div class="col-xs-12">
+            <div class="col-md-12">
                 <p><?php echo nl2br($cmsPagesDetails->Description); ?></p>
             </div>
         </div>

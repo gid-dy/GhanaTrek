@@ -7,6 +7,7 @@ use App\Tourpackagecategory;
 use Illuminate\Support\Facades\Input;
 use Image;
 use Session;
+use Validator;
 
 class TourpackagecategoryController extends Controller
 {
@@ -28,8 +29,18 @@ class TourpackagecategoryController extends Controller
      */
     public function addCategory(Request $request)
     {
+        if(Session::get('adminDetails')['Categories_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         if($request->isMethod('post')){
             $data = $request->all();
+            $validator = Validator::make($request->all(), [
+                'CategoryName' => 'required|regex:/^[\pL\s\-]+$/u|max:255',
+                'CategoryDescription' => 'nullable',
+            ]);
+            if($validator->fails()){
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
             //echo "<pre>"; print_r($data);die;
             if(empty($data['CategoryStatus'])){
                 $CategoryStatus = 0;
@@ -82,13 +93,12 @@ class TourpackagecategoryController extends Controller
 
     public function viewCategories()
     {
+        if(Session::get('adminDetails')['Categories_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         $tourpackagecategory = Tourpackagecategory::get();
-        $tourpackagecategory = json_decode(json_encode($tourpackagecategory));
-        // if(Session::has('adminSession')){
+        // $tourpackagecategory = json_decode(json_encode($tourpackagecategory));
 
-        // }else{
-        //     return redirect('/admin/login')->with('flash_message_error','Please login to access');
-        // }
         return view('admin.categories.view_categories')->with(compact('tourpackagecategory'));
     }
 
@@ -100,9 +110,19 @@ class TourpackagecategoryController extends Controller
      */
     public function editCategory(Request $request, $id=null)
     {
-        //echo "test";die;
+        if(Session::get('adminDetails')['Categories_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
+
         if($request->isMethod('post')){
             $data = $request->all();
+            $validator = Validator::make($request->all(), [
+                'CategoryName' => 'required|regex:/^[\pL\s\-]+$/u|max:255',
+                'CategoryDescription' => 'nullable',
+            ]);
+            if($validator->fails()){
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
 
             if(empty($data['CategoryStatus'])){
                 $CategoryStatus = 0;
@@ -157,10 +177,13 @@ class TourpackagecategoryController extends Controller
      */
     public function deleteCategory($id = null)
     {
-        if(!empty($id)){
+        if(Session::get('adminDetails')['Categories_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
+        // if(!empty($id)){
             Tourpackagecategory::where(['id'=>$id])->delete();
             return redirect()->back()->with('flash_message_success', 'Category deleted Successfully!');
-        }
+        //}
     }
 
     public function deleteCategoryImage($id = null)

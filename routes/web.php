@@ -93,6 +93,7 @@ Route::post('/add-subscriber-email','NewsletterController@addSubscriber');
 Route::get('admin/login', 'AdminLoginController@ShowLoginForm');
 Route::post('admin/login', 'AdminLoginController@login');
 Route::get('admin/logout', 'AdminLoginController@logout');
+Route::match(['get','post'],'admin-forgot-password','AdminController@forgotPassword');
 
 
 Route::group(['prefix' => 'admin', 'middleware' => ['adminlogin']], function() {
@@ -166,10 +167,17 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminlogin']], function() {
     Route::get('/view-bookings-chart', 'TourpackagesController@viewBookingsChart');
     //Booking chart
     Route::get('/view-users-countries-chart', 'UsersController@viewUsersCountriesChart');
+    //Admin/Sub-Admins Route
+    Route::get('/view-admins', 'AdminController@viewAdmins');
+    //add Admin/Sub-Admins Route
+    Route::match(['get','post'], '/add-admin', 'AdminController@addAdmin')->name('admin.add-admin');
+    //edit Admin/Sub-Admins Route
+    Route::match(['get','post'], '/edit-admin/{id}', 'AdminController@editAdmin');
     //Add CMS Pages
     Route::match(['get','post'], '/add-cms-page', 'CmsController@addCsmPage')->name('admin.add-cms-page');
     //View CSM Pages
     Route::get('/view-cms-pages','CmsController@viewCsmPages');
+
     //Details
     Route::match(['get','post'],'/detail-cms/{id}', 'CmsController@detailsCsmPages')->name('admin.detail-cmspage');
     //Edit CMS Page

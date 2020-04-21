@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use App\Feedback;
 use App\Tourpackages;
+use Validator;
 
 class FeedbackController extends Controller
 {
@@ -13,6 +15,15 @@ class FeedbackController extends Controller
 
         if ($request->isMethod('post')) {
             $data = $request->all();
+            $validator = Validator::make($request->all(), [
+                'SurName' => 'required|regex:/^[\pL\s\-]+$/u|max:255',
+                'OtherNames' => 'required|regex:/^[\pL\s\-]+$/u|max:255',
+                'UserEmail' => 'required|email',
+                'Package_id' => 'required',
+            ]);
+            if($validator->fails()){
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
 
             $feedback = new Feedback;
             $feedback->Package_id =$data['Package_id'];
@@ -22,10 +33,24 @@ class FeedbackController extends Controller
             $feedback->Message =$data['Message'];
             $feedback->Status = 1;
             $feedback->save();
-            return redirect()->back()->with(compact('tourpackagesDetails'));
+
+            //send Contact Email
+            $UserEmail ="ghanatrek.toursite@gmail.com";
+            $messageData = [
+                'Package_id'=>$data['Package_id'],
+                'SurName'=>$data['SurName'],
+                'OtherNames'=>$data['OtherNames'],
+                'UserEmail'=>$data['UserEmail'],
+                'comment'=>$data['Message']
+            ];
+            Mail::send('emails.feedback', $messageData, function($message)use($UserEmail){
+                $message->to($UserEmail)->subject('feedback from Ghanatrek');
+            });
+            return redirect()->back()->with('flash_message_success', 'Thanks for your feedback. We will get back to you soon.');
+
 
         }
-        //return view('tour.details');
+        // return view('tours')->with(compact('tourpackagesDetails'));
     }
 
     public function viewFeedback(){

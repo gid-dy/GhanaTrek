@@ -19,6 +19,7 @@ use App\Tourtransportation;
 use App\Tourinclude;
 use App\Coupon;
 use App\User;
+use App\Feedback;
 use App\Booking;
 use App\BookingsPackage;
 use App\TravelAddress;
@@ -39,6 +40,9 @@ class TourpackagesController extends Controller
      */
     public function addtour(Request $request)
     {
+        if(Session::get('adminDetails')['Tourpackages_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         if($request->isMethod('post')){
             $data = $request->all();
              //echo "<pre>"; print_r($data); die;
@@ -105,6 +109,9 @@ class TourpackagesController extends Controller
 
     public function viewTour()
     {
+        if(Session::get('adminDetails')['Tourpackages_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         $tourpackages = Tourpackages::get();
         $tourpackages = json_decode(json_encode($tourpackages));
             foreach($tourpackages as $key => $val){
@@ -117,6 +124,9 @@ class TourpackagesController extends Controller
 
     public function editTour(Request $request, $id=null)
     {
+        if(Session::get('adminDetails')['Tourpackages_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         if($request->isMethod('post')){
             $data = $request->all();
 
@@ -189,6 +199,9 @@ class TourpackagesController extends Controller
 
     public function deleteTourImage($id = null)
     {
+        if(Session::get('adminDetails')['Tourpackages_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         $tourpackageimage = Tourpackages::where(['id'=>$id])->first();
         //echo $tourpackageimage->Imageaddress; die;
         $large_image_path = 'images/backend_images/tours/large/';
@@ -216,12 +229,18 @@ class TourpackagesController extends Controller
 
     public function deleteTourpackage($id=null)
     {
+        if(Session::get('adminDetails')['Tourpackages_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         Tourpackages::where(['id'=>$id])->delete();
         return redirect()->back()->with('flash_message_success', 'Tour has been deleted successfully!');
     }
 
     public function deleteTourtype($id = null)
     {
+        if(Session::get('adminDetails')['Tourpackages_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         Tourtype::where(['id'=>$id])->delete();
         return redirect()->back()->with('flash_message_success', 'Tour type has been deleted successfully!');
     }
@@ -229,6 +248,9 @@ class TourpackagesController extends Controller
 
     public function tourtype(Request $request, $id = null)
     {
+        if(Session::get('adminDetails')['Tourpackages_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         $tourpackagesDetails = Tourpackages::with('tourtypes')->where(['id'=>$id])->first();
         // $tourpackagesDetails = json_decode(json_encode($tourpackagesDetails ));
         // echo "<pre>"; print_r($tourpackagesDetails); die;
@@ -268,6 +290,9 @@ class TourpackagesController extends Controller
 
     public function edittourtype(Request $request, $id = null)
     {
+        if(Session::get('adminDetails')['Tourpackages_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         if($request->isMethod('post')){
             $data = $request->all();
             //echo "<pre>"; print_r($data); die;
@@ -285,6 +310,9 @@ class TourpackagesController extends Controller
 
     public function image(Request $request, $id = null)
     {
+        if(Session::get('adminDetails')['Tourpackages_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         $tourpackagesDetails = Tourpackages::with('packageimages')->where(['id'=>$id])->first();
 
         if($request->isMethod('post')){
@@ -321,6 +349,9 @@ class TourpackagesController extends Controller
 
     public function deleteAltimage($id = null)
     {
+        if(Session::get('adminDetails')['Tourpackages_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         $tourpackageimage = Packageimages::where(['id'=>$id])->first();
         //echo $tourpackageimage->Imageaddress; die;
         $large_image_path = 'images/backend_images/tours/large/';
@@ -349,6 +380,9 @@ class TourpackagesController extends Controller
 
     public function transport(Request $request, $id = null)
     {
+        if(Session::get('adminDetails')['Tourpackages_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         $tourpackagesDetails = Tourpackages::with('tourtransports')->where(['id'=>$id])->first();
         if($request->isMethod('post')){
             $data = $request->all();
@@ -376,6 +410,9 @@ class TourpackagesController extends Controller
 
     public function edittransport(Request $request, $id = null)
     {
+        if(Session::get('adminDetails')['Tourpackages_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         if($request->isMethod('post')){
             $data = $request->all();
             //echo "<pre>"; print_r($data); die;
@@ -392,12 +429,18 @@ class TourpackagesController extends Controller
 
     public function deleteTransport($id = null)
     {
+        if(Session::get('adminDetails')['Tourpackages_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         Tourtransportation::where(['id'=>$id])->delete();
         return redirect()->back()->with('flash_message_success', 'Tour Transportation has been deleted successfully!');
     }
 
     public function tourinclude(Request $request, $id = null)
     {
+        if(Session::get('adminDetails')['Tourpackages_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         $tourpackagesDetails = Tourpackages::with('tourincludes')->where(['id'=>$id])->first();
         if($request->isMethod('post')){
             $data = $request->all();
@@ -419,6 +462,9 @@ class TourpackagesController extends Controller
 
     public function deleteTourinclude($id = null)
     {
+        if(Session::get('adminDetails')['Tourpackages_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         Tourinclude::where(['id'=>$id])->delete();
         return redirect()->back()->with('flash_message_success', 'Tour Include has been deleted successfully!');
     }
@@ -426,6 +472,9 @@ class TourpackagesController extends Controller
 
     public function accommodation(Request $request, $id = null)
     {
+        if(Session::get('adminDetails')['Tourpackages_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         $tourpackagesDetails = Tourpackages::with('accommodations')->where(['id'=>$id])->first();
         if($request->isMethod('post')){
             $data = $request->all();
@@ -443,44 +492,51 @@ class TourpackagesController extends Controller
 
             return redirect('admin/add-tourtype/'.$id)->with('flash_message_success', 'Accomodation has been added successfully');
         }
-        return view('admin.tour.add_tourtype')->with(compact('tourpackagesDetails','tourlocations_dropdown'));
+        return view('admin.tour.add_tourtype')->with(compact('tourpackagesDetails'));
     }
 
     public function deleteAccommodation($id = null)
     {
+        if(Session::get('adminDetails')['Tourpackages_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         Accommodation::where(['id'=>$id])->delete();
         return redirect()->back()->with('flash_message_success', 'Accommodation has been deleted successfully!');
     }
 
     public function location(Request $request, $id = null)
     {
-        $tourpackagesDetails = Tourpackages::where(['id'=>$id])->first();
-        if($request->isMethod('post')){
-            $data = $request->all();
-            //echo "<pre>"; print_r($data);die;
-
-            $tourlocations = new Tourlocations;
-            $tourlocations->Package_id =$id;
-            $tourlocations->LocationName = $data['LocationName'];
-            $tourlocations->Longitude = $data['Longitude'];
-            $tourlocations->Latitude = $data['Latitude'];
-            $tourlocations->Weather = $data['Weather'];
-            $tourlocations->GhanaPostAddress = $data['GhanaPostAddress'];
-            $tourlocations->OtherAddress = $data['OtherAddress'];
-            $tourlocations->save();
-
-            return redirect('/admin/add-location/'.$id)->with('flash_message_success', 'tour location added Successfully!');
+        if(Session::get('adminDetails')['Tourpackages_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
         }
+            $tourpackagesDetails = Tourpackages::where(['id'=>$id])->first();
+            if($request->isMethod('post')){
+                $data = $request->all();
+                //echo "<pre>"; print_r($data);die;
+
+                $tourlocations = new Tourlocations;
+                $tourlocations->Package_id =$id;
+                $tourlocations->LocationName = $data['LocationName'];
+                $tourlocations->Longitude = $data['Longitude'];
+                $tourlocations->Latitude = $data['Latitude'];
+                $tourlocations->Weather = $data['Weather'];
+                $tourlocations->GhanaPostAddress = $data['GhanaPostAddress'];
+                $tourlocations->OtherAddress = $data['OtherAddress'];
+                $tourlocations->save();
+
+                return redirect('/admin/add-location/'.$id)->with('flash_message_success', 'tour location added Successfully!');
+            }
 
             return view('admin.tour.location')->with(compact('tourpackagesDetails'));
 
-        }
+    }
 
 
 
 
     public function tour($CategoryName = null)
     {
+
         $countCategory = Tourpackagecategory::where(['CategoryName'=>$CategoryName, 'CategoryStatus'=>1])->count();
         if ($countCategory==0){
             abort(404);
@@ -1083,6 +1139,9 @@ class TourpackagesController extends Controller
     }
 
     public function viewBookings(){
+        if(Session::get('adminDetails')['Bookings_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         $bookings = Booking::with('bookings')->orderBy('id', 'DESC')->get();
         $bookings = json_decode(json_encode($bookings));
 
@@ -1090,6 +1149,9 @@ class TourpackagesController extends Controller
     }
 
     public function viewBookingDetails($Booking_id){
+        if(Session::get('adminDetails')['Bookings_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         $bookingDetails = Booking::with('bookings')->where('id',$Booking_id)->first();
         $bookingDetails =json_decode(json_encode($bookingDetails));
         $user_id = $bookingDetails->user_id;
@@ -1098,6 +1160,9 @@ class TourpackagesController extends Controller
     }
 
     public function viewBookingInvoice($Booking_id){
+        if(Session::get('adminDetails')['Bookings_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         $bookingDetails = Booking::with('bookings')->where('id',$Booking_id)->first();
         $bookingDetails =json_decode(json_encode($bookingDetails));
         $user_id = $bookingDetails->user_id;
@@ -1106,6 +1171,9 @@ class TourpackagesController extends Controller
     }
 
     public function viewPDFInvoice($Booking_id){
+        if(Session::get('adminDetails')['Bookings_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         $bookingDetails = Booking::with('bookings')->where('id', $Booking_id)->first();
         $bookingDetails =json_decode(json_encode($bookingDetails));
         $user_id = $bookingDetails->user_id;
@@ -1351,6 +1419,9 @@ class TourpackagesController extends Controller
     }
 
     public  function updateBookingStatus(Request $request){
+        if(Session::get('adminDetails')['Bookings_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         if($request->isMethod('post')){
             $data = $request->all();
             Booking::where('id',$data['Booking_id'])->update(['Status'=>$data['Status']]);
@@ -1363,6 +1434,9 @@ class TourpackagesController extends Controller
     }
 
     public function viewBookingsChart(){
+        if(Session::get('adminDetails')['Bookings_access']==0){
+            return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
+        }
         $current_month_booking =Booking::whereYear('created_at', Carbon::now()->year)
                                 ->whereMonth('created_at', Carbon::now()->month)->count();
         $last_month_booking =Booking::whereYear('created_at', Carbon::now()->year)

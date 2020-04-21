@@ -3,7 +3,7 @@
     
 <div id="content">
   <div id="content-header">
-    <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#">Form elements</a> <a href="#" class="current">Settings</a> </div>
+    <div id="breadcrumb"> <a href="{{ url('admin/dashboard') }}" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#">Password</a> <a href="#" class="current">Settings</a> </div>
         <h1>Admin Settings</h1>
         @if (Session::has('flash_message_error'))    
             <div class="alert alert-error alert-block">
@@ -30,13 +30,19 @@
               <div class="widget-content nopadding">
                 <form class="form-horizontal" method="post" action="{{ url('/admin/update-pwd') }}" name="password_validate" id="password_validate" novalidate="novalidate">
                     @csrf
-                  <div class="control-group">
-                    <label class="control-label">Current Password</label>
-                    <div class="controls">
-                      <input type="password" name="current_pwd" id="current_pwd" />
-                      <span id="chkPwd"></span>
+                    <div class="control-group">
+                        <label class="control-label">Admin Email</label>
+                        <div class="controls">
+                            <input type="text" value="{{ $adminDetails->UserEmail }}" readonly="" />
+                        </div>
                     </div>
-                  </div>
+                    <div class="control-group">
+                        <label class="control-label">Current Password</label>
+                        <div class="controls">
+                            <input type="password" name="current_pwd" id="current_pwd" />
+                            <span id="chkPwd"></span>
+                        </div>
+                    </div>
                   <div class="control-group">
                     <label class="control-label">New Password</label>
                     <div class="controls">

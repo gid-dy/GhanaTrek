@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Cmspages;
 use App\Enquiry;
+use Validator;
 
 class CmsController extends Controller
 {
@@ -45,7 +46,7 @@ class CmsController extends Controller
                 'Description'=>$data['Description'],
                 'Status'=>$Status
             ]);
-            return redirect()->back()->with('flash_message_success', 'Cms Page has been updated Successfully!');
+            return redirect('/admin/detail-cms/'.$id)->with('flash_message_success', 'Cms Page has been updated Successfully!');
         }
         return view('admin.pages.edit_cms_page')->with(compact('cmspageDetails'));
     }
@@ -57,6 +58,7 @@ class CmsController extends Controller
         $cmspage = json_decode(json_encode($cmspage));
         return view('admin.pages.view_cms_pages')->with(compact('cmspage'));
     }
+
 
     public function detailsCsmPages(Request $request, $id = null){
         $cmspageDetails = Cmspages::where(['id'=>$id])->first();
@@ -91,6 +93,17 @@ class CmsController extends Controller
         if($request->isMethod('post')){
             $data = $request->all();
 
+            $validator = Validator::make($request->all(), [
+                'SurName' => 'required|regex:/^[\pL\s\-]+$/u|max:255',
+                'OtherNames' => 'required|regex:/^[\pL\s\-]+$/u|max:255',
+                'UserEmail' => 'required|email',
+                'Subject' => 'required',
+            ]);
+            if($validator->fails()){
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+
             $enquiry = new Enquiry;
             $enquiry->SurName = $data['SurName'];
             $enquiry->OtherNames =$data['OtherNames'];
@@ -122,6 +135,15 @@ class CmsController extends Controller
     public function addPost(Request $request){
         if($request->isMethod('post')){
             $data = $request->all();
+            $validator = Validator::make($request->all(), [
+                'SurName' => 'required|regex:/^[\pL\s\-]+$/u|max:255',
+                'OtherNames' => 'required|regex:/^[\pL\s\-]+$/u|max:255',
+                'UserEmail' => 'required|email',
+                'Subject' => 'required',
+            ]);
+            if($validator->fails()){
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
             //dd($data);
             $enquiry = new Enquiry;
             $enquiry->SurName = $data['SurName'];
