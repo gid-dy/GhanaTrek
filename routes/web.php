@@ -31,12 +31,13 @@
 
 // Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/', 'IndexController@index')->name('index');
+//tour filter
+Route::match(['get','post'],'/tours-filter','TourpackagesController@filter');
+
 
 //category listing page
 Route::get('/tour/{CategoryName}','TourpackagesController@tour');
 
-//tour filter
-Route::match(['get','post'],'/tour-filter','TourpackagesController@filter');
 
 //tour detail page
 Route::get('/tours/{id}','TourpackagesController@tours');
@@ -92,7 +93,7 @@ Route::post('/add-subscriber-email','NewsletterController@addSubscriber');
 
 Route::get('admin/login', 'AdminLoginController@ShowLoginForm');
 Route::post('admin/login', 'AdminLoginController@login');
-Route::get('admin/logout', 'AdminLoginController@logout');
+Route::get('admin/logout', 'AdminController@logout');
 Route::match(['get','post'],'admin-forgot-password','AdminController@forgotPassword');
 
 
@@ -146,6 +147,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminlogin']], function() {
     Route::match(['get','post'],'/edit-coupon/{id}', 'CouponsController@editCoupon')->name('admin.edit-coupon');
     Route::get('/view-coupons','CouponsController@viewCoupons');
     Route::get('/delete-coupon/{id}', 'CouponsController@deleteCoupon');
+
+    //banner route
+    Route::match(['get','post'],'/add-banner', 'BannerController@addbanner')->name('admin.add-banner');
+    Route::match(['get','post'],'/edit-banner/{id}', 'BannerController@editbanner')->name('admin.edit-banner');
+    Route::get('/view-banners','BannerController@viewbanners');
+    Route::get('/delete-banner/{id}', 'BannerController@deletebanner');
 
     //Admin Bookings Route
     Route::get('/view-bookings', 'TourpackagesController@viewBookings');

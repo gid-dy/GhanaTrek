@@ -38,6 +38,8 @@
   <link rel="stylesheet" href="{{ asset('css/frontend_css/colors/blue.css') }}">
   <link rel="stylesheet" href="{{ asset('css/frontend_css/shop.css') }}">
   <link rel="stylesheet" href="{{ asset('css/frontend_css/passtrength.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexslider/2.2.0/flexslider-min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
   <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5e8d2b907daa0a0012e7bee3&product=inline-share-buttons&cms=website' async='async'></script>
 </head>
 </body>
@@ -48,6 +50,7 @@
     @include('layouts.frontlayout.user_subscription')
     @include('layouts.frontlayout.user_footer')
 {{--  <!-- JavaScript Libraries -->  --}}
+
     <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('lib/bootstrap/js/bootstrap.min.js') }}"></script>
     {{-- <script src="{{ asset('lib/php-mail-form/validate.js') }}"></script> --}}
@@ -62,8 +65,11 @@
     <script src="{{ asset('lib/jigowatt/jigowatt.js') }}"></script>
     <script src="{{ asset('lib/easypiechart/easypiechart.min.js') }}"></script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false" type="text/javascript"></script>
+
+    {{-- <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false" type="text/javascript"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flexslider/2.2.0/jquery.flexslider-min.js"></script>
 
 
     {{--  <!-- Template Main Javascript File -->  --}}
@@ -73,11 +79,19 @@
     <script src="{{ asset('js/frontend_js/passtrength.js') }}"></script>
     {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
 
+
+
     <script>
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
     </script>
+    <script>
+        $('.flexslider').flexslider({
+       animation: "slide",
+       controlNav: false
+   })
+   </script>
 
 
 

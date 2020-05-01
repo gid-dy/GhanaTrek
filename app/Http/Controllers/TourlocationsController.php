@@ -31,10 +31,10 @@ class TourlocationsController extends Controller
                 return redirect('/admin/login')->with('flash_message_error','Please login to access');
             }
             return view('admin.tour.location');
-            
-        }
-        
-    
 
-    
+    }
+
+
+
+
 }

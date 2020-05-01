@@ -5,13 +5,13 @@
   <div id="content-header">
     <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#">Tour Package</a> <a href="#" class="current">Add Location</a> </div>
     <h1>Location</h1>
-    @if (Session::has('flash_message_error'))    
+    @if (Session::has('flash_message_error'))
             <div class="alert alert-error alert-block">
                 <button type="button" class="close" data-dismiss='alert'></button>
                 <strong>{!! session('flash_message_error') !!}</strong>
             </div>
-        @endif 
-        @if (Session::has('flash_message_success'))    
+        @endif
+        @if (Session::has('flash_message_success'))
             <div class="alert alert-success alert-block">
                 <button type="button" class="close" data-dismiss='alert'></button>
                 <strong>{!! session('flash_message_success') !!}</strong>
@@ -78,3 +78,4 @@
   </div>
 </div>
 @endsection
+

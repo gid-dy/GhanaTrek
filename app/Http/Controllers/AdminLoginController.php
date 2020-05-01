@@ -51,9 +51,9 @@ class AdminLoginController extends Controller
 
 
 
-    public function logout(Request $request) {
-        Auth::logout();
+    // public function logout(Request $request) {
+    //     Auth::logout();
 
-        return redirect(url('admin/login'))->with('flash_message_success','logged out successfully');
-    }
+    //     return redirect(url('admin/login'))->with('flash_message_success','logged out successfully');
+    // }
 }

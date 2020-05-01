@@ -367,9 +367,9 @@
     margin: 0 0 10px 0;
     padding: 0;
     font-weight: bold;
-    font-size: 24px;
+    font-size: 18px;
     line-height: 1.2;
-    font-weight: 400;
+    font-weight: 200;
 }
 
 .block-5 .text .post-meta {
@@ -379,7 +379,7 @@
 }
 
 .block-5 .text .post-meta span {
-    display: inline-block;
+    /* display: inline-block; */
     margin-right: 10px;
     margin-bottom: 10px;
     opacity: .6;

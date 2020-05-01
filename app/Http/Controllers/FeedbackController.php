@@ -11,7 +11,7 @@ use Validator;
 class FeedbackController extends Controller
 {
     public function feedback(Request $request, $id = null){
-        $tourpackagesDetails = Tourpackages::where(['id'=>$id])->first();
+        $feedbacks = Tourpackages::where(['id'=>$id])->first();
 
         if ($request->isMethod('post')) {
             $data = $request->all();
@@ -50,7 +50,7 @@ class FeedbackController extends Controller
 
 
         }
-        // return view('tours')->with(compact('tourpackagesDetails'));
+        return view('tour.details')->with(compact('feedbacks'));
     }
 
     public function viewFeedback(){

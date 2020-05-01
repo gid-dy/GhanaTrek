@@ -10,6 +10,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Support\Str;
 use App\Tourpackages;
+use App\Feedback;
 use App\Country;
 use App\Tourtype;
 use App\Tourlocations;
@@ -19,7 +20,6 @@ use App\Tourtransportation;
 use App\Tourinclude;
 use App\Coupon;
 use App\User;
-use App\Feedback;
 use App\Booking;
 use App\BookingsPackage;
 use App\TravelAddress;
@@ -531,6 +531,22 @@ class TourpackagesController extends Controller
 
     }
 
+    public function map($id = null)
+    {
+
+        $tourpackagesCount = Tourpackages::where(['id'=>$id, 'Status'=>1])->count();
+        if($tourpackagesCount == 0){
+            abort(404);
+        }
+
+        $tourpackagesDetails = Tourlocations::with('tourlocations')->where('id', $id)->first();
+        $tourpackagesDetails = json_decode(json_encode($tourpackagesDetails));
+        dd($tourpackagesDetails);
+
+        return view('tour.details')->with(compact('tourpackagesDetails'));
+    }
+
+
 
 
 
@@ -545,11 +561,25 @@ class TourpackagesController extends Controller
         $categoryDetails = Tourpackagecategory::where(['CategoryName'=>$CategoryName])->first();
 
 
-        $tourpackagesAll = Tourpackages::where(['Category_id' => $categoryDetails->id ])->paginate(3);
+        $tourpackagesAll = Tourpackages::where(['tourpackages.Category_id' => $categoryDetails->id ])->where('tourpackages.Status','1')->orderBy('tourpackages.id','DESC');
+
+
+        if(!empty($_GET['TourTypeName'])){
+            $TourTypeNameArray = explode('-', $_GET['TourTypeName']);
+            $tourpackagesAll = $tourpackagesAll->join('tourtypes','tourtypes.Package_id','=','tourpackages.id')
+            ->select('tourpackages.*','tourtypes.Package_id','tourtypes.TourTypeName')
+            ->groupBy('tourtypes.Package_id')
+            ->whereIn('tourtypes.TourTypeName',$TourTypeNameArray);
+        }
+
+        $tourpackagesAll = $tourpackagesAll->paginate(6);
+        // $tourpackagesAll = json_decode(json_encode($tourpackagesAll));
+        // dd($tourpackagesAll);
 
         $TourTypeNameArray = TourType::select('TourTypeName')->groupBy('TourTypeName')->get();
         $TourTypeNameArray =array_flatten(json_decode(json_encode($TourTypeNameArray),true));
-
+        //dd($TourTypeNameArray);
+        //echo "<pre>"; print_r($TourTypeNameArray); die;
 
         //meta
         $meta_title = $categoryDetails->meta_title;
@@ -559,8 +589,21 @@ class TourpackagesController extends Controller
     }
 
     public function filter(Request $request){
-        $data = $request->all;
-        echo "<pre>"; print_r($data); die;
+        $data = $request->all();
+        //dd($data);
+
+        $TourTypeNameUrl="";
+        if(!empty($data['TourTypeNameFilter'])){
+            foreach($data['TourTypeNameFilter'] as $TourTypeName){
+                if(empty($TourTypeNameUrl)){
+                    $TourTypeNameUrl = "&TourTypeName=".$TourTypeName;
+                }else{
+                    $TourTypeNameUrl .= "-".$TourTypeName;
+                }
+            }
+        }
+        $finalUrl = "tour/".$data['CategoryName']."?".$TourTypeNameUrl;
+        return redirect::to($finalUrl);
     }
 
     public function searchTour(Request $request){
@@ -599,12 +642,15 @@ class TourpackagesController extends Controller
         $total_availability = TourType::where('Package_id',$id)->sum('TourTypeSize');
         //dd( $tourpackagesDetails);
 
+        $feedbacks = Feedback::where('Status', '1')->get();
+        // $banners = Banner::where('Status', '1')->get();
+
 
         //meta
         $meta_title = $tourpackagesDetails->PackageName;
         $meta_description = $tourpackagesDetails->Description;
         $meta_keywords = $tourpackagesDetails->PackageName;
-        return view('tour.details')->with(compact('tourpackagesDetails','tourAltImage','relatedTour','total_availability','meta_title','meta_description','meta_keywords'));
+        return view('tour.details')->with(compact('tourpackagesDetails','tourAltImage','relatedTour','total_availability','meta_title','meta_description','meta_keywords','feedbacks'));
     }
 
 

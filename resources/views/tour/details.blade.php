@@ -427,13 +427,17 @@
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Nzulezu</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">{{ $tourpackagesDetails->PackageName}}</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">×</span>
-                                  </button>
+                                            <span aria-hidden="true">×</span>
+                                        </button>
                                     </div>
                                     <div class="modal-body">
-                                        <div id="map-canvas"></div>
+                                        @foreach($tourpackagesDetails->tourlocations as $location)
+                                            {{--  <div id="map-canvas"></div>  --}}
+                                            <input type="text" value="{{ $tourpackagesDetails->id }}-{{ $location->Latitude }}" class="form-control" name="{{ $location->Latitude }}"   />
+                                            <input type="text" value="{{ $tourpackagesDetails->id }}-{{ $location->Longitude }}" class="form-control" name="{{ $location->Longitude }}"   />
+                                        @endforeach
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -522,10 +526,9 @@
                                         </ul>
                                     </div>
                                 @endif
-                                <?php $feedbacks =DB::table('feedback')->get(); ?>
+                                
 
                                 @foreach ($feedbacks as $feedback)
-                                @if($feedback->Status=="1")
                                     <div class="row">
                                         <div class="col-sm-3">
                                             <h2 class="circle-name">{{ $feedback->SurName }} {{ $feedback->OtherNames }}</h2><br>
@@ -536,7 +539,6 @@
                                         </div>
                                     </div>
                                     <hr/><br>
-                                @endif
                                 @endforeach
 
                             </div>
@@ -546,7 +548,7 @@
                                 <div class="card-body">
                                     <form class="form-horizontal" method="post" action="{{ url('/feedback') }}">
                                         @csrf
-                                        <input type="text" name="Package_id" <?php $Package_id =DB::table('feedback')->get(); ?> value="{{ $tourpackagesDetails->id }}" />
+                                        <input type="hidden" name="$tourpackagesDetails->Package_id"  value="{{ $tourpackagesDetails->id }}" />
                                         <div class="col-md-6">
                                             <label for="name" class="cols-sm-2 control-label">SurName</label>
                                             <div class="input-group">
@@ -558,7 +560,7 @@
                                             <label for="name" class="cols-sm-2 control-label">Other Names</label>
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-                                                <input type="text" class="form-control" name="OtherNames" id="v" placeholder="Enter your Other names" />
+                                                <input type="text" class="form-control" name="OtherNames" id="OtherNames" placeholder="Enter your Other names" />
                                             </div>
                                         </div>
 
