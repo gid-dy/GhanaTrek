@@ -1169,6 +1169,12 @@ class TourpackagesController extends Controller
         return view('booking.thanks');
     }
 
+    public function slydepay(Request $request){
+        // $UserEmail = Auth::user()->UserEmail;
+        // DB::table('carts')->where('UserEmail', $UserEmail)->delete();
+        return view('booking.slydepay');
+    }
+
     public function userBookings(){
         $user_id =Auth::user()->id;
         $bookings = Booking::with('Bookings')->where('user_id', $user_id)->orderBy('id','DESC')->get();

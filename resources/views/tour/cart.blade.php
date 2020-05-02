@@ -95,7 +95,7 @@
                     <hr>
                     <div class="row">
                         <div class="col-xs-12">
-                           <a href="{{ url('/billing') }}"> <button class="pay button btn-lg btn-block" type="button"><i class="fa fa-crosshairs"> checkout-coupon</i></button></a>
+                           <a href="{{ url('/billing') }}"> <button class="pay button btn-lg btn-block" type="button"><i class="fa fa-crosshairs"> checkout</i></button></a>
                         </div>
                     </div>
                     <div class="row">

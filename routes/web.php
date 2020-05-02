@@ -252,6 +252,8 @@ Route::group(['middleware' => ['frontlogin']], function() {
     Route::match(['get','post'],'/place-package','TourpackagesController@placePackage');
     //Thanks Page
     Route::get('/thanks', 'TourpackagesController@thanks');
+    //Slydepay Page
+    Route::get('/slydepay', 'TourpackagesController@slydepay');
     //User Bookings Page
     Route::get('/Bookings', 'TourpackagesController@userBookings');
     //User Booked Package Page
