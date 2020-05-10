@@ -520,8 +520,7 @@ class TourpackagesController extends Controller
                 $tourlocations->Longitude = $data['Longitude'];
                 $tourlocations->Latitude = $data['Latitude'];
                 $tourlocations->Weather = $data['Weather'];
-                $tourlocations->GhanaPostAddress = $data['GhanaPostAddress'];
-                $tourlocations->OtherAddress = $data['OtherAddress'];
+                $tourlocations->WeatherDetails = $data['WeatherDetails'];
                 $tourlocations->save();
 
                 return redirect('/admin/add-location/'.$id)->with('flash_message_success', 'tour location added Successfully!');
@@ -531,20 +530,7 @@ class TourpackagesController extends Controller
 
     }
 
-    public function map($id = null)
-    {
 
-        $tourpackagesCount = Tourpackages::where(['id'=>$id, 'Status'=>1])->count();
-        if($tourpackagesCount == 0){
-            abort(404);
-        }
-
-        $tourpackagesDetails = Tourlocations::with('tourlocations')->where('id', $id)->first();
-        $tourpackagesDetails = json_decode(json_encode($tourpackagesDetails));
-        dd($tourpackagesDetails);
-
-        return view('tour.details')->with(compact('tourpackagesDetails'));
-    }
 
 
 
@@ -1159,7 +1145,14 @@ class TourpackagesController extends Controller
             Mail::send('emails.booking', $messageData, function($message) use($UserEmail){
                 $message->to($UserEmail)->subject('Booking Placed - GhanaTrek');
             });
-            return redirect('/thanks');
+
+            if($data['Payment_method']=="COD"){
+                //cod......redirect user to thanks page
+                return redirect('/thanks');
+            }else{
+                //Ipay.....redirect user to ipay page
+                return redirect('/ipay');
+            }
         }
     }
 
@@ -1169,10 +1162,19 @@ class TourpackagesController extends Controller
         return view('booking.thanks');
     }
 
-    public function slydepay(Request $request){
-        // $UserEmail = Auth::user()->UserEmail;
-        // DB::table('carts')->where('UserEmail', $UserEmail)->delete();
-        return view('booking.slydepay');
+    public function ipaythanks(Request $request){
+        return view('booking.thanks_ipay');
+    }
+
+    public function ipaycancel(Request $request){
+        return view('booking.cancel_ipay');
+    }
+
+
+    public function ipay(Request $request){
+        $UserEmail = Auth::user()->UserEmail;
+        DB::table('carts')->where('UserEmail', $UserEmail)->delete();
+        return view('booking.ipay');
     }
 
     public function userBookings(){

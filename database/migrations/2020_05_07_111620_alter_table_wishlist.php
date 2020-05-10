@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAccommodationsTable extends Migration
+class AlterTableWishlist extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateAccommodationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('accommodations', function (Blueprint $table) {
-            $table->bigIncrements('id');
-			$table->string('AccommodationName', 255);
-			$table->unsignedBiginteger('Package_id')->index('RefTourPackages28');
-            $table->timestamps();
+        Schema::table('wishlist', function (Blueprint $table) {
+            $table->bigInteger('Package_id')->nullable()->unsigned()->after('id');
+
+            $table->foreign('Package_id')->references('id')->on('tourpackages');
         });
     }
 
@@ -28,6 +27,8 @@ class CreateAccommodationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('accommodations');
+        Schema::table('wishlist', function (Blueprint $table) {
+            //
+        });
     }
 }

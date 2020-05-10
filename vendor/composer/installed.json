@@ -920,17 +920,17 @@
     },
     {
         "name": "filp/whoops",
-        "version": "2.7.1",
-        "version_normalized": "2.7.1.0",
+        "version": "2.7.2",
+        "version_normalized": "2.7.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/filp/whoops.git",
-            "reference": "fff6f1e4f36be0e0d0b84d66b413d9dcb0c49130"
+            "reference": "17d0d3f266c8f925ebd035cd36f83cf802b47d4a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/filp/whoops/zipball/fff6f1e4f36be0e0d0b84d66b413d9dcb0c49130",
-            "reference": "fff6f1e4f36be0e0d0b84d66b413d9dcb0c49130",
+            "url": "https://api.github.com/repos/filp/whoops/zipball/17d0d3f266c8f925ebd035cd36f83cf802b47d4a",
+            "reference": "17d0d3f266c8f925ebd035cd36f83cf802b47d4a",
             "shasum": ""
         },
         "require": {
@@ -946,7 +946,7 @@
             "symfony/var-dumper": "Pretty print complex values better with var-dumper available",
             "whoops/soap": "Formats errors as SOAP responses"
         },
-        "time": "2020-01-15T10:00:00+00:00",
+        "time": "2020-05-05T12:28:07+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1324,17 +1324,17 @@
     },
     {
         "name": "laravel/framework",
-        "version": "v6.18.11",
-        "version_normalized": "6.18.11.0",
+        "version": "v6.18.13",
+        "version_normalized": "6.18.13.0",
         "source": {
             "type": "git",
             "url": "https://github.com/laravel/framework.git",
-            "reference": "73bc10bb23aab7539c8ffae6d5dc3c4b277de557"
+            "reference": "39519d03237a81380e2126d667e898e2922db444"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/laravel/framework/zipball/73bc10bb23aab7539c8ffae6d5dc3c4b277de557",
-            "reference": "73bc10bb23aab7539c8ffae6d5dc3c4b277de557",
+            "url": "https://api.github.com/repos/laravel/framework/zipball/39519d03237a81380e2126d667e898e2922db444",
+            "reference": "39519d03237a81380e2126d667e898e2922db444",
             "shasum": ""
         },
         "require": {
@@ -1436,7 +1436,7 @@
             "symfony/psr-http-message-bridge": "Required to use PSR-7 bridging features (^1.2).",
             "wildbit/swiftmailer-postmark": "Required to use Postmark mail driver (^3.0)."
         },
-        "time": "2020-04-28T15:18:58+00:00",
+        "time": "2020-05-05T15:53:49+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1649,17 +1649,17 @@
     },
     {
         "name": "laravolt/avatar",
-        "version": "3.2.0",
-        "version_normalized": "3.2.0.0",
+        "version": "3.2.1",
+        "version_normalized": "3.2.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/laravolt/avatar.git",
-            "reference": "9c095aee31e780de85c76a05f19fde3a3d98edac"
+            "reference": "4650dd596e1fe3aa1909e30ee4fe5bf2b6766246"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/laravolt/avatar/zipball/9c095aee31e780de85c76a05f19fde3a3d98edac",
-            "reference": "9c095aee31e780de85c76a05f19fde3a3d98edac",
+            "url": "https://api.github.com/repos/laravolt/avatar/zipball/4650dd596e1fe3aa1909e30ee4fe5bf2b6766246",
+            "reference": "4650dd596e1fe3aa1909e30ee4fe5bf2b6766246",
             "shasum": ""
         },
         "require": {
@@ -1669,15 +1669,15 @@
             "php": ">=7.1.3"
         },
         "require-dev": {
-            "mockery/mockery": "^0.9.1",
+            "mockery/mockery": "~1.3",
             "php-coveralls/php-coveralls": "^2.1",
             "phpunit/phpunit": "~7.0"
         },
-        "time": "2020-03-04T03:11:24+00:00",
+        "time": "2020-05-03T03:32:24+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "2.0-dev"
+                "dev-master": "4.0-dev"
             },
             "laravel": {
                 "providers": [
@@ -1702,7 +1702,7 @@
             {
                 "name": "Bayu Hendra Winata",
                 "email": "uyab.exe@gmail.com",
-                "homepage": "http://id-laravel.com",
+                "homepage": "https://laravolt.dev",
                 "role": "Developer"
             }
         ],
@@ -1717,17 +1717,17 @@
     },
     {
         "name": "league/commonmark",
-        "version": "1.4.2",
-        "version_normalized": "1.4.2.0",
+        "version": "1.4.3",
+        "version_normalized": "1.4.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/thephpleague/commonmark.git",
-            "reference": "9e780d972185e4f737a03bade0fd34a9e67bbf31"
+            "reference": "412639f7cfbc0b31ad2455b2fe965095f66ae505"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/9e780d972185e4f737a03bade0fd34a9e67bbf31",
-            "reference": "9e780d972185e4f737a03bade0fd34a9e67bbf31",
+            "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/412639f7cfbc0b31ad2455b2fe965095f66ae505",
+            "reference": "412639f7cfbc0b31ad2455b2fe965095f66ae505",
             "shasum": ""
         },
         "require": {
@@ -1750,7 +1750,7 @@
             "scrutinizer/ocular": "^1.5",
             "symfony/finder": "^4.2"
         },
-        "time": "2020-04-24T13:39:56+00:00",
+        "time": "2020-05-04T22:15:21+00:00",
         "bin": [
             "bin/commonmark"
         ],
@@ -3851,17 +3851,17 @@
     },
     {
         "name": "psy/psysh",
-        "version": "v0.10.3",
-        "version_normalized": "0.10.3.0",
+        "version": "v0.10.4",
+        "version_normalized": "0.10.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/bobthecow/psysh.git",
-            "reference": "2bde2fa03e05dff0aee834598b951d6fc7c6fe02"
+            "reference": "a8aec1b2981ab66882a01cce36a49b6317dc3560"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/bobthecow/psysh/zipball/2bde2fa03e05dff0aee834598b951d6fc7c6fe02",
-            "reference": "2bde2fa03e05dff0aee834598b951d6fc7c6fe02",
+            "url": "https://api.github.com/repos/bobthecow/psysh/zipball/a8aec1b2981ab66882a01cce36a49b6317dc3560",
+            "reference": "a8aec1b2981ab66882a01cce36a49b6317dc3560",
             "shasum": ""
         },
         "require": {
@@ -3884,7 +3884,7 @@
             "ext-readline": "Enables support for arrow-key history navigation, and showing and manipulating command history.",
             "hoa/console": "A pure PHP readline implementation. You'll want this if your PHP install doesn't already support readline or libedit."
         },
-        "time": "2020-04-07T06:44:48+00:00",
+        "time": "2020-05-03T19:32:03+00:00",
         "bin": [
             "bin/psysh"
         ],
@@ -4816,50 +4816,6 @@
         ],
         "description": "Library that helps with managing the version number of Git-hosted PHP projects",
         "homepage": "https://github.com/sebastianbergmann/version"
-    },
-    {
-        "name": "slydepay/slydepay-soap",
-        "version": "v1.1.1",
-        "version_normalized": "1.1.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/DreamOval/slydepay-php-connector.git",
-            "reference": "e58929b1b265534e6439275043c4cafccdd034ff"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/DreamOval/slydepay-php-connector/zipball/e58929b1b265534e6439275043c4cafccdd034ff",
-            "reference": "e58929b1b265534e6439275043c4cafccdd034ff",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.6"
-        },
-        "require-dev": {
-            "kahlan/kahlan": "^3.0"
-        },
-        "time": "2017-05-24T11:14:23+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Slydepay\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Andrew Smith",
-                "email": "a.smith@silentworks.co.uk"
-            },
-            {
-                "name": "Joseph Djomeda",
-                "email": "joseph@dreamoval.com"
-            }
-        ]
     },
     {
         "name": "swiftmailer/swiftmailer",
@@ -6698,21 +6654,21 @@
     },
     {
         "name": "vlucas/phpdotenv",
-        "version": "v3.6.3",
-        "version_normalized": "3.6.3.0",
+        "version": "v3.6.4",
+        "version_normalized": "3.6.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/vlucas/phpdotenv.git",
-            "reference": "1b3103013797f04521c6cae5560f604649484066"
+            "reference": "10d3f853fdf1f3a6b3c7ea0c4620d2f699713db5"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/1b3103013797f04521c6cae5560f604649484066",
-            "reference": "1b3103013797f04521c6cae5560f604649484066",
+            "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/10d3f853fdf1f3a6b3c7ea0c4620d2f699713db5",
+            "reference": "10d3f853fdf1f3a6b3c7ea0c4620d2f699713db5",
             "shasum": ""
         },
         "require": {
-            "php": "^5.4 || ^7.0",
+            "php": "^5.4 || ^7.0 || ^8.0",
             "phpoption/phpoption": "^1.5",
             "symfony/polyfill-ctype": "^1.9"
         },
@@ -6725,7 +6681,7 @@
             "ext-filter": "Required to use the boolean validator.",
             "ext-pcre": "Required to use most of the library."
         },
-        "time": "2020-04-12T15:18:03+00:00",
+        "time": "2020-05-02T13:46:13+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -6761,6 +6717,10 @@
             "environment"
         ],
         "funding": [
+            {
+                "url": "https://github.com/GrahamCampbell",
+                "type": "github"
+            },
             {
                 "url": "https://tidelift.com/funding/github/packagist/vlucas/phpdotenv",
                 "type": "tidelift"

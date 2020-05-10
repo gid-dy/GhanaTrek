@@ -131,7 +131,6 @@ class ComposerStaticInit4bf874800f164de7b67cf491dc938a4f
             'Symfony\\Component\\CssSelector\\' => 30,
             'Symfony\\Component\\Console\\' => 26,
             'Svg\\' => 4,
-            'Slydepay\\' => 9,
         ),
         'R' => 
         array (
@@ -340,10 +339,6 @@ class ComposerStaticInit4bf874800f164de7b67cf491dc938a4f
         'Svg\\' => 
         array (
             0 => __DIR__ . '/..' . '/phenx/php-svg-lib/src/Svg',
-        ),
-        'Slydepay\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/slydepay/slydepay-soap/src',
         ),
         'Ramsey\\Uuid\\' => 
         array (
@@ -600,6 +595,7 @@ class ComposerStaticInit4bf874800f164de7b67cf491dc938a4f
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
         'App\\Http\\Controllers\\IndexController' => __DIR__ . '/../..' . '/app/Http/Controllers/IndexController.php',
         'App\\Http\\Controllers\\NewsletterController' => __DIR__ . '/../..' . '/app/Http/Controllers/NewsletterController.php',
+        'App\\Http\\Controllers\\SlydepayController' => __DIR__ . '/../..' . '/app/Http/Controllers/SlydepayController.php',
         'App\\Http\\Controllers\\TourlocationsController' => __DIR__ . '/../..' . '/app/Http/Controllers/TourlocationsController.php',
         'App\\Http\\Controllers\\TourpackagecategoryController' => __DIR__ . '/../..' . '/app/Http/Controllers/TourPackageCategoryController.php',
         'App\\Http\\Controllers\\TourpackagesController' => __DIR__ . '/../..' . '/app/Http/Controllers/TourpackagesController.php',
@@ -4498,6 +4494,7 @@ class ComposerStaticInit4bf874800f164de7b67cf491dc938a4f
         'Psy\\CodeCleaner\\NoReturnValue' => __DIR__ . '/..' . '/psy/psysh/src/CodeCleaner/NoReturnValue.php',
         'Psy\\CodeCleaner\\PassableByReferencePass' => __DIR__ . '/..' . '/psy/psysh/src/CodeCleaner/PassableByReferencePass.php',
         'Psy\\CodeCleaner\\RequirePass' => __DIR__ . '/..' . '/psy/psysh/src/CodeCleaner/RequirePass.php',
+        'Psy\\CodeCleaner\\ReturnTypePass' => __DIR__ . '/..' . '/psy/psysh/src/CodeCleaner/ReturnTypePass.php',
         'Psy\\CodeCleaner\\StrictTypesPass' => __DIR__ . '/..' . '/psy/psysh/src/CodeCleaner/StrictTypesPass.php',
         'Psy\\CodeCleaner\\UseStatementPass' => __DIR__ . '/..' . '/psy/psysh/src/CodeCleaner/UseStatementPass.php',
         'Psy\\CodeCleaner\\ValidClassNamePass' => __DIR__ . '/..' . '/psy/psysh/src/CodeCleaner/ValidClassNamePass.php',
@@ -4558,7 +4555,9 @@ class ComposerStaticInit4bf874800f164de7b67cf491dc938a4f
         'Psy\\Formatter\\CodeFormatter' => __DIR__ . '/..' . '/psy/psysh/src/Formatter/CodeFormatter.php',
         'Psy\\Formatter\\DocblockFormatter' => __DIR__ . '/..' . '/psy/psysh/src/Formatter/DocblockFormatter.php',
         'Psy\\Formatter\\Formatter' => __DIR__ . '/..' . '/psy/psysh/src/Formatter/Formatter.php',
+        'Psy\\Formatter\\ReflectorFormatter' => __DIR__ . '/..' . '/psy/psysh/src/Formatter/ReflectorFormatter.php',
         'Psy\\Formatter\\SignatureFormatter' => __DIR__ . '/..' . '/psy/psysh/src/Formatter/SignatureFormatter.php',
+        'Psy\\Formatter\\TraceFormatter' => __DIR__ . '/..' . '/psy/psysh/src/Formatter/TraceFormatter.php',
         'Psy\\Input\\CodeArgument' => __DIR__ . '/..' . '/psy/psysh/src/Input/CodeArgument.php',
         'Psy\\Input\\FilterOptions' => __DIR__ . '/..' . '/psy/psysh/src/Input/FilterOptions.php',
         'Psy\\Input\\ShellInput' => __DIR__ . '/..' . '/psy/psysh/src/Input/ShellInput.php',
@@ -4808,20 +4807,6 @@ class ComposerStaticInit4bf874800f164de7b67cf491dc938a4f
         'SebastianBergmann\\Type\\UnknownType' => __DIR__ . '/..' . '/sebastian/type/src/UnknownType.php',
         'SebastianBergmann\\Type\\VoidType' => __DIR__ . '/..' . '/sebastian/type/src/VoidType.php',
         'SebastianBergmann\\Version' => __DIR__ . '/..' . '/sebastian/version/src/Version.php',
-        'Slydepay\\ApiQrResponse' => __DIR__ . '/..' . '/slydepay/slydepay-soap/src/ApiQrResponse.php',
-        'Slydepay\\ApiResponse' => __DIR__ . '/..' . '/slydepay/slydepay-soap/src/ApiResponse.php',
-        'Slydepay\\Exception\\CancelTransactionException' => __DIR__ . '/..' . '/slydepay/slydepay-soap/src/Exception/CancelTransactionException.php',
-        'Slydepay\\Exception\\ConfirmTransactionException' => __DIR__ . '/..' . '/slydepay/slydepay-soap/src/Exception/ConfirmTransactionException.php',
-        'Slydepay\\Exception\\InvalidPayTokenException' => __DIR__ . '/..' . '/slydepay/slydepay-soap/src/Exception/InvalidPayTokenException.php',
-        'Slydepay\\Exception\\MobilePaymentException' => __DIR__ . '/..' . '/slydepay/slydepay-soap/src/Exception/MobilePaymentException.php',
-        'Slydepay\\Exception\\ProcessPaymentException' => __DIR__ . '/..' . '/slydepay/slydepay-soap/src/Exception/ProcessPaymentException.php',
-        'Slydepay\\Helper' => __DIR__ . '/..' . '/slydepay/slydepay-soap/src/Helper.php',
-        'Slydepay\\Order\\Order' => __DIR__ . '/..' . '/slydepay/slydepay-soap/src/Order/Order.php',
-        'Slydepay\\Order\\OrderItem' => __DIR__ . '/..' . '/slydepay/slydepay-soap/src/Order/OrderItem.php',
-        'Slydepay\\Order\\OrderItems' => __DIR__ . '/..' . '/slydepay/slydepay-soap/src/Order/OrderItems.php',
-        'Slydepay\\Response' => __DIR__ . '/..' . '/slydepay/slydepay-soap/src/Response.php',
-        'Slydepay\\Slydepay' => __DIR__ . '/..' . '/slydepay/slydepay-soap/src/Slydepay.php',
-        'Slydepay\\TransactionStatusResponse' => __DIR__ . '/..' . '/slydepay/slydepay-soap/src/TransactionStatusResponse.php',
         'Svg\\DefaultStyle' => __DIR__ . '/..' . '/phenx/php-svg-lib/src/Svg/DefaultStyle.php',
         'Svg\\Document' => __DIR__ . '/..' . '/phenx/php-svg-lib/src/Svg/Document.php',
         'Svg\\Gradient\\Stop' => __DIR__ . '/..' . '/phenx/php-svg-lib/src/Svg/Gradient/Stop.php',

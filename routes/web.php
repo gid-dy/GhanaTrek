@@ -49,8 +49,6 @@ Route::match(['get','post'],'/add-cart', 'TourpackagesController@addtocart')->na
 
 //cart page
 Route::match(['get','post'],'/cart', 'TourpackagesController@cart');
-//wishlist page
-Route::match(['get','post'],'/wishlist', 'TourpackagesController@wishlist');
 
 //Route::get('/cart', 'TourpackagesController@cart');
 
@@ -233,6 +231,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminlogin']], function() {
     //Delete Feedback
     Route::get('/delete-feedback/{id}', 'FeedbackController@deleteFeedback');
 
+
+
 });
 
 
@@ -250,10 +250,17 @@ Route::group(['middleware' => ['frontlogin']], function() {
     Route::match(['get','post'],'/tour-review','TourpackagesController@tourReview');
     //Place Package
     Route::match(['get','post'],'/place-package','TourpackagesController@placePackage');
+    //wishlist page
+    Route::match(['get','post'],'/wishlist', 'TourpackagesController@wishlist');
     //Thanks Page
     Route::get('/thanks', 'TourpackagesController@thanks');
-    //Slydepay Page
-    Route::get('/slydepay', 'TourpackagesController@slydepay');
+    //ipay routes
+    Route::get('/ipay','TourpackagesController@ipay');
+    //ipay return thanks page
+    Route::get('/ipay/thanks','TourpackagesController@ipaythanks');
+    //ipay rcancel page
+    Route::get('/ipay/cancel','TourpackagesController@ipayCancel');
+    Route::get('/slydepay','SlydepayController@SlydepayPayment');
     //User Bookings Page
     Route::get('/Bookings', 'TourpackagesController@userBookings');
     //User Booked Package Page

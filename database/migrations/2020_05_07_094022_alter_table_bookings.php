@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAccommodationsTable extends Migration
+class AlterTableBookings extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateAccommodationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('accommodations', function (Blueprint $table) {
-            $table->bigIncrements('id');
-			$table->string('AccommodationName', 255);
-			$table->unsignedBiginteger('Package_id')->index('RefTourPackages28');
-            $table->timestamps();
+        Schema::table('bookings', function (Blueprint $table) {
+            $table->bigInteger('user_id')->nullable()->unsigned()->after('id');
+
         });
     }
 
@@ -28,6 +26,8 @@ class CreateAccommodationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('accommodations');
+        Schema::table('bookings', function (Blueprint $table) {
+            //
+        });
     }
 }

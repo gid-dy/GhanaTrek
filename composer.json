@@ -19,8 +19,7 @@
         "laravel/ui": "^1.2",
         "laravolt/avatar": "^3.2",
         "maatwebsite/excel": "^3.1",
-        "milon/barcode": "^6.0",
-        "slydepay/slydepay-soap": "^1.1"
+        "milon/barcode": "^6.0"
     },
     "require-dev": {
         "facade/ignition": "^1.4",

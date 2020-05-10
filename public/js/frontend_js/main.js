@@ -641,8 +641,8 @@ $().ready(function(){
 });
 
 function selectPaymentMethod(){
-    if($('#Paypal').is(':checked') || $('#MobileMoney').is(':checked') || $('#COD').is(':checked')){
-        // alert("checked");
+    if($('#Slydepay').is(':checked') || $('#ipay').is(':checked') || $('#COD').is(':checked')){
+        //  alert("checked");
     }else{
         alert("Please select Payment Method");
         return false;

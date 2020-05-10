@@ -5,13 +5,13 @@
   <div id="content-header">
     <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#">Tour Packages</a> <a href="#" class="current">Add Tourtype</a> </div>
     <h1>Tourtype</h1>
-     @if (Session::has('flash_message_error'))    
+     @if (Session::has('flash_message_error'))
             <div class="alert alert-error alert-block">
                 <button type="button" class="close" data-dismiss='alert'></button>
                 <strong>{!! session('flash_message_error') !!}</strong>
             </div>
-        @endif 
-        @if (Session::has('flash_message_success'))    
+        @endif
+        @if (Session::has('flash_message_success'))
             <div class="alert alert-success alert-block">
                 <button type="button" class="close" data-dismiss='alert'></button>
                 <strong>{!! session('flash_message_success') !!}</strong>
@@ -25,7 +25,7 @@
           <div class="widget-title"> <span class="icon"> <i class="icon-info-sign"></i> </span>
             <h5>Add Tour Attribute</h5>
           </div>
-          
+
           <div class="widget-content nopadding">
             <form enctype="multipart/form-data" class="form-horizontal" method="post" action="{{ url('/admin/add-tourtype/'.$tourpackagesDetails->id) }}" name="add_tourtype" id="add_tourtype">
                 @csrf
@@ -39,7 +39,7 @@
                     <label class="control-label"><strong>{{ $tourpackagesDetails->PackageCode }}</strong></label>
                 </div>
                 <div class="control-group">
-                
+
                     <label class="control-label"></label>
                     <div class="widget-title" style="margin-top:20px;"> <span class="icon"> <i class="icon-info-sign"></i> </span>
                         <h5>Attributes</h5>
@@ -55,7 +55,7 @@
                     </div>
                 </div>
 
-              
+
               <div class="form-actions">
                 <input type="submit" value="Add Tour Attribute" class="btn btn-success">
               </div>
@@ -67,12 +67,14 @@
 
   </div>
   <div class="row-fluid">
-      <div class="span12"> 
+      <div class="span12">
         <div class="widget-box">
           <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
             <h5>View Tourtype</h5>
           </div>
           <div class="widget-content nopadding">
+            <form class="form-horizontal" method="post" action="{{ url('/admin/edit-tourtype/'.$tourpackagesDetails->id) }}" name="edit_tourtype" id="edit_tourtype" novalidate="novalidate">
+                @csrf
                   <table class="table table-bordered data-table">
                     <thead>
                         <tr>
@@ -97,9 +99,10 @@
                                   <a rel="{{ $tourtype->id }}" rel1="delete-tourtype" href="javascript:" class="btn btn-danger btn-mini deleteRecord">Delete</a>
                                 </td>
                             </tr>
-                        @endforeach                   
+                        @endforeach
                     </tbody>
                   </table>
+            </form>
           </div>
         </div>
       </div>
@@ -116,12 +119,12 @@
             <h5>Add Tour Transportation</h5>
 
           </div>
-          
+
           <div class="widget-content nopadding">
             <form enctype="multipart/form-data" class="form-horizontal" method="post" action="{{ url('/admin/add-tourtransportation/'.$tourpackagesDetails->id) }}" name="add_transportation" id="add_transportation" novalidate="novalidate">
                 @csrf
                 <div class="control-group">
-                
+
                     <label class="control-label"></label>
                     <div class="widget-title" style="margin-top:20px;"> <span class="icon"> <i class="icon-info-sign"></i> </span>
                         <h5>Transportation</h5>
@@ -135,7 +138,7 @@
                     </div>
                 </div>
 
-              
+
               <div class="form-actions">
                 <input type="submit" value="Add Transport" class="btn btn-success">
               </div>
@@ -147,7 +150,7 @@
 
   </div>
    <div class="row-fluid">
-      <div class="span12"> 
+      <div class="span12">
         <div class="widget-box">
           <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
             <h5>View Tour transport</h5>
@@ -175,7 +178,7 @@
                                   <a rel="{{ $tourtransportation->id }}" rel1="delete-transport" href="javascript:" class="btn btn-danger btn-mini deleteRecord">Delete</a>
                                 </td>
                             </tr>
-                        @endforeach                   
+                        @endforeach
                     </tbody>
                 </table>
               </form>
@@ -195,12 +198,12 @@
             <h5>Add Tour Include</h5>
 
           </div>
-          
+
           <div class="widget-content nopadding">
             <form enctype="multipart/form-data" class="form-horizontal" method="post" action="{{ url('/admin/add-include/'.$tourpackagesDetails->id) }}" name="add_include" id="add_include" novalidate="novalidate">
                 @csrf
                 <div class="control-group">
-                
+
                     <label class="control-label"></label>
                     <div class="widget-title" style="margin-top:20px;"> <span class="icon"> <i class="icon-info-sign"></i> </span>
                         <h5>Include</h5>
@@ -216,7 +219,7 @@
                     </div>
                 </div>
 
-              
+
               <div class="form-actions">
                 <input type="submit" value="Add Include" class="btn btn-success">
               </div>
@@ -228,7 +231,7 @@
 
   </div>
   <div class="row-fluid">
-      <div class="span12"> 
+      <div class="span12">
         <div class="widget-box">
           <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
             <h5>View Include</h5>
@@ -251,12 +254,12 @@
                             <td>{{ $tourinclude->IncludeName }}</td>
                             <td>{{ $tourinclude->TourIncludeInfo }}</td>
                             <td>{{ $tourinclude->TourExcludeName }}</td>
-                            
+
                             <td class="center">
                               <a rel="{{ $tourinclude->id }}" rel1="delete-tourinclude" href="javascript:" class="btn btn-danger btn-mini deleteRecord">Delete</a>
                             </td>
                         </tr>
-                    @endforeach                   
+                    @endforeach
                 </tbody>
             </table>
           </div>
@@ -283,7 +286,7 @@
                   <input type="text" name="AccommodationName" id="AccommodationName">
                 </div>
               </div>
-              
+
               <div class="form-actions">
                 <input type="submit" value="Add Accomodation" class="btn btn-success">
               </div>
@@ -295,7 +298,7 @@
   </div>
 
   <div class="row-fluid">
-      <div class="span12"> 
+      <div class="span12">
         <div class="widget-box">
           <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
             <h5>View Tour Accommodation</h5>
@@ -318,7 +321,7 @@
                               <a rel="{{ $accommodation->id }}" rel1="delete-accommodation" href="javascript:" class="btn btn-danger btn-mini deleteRecord">Delete</a>
                             </td>
                         </tr>
-                    @endforeach                   
+                    @endforeach
                 </tbody>
             </table>
           </div>
