@@ -40,8 +40,8 @@
                 <div class="content col-lg-12 col-md-12 col-sm-12 clearfix">
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <h4 class="title"><span>{{ __('Welcome back!') }}</span></h4>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.</p>
-                        <p>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+                        <p>Exciting and affordable packages awaits you. Log into your account and let's tour around Ghana</p>
+                        <p>Ghanatrek is here to provide of objective, accurate, informative and reliable travel content in various formats, to enable our clients have the best of travel experience.</p>
                         <p class="withpadding">Still not registered?
                             <a href="{{ url('/register') }}">Click Here</a> to register now.</p>
                     </div>

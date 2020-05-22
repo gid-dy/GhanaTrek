@@ -21,10 +21,11 @@ class CreateTravelAddressesTable extends Migration
 			$table->string('OtherNames', 150);
             $table->string('Mobile', 15);
             $table->string('OtherContact', 150);
-            $table->string('country_name', 150);
+            $table->string('Country', 150);
             $table->string('Address', 150);
             $table->string('City', 150);
             $table->string('State', 150);
+            $table->string('ZipCode', 150);
             $table->timestamps();
         });
     }

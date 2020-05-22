@@ -317,7 +317,8 @@ class UsersController extends Controller
         if(Session::get('adminDetails')['Users_access']==0){
             return redirect('/admin/dashboard')->with('flash_message_error','You have no access for this module');
         }
-        return Excel::download(new usersExport(), 'users.xlsx','Html');
+        return Excel::download(new usersExport, 'users.xlsx');
+
     }
 
     public function viewUsersChart(){

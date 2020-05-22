@@ -4,23 +4,7 @@
     <?php
 use App\Tourpackages;
 ?>
-{{-- <div class="section" id="section-1">
-    <div class="flexslider">
-        <ul class="slides">
-            @foreach($tourpackagecategory  as $cat)
-            <li>
-                <?php $tourpackagesCount = Tourpackages::tourpackagesCount($cat->id); ?>
-                <img src="{{ asset('images/backend_images/categories/large/'.$cat->Imageaddress) }}->id">
-                <div class="meta">
-                    <h2>Lorem ipsum dolor sit amet, consectetur.</h2>
-                    <h4>Lorem ipsum dolor sit.</h4>
-                </div>
-            </li>
-            @endforeach
-        </ul>
-    </div>
-  <div class="clearfix"></div>
-</div> --}}
+
 
 
   <!--cat badges-->

@@ -11,11 +11,11 @@
                 <img src="images/frontend_images/banners/{{ $banner->Image }}">
                 <div class="meta">
                     <h4>{{ $banner->Title }}</h4>
-                    <h6>Accurate, informative and reliable travel content</h6>
+                    <h4>Lorem ipsum dolor sit.</h4>
                 </div>
             </li>
             @endforeach
-            
+
         </ul>
     </div>
 

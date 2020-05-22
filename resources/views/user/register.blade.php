@@ -40,8 +40,8 @@
                 <div class="content col-lg-12 col-md-12 col-sm-12 clearfix">
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <h4 class="title"><span>Why Join Us?</span></h4>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s..</p>
-                        <p>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+                        <p>With all of our packages and features updated by our experts, we seek to provide quality and secured services for our clients.We pride ourselves on producing content that stands out from the crowd.</p>
+                        <p>To provide of objective, accurate, informative and reliable travel content in various formats, to enable our clients have the best of travel experience.</p>
 
                         <p class="withpadding">Already having an account? <a href="{{ url('/login') }}">Click Here</a> to login now.</p>
                     </div>

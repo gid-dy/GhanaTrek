@@ -142,23 +142,23 @@
                 </div>
                 <form name="paymentform" id="paymentform" action="{{ url('/place-package') }}" method="post">
                     @csrf
-                    <input type="text" name="Grand_total" value="{{ $Grand_total }}">
+                    <input type="hidden" name="Grand_total" value="{{ $Grand_total }}">
                     <div class="payment-method">
                         <div class="panel-group">
                             <span>Select Payment Method:</strong></label></span>
                         </div>
-                        <span class="col-md-4">
+                        {{--  <span class="col-md-4">
                             <label><input type="radio" id="Slydepay" name="Payment_method" value="Slydepay">
                                 Slydepay <img src="{{ asset('images/frontend_images/payment.png') }}"></label>
-                        </span>
+                        </span>  --}}
                         <span class="col-md-4">
                             <label><input type="radio" id="ipay" name="Payment_method" value="ipay">
-                                ipay <img src="{{ asset('images/frontend_images/mobile.jpeg') }}"></label>
+                                ipay <img src="{{ asset('images/frontend_images/ipay.jpg') }}"></label>
                         </span>
                         <span class="col-md-4">
-                        <label><input type="radio" id="COD" name="Payment_method" value="COD">
+                        {{--  <label><input type="radio" id="COD" name="Payment_method" value="COD">
                                 COD <img src="{{ asset('images/frontend_images/payment.png') }}"></label>
-                        </span>
+                        </span>  --}}
                         <div class="order-button-payment">
                             <input type="submit" onclick="return selectPaymentMethod();" value="Proceed to Payment" />
                         </div>

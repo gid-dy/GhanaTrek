@@ -112,7 +112,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="checkout-form-list">
-                                                        <input class="form-control" type="text" name="description" id="description" placeholder="Description of Payment" value="Payment of {{ Session::get('PackageName') }} tour site.">
+                                                        <input class="form-control" type="text" name="description" id="description" placeholder="Description of Payment" value="Payment of tour site.">
                                                     </div>
                                                 </div>
                                             </div>

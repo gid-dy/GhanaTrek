@@ -93,9 +93,9 @@
             </div>
         </div>
     </section>
-
     <section>
         <div class="container info" style="margin-top: 40px;">
+    <div class="container">
             <div class="row">
                 <div class="col-md-12">
                     @foreach($tourpackagesDetails->tourlocations as $tourlocation)
@@ -108,11 +108,11 @@
                     @endforeach
                 </div>
             </div>
+        </div>
 
 
 
-
-
+        
                 <div class="col-md-6">
                     <div class="row center">
                         <!-- <div class="col-md-6">
@@ -221,8 +221,8 @@
 
                 </div>
             </div>
-        </div>
-    </section>
+        
+        </section>
 
 
     <section>
