@@ -98,15 +98,20 @@
                            <a href="{{ url('/billing') }}"> <button class="pay button btn-lg btn-block" type="button"><i class="fa fa-crosshairs"> checkout</i></button></a>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                           <a href="{{ url('under_cat') }}"> <button class="pay button btn-lg btn-block" type="button"><i class="fa fa-crosshairs"> See More Activities</i></button></a>
-                        </div>
-                    </div>
-                    <div class="cart-section col-md-12" style="font-size: 16px;margin-top: 30px;">
-                        <a href="{{ url('register') }}">Create Account</a> or <a href="{{ url('login') }}">login</a> for faster booking
-                    </div>
 
+                    <div class="cart-section col-md-12" style="font-size: 16px;margin-top: 30px;margin-bottom: 30px;">
+                        <a href="{{ url('register') }}">Create Account</a> or <a href="{{ url('login') }}">login</a> for faster booking
+                        <h4 style="text-align:center;margin-top: 30px"><i class="fa fa-check-circle"></i>Best Price Guaranteed</h4>
+                    </div>
+                    <div class="cart-section col-md-12" style="background-color:rgb(235, 235, 235);">
+                        <h4 style="margin-top: 30px;"><strong>Data Security</strong></h4>
+                        <p><i class="fa fa-lock"></i>Your info's safe with us. All data is encrypted and transmitted securely with an SSL protocol.</p>
+                        <h4 style="margin-top: 30px;"><strong>Book with confidence</strong></h4>
+                        <p>
+                            <i class="fa fa-check-circle"></i>Best price guarantee. Found your activity for less? We'll refund the difference.
+                        </p>
+                        <p><i class="fa fa-check-circle"></i>Peace of mind. Book ahead to skip the lines and reserve your spot.</p>
+                    </div>
                 </div>
 
 

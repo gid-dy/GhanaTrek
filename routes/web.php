@@ -102,7 +102,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminlogin']], function() {
     Route::get('/check-pwd', 'AdminController@chkPassword');
     Route::match(['get','post'],'/update-pwd', 'AdminController@updatePassword');
 
-
+    Route::get('/view-users-chart', 'UsersController@viewUsersChart');
     //category route
     Route::match(['get','post'],'/add-category', 'TourpackagecategoryController@addCategory')->name('admin.add-category');
     Route::get('/view-categories', 'TourpackagecategoryController@viewCategories');

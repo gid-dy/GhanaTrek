@@ -6,9 +6,13 @@ use Illuminate\Http\Request;
 use Session;
 use Hash;
 use App\User;
+use App\Booking;
 use App\Admin;
+use App\Country;
 use Illuminate\Support\Facades\Mail;
 use Auth;
+use DB;
+use Carbon\Carbon;
 use Validator;
 
 class AdminController extends Controller
@@ -18,7 +22,23 @@ class AdminController extends Controller
 
     public function dashboard()
     {
-        return view('admin.dashboard');
+
+         $current_month_users =User::whereYear('created_at', Carbon::now()->year)
+                                ->whereMonth('created_at', Carbon::now()->month)->count();
+        $last_month_users =User::whereYear('created_at', Carbon::now()->year)->whereMonth('created_at', Carbon::now()->subMonth(1))->count();
+         $last_to_last_month_users =User::whereYear('created_at', Carbon::now()->year)
+                                ->whereMonth('created_at', Carbon::now()->subMonth(2))->count();
+
+                                $current_month_booking =Booking::whereYear('created_at', Carbon::now()->year)
+                                ->whereMonth('created_at', Carbon::now()->month)->count();
+        $last_month_booking =Booking::whereYear('created_at', Carbon::now()->year)
+                                ->whereMonth('created_at', Carbon::now()->subMonth(1))->count();
+        $last_to_last_month_booking =Booking::whereYear('created_at', Carbon::now()->year)
+                                ->whereMonth('created_at', Carbon::now()->subMonth(2))->count();
+
+        $getUserCountries = User::select('Country',DB::raw('count(Country) as count'))->groupBy('Country')->get();
+        $getUserCountries = json_decode(json_encode($getUserCountries),true);
+        return view('admin.dashboard')->with(compact('current_month_users','last_month_users','last_to_last_month_users','current_month_booking','last_month_booking','last_to_last_month_booking','getUserCountries'));
     }
 
     public function settings()
@@ -201,6 +221,10 @@ class AdminController extends Controller
             }
         }
         return view('admin.admins.edit_admin')->with(compact('adminDetails'));
+    }
+
+    public function viewUsersChart(){
+
     }
 
 }

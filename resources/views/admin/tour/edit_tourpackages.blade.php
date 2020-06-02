@@ -18,6 +18,15 @@
             </div>
         @endif
   </div>
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li style="list-style-type:none;">{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
   <div class="container-fluid"><hr>
     <div class="row-fluid">
       <div class="span12">

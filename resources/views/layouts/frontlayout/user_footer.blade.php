@@ -4,7 +4,7 @@
       <div class="widget col-lg-3 col-md-3 col-sm-12">
         <h4 class="title">About us</h4>
         <p>We are dedicated to the provision of objective, accurate, informative and reliable travel content in various formats, to enable of clients have the best of travel experience...</p>
-        <a class="button small" href="about us.html">read more</a>
+        <a class="button small" href="{{ url('page/about-us') }}">read more</a>
       </div>
       <!-- end widget -->
       <div class="widget col-lg-3 col-md-3 col-sm-12">
@@ -24,7 +24,6 @@
           <li><i class="fa fa-envelope-o"></i> einsteingideon@gmail.com</li>
           <li><i class="fa fa-phone-square"></i> +3233 542 500 499</li>
           <li><i class="fa fa-home"></i> Kotei near KNUST, AK 566-0554 Kumasi, Ghana.</li>
-          <li><a href="#"><i class="fa fa-map-marker"></i> View large map</a></li>
         </ul>
         <!-- contact_details -->
       </div>

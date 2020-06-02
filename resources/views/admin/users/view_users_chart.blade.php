@@ -4,9 +4,11 @@ $last_month = date('M',strtotime("-1 month"));
 $last_to_last_month = date('M', strtotime("-2 month"));
 
 $dataPoints = array(
-	array("y" => $last_to_last_month_users, "label" => $last_to_last_month),
+    array("y" => $current_month_users, "label" => $current_month),
     array("y" => $last_month_users, "label" => $last_month),
-	array("y" => $current_month_users, "label" => $current_month)
+	array("y" => $last_to_last_month_users, "label" => $last_to_last_month),
+
+
 );
 
 ?>

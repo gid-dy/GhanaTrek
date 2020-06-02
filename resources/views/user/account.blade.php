@@ -5,7 +5,7 @@
         <section class="post-wrapper-top">
           <div class="container">
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-              <ul class="breadcrumb">
+              <ul class="breadcrumb withpadding1">
                 <li><a href="{{ url('/') }}">Home</a></li>
                 <li>Account</li>
               </ul>
@@ -18,8 +18,8 @@
 
         <section class="section1">
                 <div class="container clearfix">
-                    <ul style="list-style-type:none; display:inline-flex; float-left;">
-                      <li class="active" style="margin-right:30px; color:red"><a href="settings.html"><i class="fa fa-user"></i> Setting</a></li>
+                    <ul class="withpadding1" style="list-style-type:none; display:inline-flex; float-left;">
+                      <li class="active" style="margin-right:30px; color:red"><a href="{{ url('account') }}"><i class="fa fa-user"></i> Setting</a></li>
                       <li style="margin-right:30px;"><a href="{{ url('wishlist') }}"><i class="fa fa-star"></i> Wishlist</a></li>
                       <li style="margin-right:30px;"><a href="{{ url('Bookings') }}"><i class="fa fa-shopping-cart"></i> {{ __('Recent Activities') }}</a></li>
                     </ul>
@@ -37,14 +37,14 @@
                         </div>
                     @endif
                     @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li style="list-style-type:none;">{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li style="list-style-type:none;">{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <div class="contact-container">
                         <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
                             <div class="btn-group" role="group">
@@ -183,7 +183,7 @@
                     <hr>
                 </div>
 
-  </section>
+        </section>
   {{-- <section id="subs" class="subscribe">
 
     <div class="subscribe-title text-center">

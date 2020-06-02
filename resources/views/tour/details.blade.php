@@ -59,7 +59,7 @@
                                                     EUR {{ $getCurrencyRates['EUR_Rate'] }}<br>
                                                 </h4>
                                             </span>
-                                            <p>
+                                            {{-- <p>
                                                 <select id="SelTran" name="TransportName">
                                                     <option value="">Select Transportation</option>
                                                     @foreach($tourpackagesDetails->tourtransports as $tourtransportation)
@@ -67,7 +67,7 @@
                                                     @endforeach
                                                 </select>
                                             </p>
-                                            <h4 class="price">cost: <span id="getTransportCost" hidden>GHS  0</span></h4>
+                                            <h4 class="price">cost: <span id="getTransportCost" hidden>GHS  0</span></h4> --}}
                                                 <p><b>Availability:</b> <span id="Availability"> @if($total_availability>0) Available @else Sold Out @endif </span></p>
                                                 <div>
                                                     <p><i class="fa fa-check" aria-hidden="true"></i>Free Cancellation up to 24 hours in advance</p>
@@ -112,14 +112,9 @@
 
 
 
-        
-                <div class="col-md-6">
+
+                <div class="col-lg-12 col-sm-12">
                     <div class="row center">
-                        <!-- <div class="col-md-6">
-                            <button type="button" class=" btn btn-default filter-button" data-toggle="modal" data-target="#exampleModal">View large map</button>
-
-
-                      </div> -->
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
@@ -129,10 +124,10 @@
                                             <span aria-hidden="true">×</span>
                                         </button>
                                     </div>
-                                    <div class="modal-body col-lg-12">
+                                    <div class="modal-body col-lg-12 col-sm-12">
                                         @foreach($tourpackagesDetails->tourlocations as $tourlocation)
                                             {{--  <div id="map-canvas"></div>  --}}
-                                            <div id="map" style="height: 700px; width:100%;"></div>
+                                            <div id="map" style="height: 700px; "></div>
                                         <script>
                                              var map, infoWindow;
                                             function initMap(){
@@ -221,7 +216,7 @@
 
                 </div>
             </div>
-        
+
         </section>
 
 
@@ -241,7 +236,7 @@
                 <!-- Tab panes -->
                 <div class="tab-content col-xs-12">
                     <div class="pro-info-tab tab-pane active" id="more-info">
-                        <p style="font-weight: 700;">{{ $tourpackagesDetails->Description}}</p>
+                        <p style="font-weight: 700;"><?php echo nl2br($tourpackagesDetails->Description); ?></p>
                         <hr>
                                 <label class="control-label"><h4>EXTRA</h4></label>
                         @foreach($tourpackagesDetails->tourincludes as $tourinclude)
@@ -268,6 +263,7 @@
                             @foreach($tourpackagesDetails->tourincludes as $tourinclude)
                                 <p style="margin-left:240px;"><i class="fa fa-check-circle"></i> {{ $tourinclude->IncludeName }}</p>
                             @endforeach
+                            <label class="control-label"><strong>Exclude</strong></label>
                              @foreach($tourpackagesDetails->tourincludes as $tourinclude)
                                 <p style="margin-left:240px;"><i class="fa fa-times-circle"></i> {{ $tourinclude->TourExcludeName }}</p>
                             @endforeach

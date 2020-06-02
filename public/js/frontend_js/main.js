@@ -433,13 +433,13 @@ jQuery(document).ready(function($) {
             let ck = $(this).val().split('-');
             //console.log(ck)
             if(ck[1] === "Organisation"){
-                $('#nt').attr('max','30')
+                $('#nt').attr({"min":10,  "max":30});
             }else if(ck[1] === "Family"){
-                $('#nt').attr('max','8')
+                $('#nt').attr({"min":3,  "max":8});
             }else if(ck[1] === "Individual"){
-                $('#nt').attr('max', '1')
-            }else if(ck[1] == "Couple"){
-                $('#nt').attr('max','2')
+                $('#nt').attr({"min":1,  "max":1});
+            }else if(ck[1] === "Couple"){
+                $('#nt').attr({"min":2,  "max":2});
             }
             $.ajax({
                 type:'get',

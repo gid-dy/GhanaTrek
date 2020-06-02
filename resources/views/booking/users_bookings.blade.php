@@ -7,9 +7,9 @@
             <div class="row" style="margin-top: 30px;">
                 <section class="post-wrapper-top">
                     <div class="container">
-                        <div class="breadcrumb">
+                        <div class="breadcrumb withpadding1">
                             <ul class="breadcrumb">
-                                <li><a href="index.html">Home</a></li>
+                                <li><a href="{{ url('/') }}">Home</a></li>
                                 <li><a href="{{ url('Bookings') }}">Booking</a></li>
                             </ul>
                         </div>
@@ -33,9 +33,9 @@
                                     @foreach($bookings as $booking)
                                     <tr>
                                         <td>{{ $booking->id }}</td>
-                                        <td>
+                                        <td class="withpadding1">
                                             @foreach($booking->bookings as $pro)
-                                                <a href="{{ url('/Bookings/'.$booking->id) }}">{{ $pro->PackageCode }}</a><br>
+                                                <a href="{{ url('/Bookings/'.$booking->id) }}" >{{ $pro->PackageCode }}</a><br>
                                             @endforeach
                                         </td>
                                         <td>{{ $booking->Payment_method }}</td>

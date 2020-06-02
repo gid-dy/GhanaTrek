@@ -67,7 +67,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="checkout-form-list">
+                                <div class="checkout-form-list withpadding1">
                                     <input type="submit" class="button" value="login"><br>
                                     <a href="{{ url('/forgot-password') }}">forgot Password?</a>
                                 </div>

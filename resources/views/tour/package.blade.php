@@ -28,22 +28,22 @@ use App\Tourpackages;
     </section>
     <section id="pack" class="packages">
         <div class="container">
-                <div class="content pull-right col-lg-8 col-md-8 col-sm-8 col-xs-12 clearfix dest1">
+                <div class="content pull-right col-lg-9 col-md-9 col-sm-9 col-xs-12 clearfix dest1">
                     <div class="row">
                         @foreach($tourpackagesAll as $tourpackages)
                             @if($tourpackages->Status=="1")
-                                <div class="col-md-6 col-xs-6">
+                                <div class="col-lg-4 col-md-4 col-xs-12">
                                     <a href="{{ url('tours/'.$tourpackages->id) }}" class="block-5">
                                         <img src="{{ asset('images/backend_images/tours/large/'.$tourpackages->Imageaddress) }}" alt="tour image" />
                                         <div class="text">
                                             <h4 class="heading">{{ $tourpackages->PackageName}}<span class="price pull-right"> GHS {{ $tourpackages->PackagePrice}}</span></h4>
                                             <div class="post-meta">
-                                                <p>
+                                                <p class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                                                     <span class="price">
                                                         <i class="fa fa-angle-right"></i> {{ $tourpackages->AccommodationName}}
                                                     </span>
                                                     <span class="price">
-                                                        <i class="fa fa-angle-right"></i>  {{ $tourpackages->Description}}
+                                                        {{-- <i class="fa fa-angle-right"></i>  {{ $tourpackages->Description}} --}}
                                                     </span>
                                                 </p>
                                             </div>
@@ -65,7 +65,7 @@ use App\Tourpackages;
                 </div>
 
                 <!-- SIDEBAR -->
-                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 panel-group dest1" id="sidebar">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 panel-group dest1" id="sidebar">
                     @include('layouts.frontlayout.user_sidebar')
                 </div>
                 <!-- end sidebar -->

@@ -764,37 +764,117 @@ textarea {
 	About Us
 	===========================*/
 
-.aboutus-section {
-    padding: 90px 0;
-}
+/* ===================================================================
+ * # about
+ *
+ * ------------------------------------------------------------------- */
+ .s-about {
+    padding-top: 19.6rem;
+    padding-bottom: 19.6rem;
+    background-color: #3b0d11;
+    color: rgba(255, 255, 255, 0.8);
+  }
 
-.aboutus-title {
-    font-size: 30px;
-    letter-spacing: 0;
-    line-height: 32px;
-    margin: 0 0 39px;
-    padding: 0 0 11px;
-    position: relative;
+  .s-about .subhead {
+    color: #fb8b23;
+    margin-bottom: 4rem;
+  }
+
+  .s-about .lead {
+    color: #ffffff;
+    margin-bottom: 4rem;
+  }
+
+  .s-about .btn--about {
+    display: block;
+    width: 100%;
+    margin-right: 0;
+    background-color: #21070a;
+    border-color: #21070a;
+  }
+
+  /* -------------------------------------------------------------------
+   * ## about content
+   * ------------------------------------------------------------------- */
+  .about-content .column:first-child {
+    padding-right: 2.4vw;
+  }
+
+  .about-content .column:last-child {
+    padding-left: 2.4vw;
+  }
+
+  /* -------------------------------------------------------------------
+   * ## schedule of services
+   * ------------------------------------------------------------------- */
+  .about-sched {
+    list-style: none;
+    margin: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .about-sched h4 {
+    font-size: 1.5rem;
+    line-height: 1.333;
+    margin-top: 0;
     text-transform: uppercase;
-    color: #000;
-}
+    letter-spacing: .4rem;
+    color: #ffffff;
+  }
 
-.aboutus-title::after {
-    background: #fdb801 none repeat scroll 0 0;
-    bottom: 0;
-    content: "";
-    height: 2px;
-    left: 0;
-    position: absolute;
-    width: 54px;
-}
+  .about-sched li {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 3.2rem;
+    padding-left: 0;
+  }
 
-.aboutus-text {
-    color: #606060;
-    font-size: 13px;
-    line-height: 22px;
-    margin: 0 0 35px;
-}
+  /* -------------------------------------------------------------------
+   * responsive:
+   * about
+   * ------------------------------------------------------------------- */
+  @media screen and (max-width:1200px) {
+    .about-content {
+      max-width: 900px;
+    }
+
+    .about-content .column:first-child {
+      padding-right: 16px;
+    }
+
+    .about-content .column:last-child {
+      padding-left: 16px;
+    }
+
+    .about-content .column:first-child {
+      margin-bottom: 6.4rem;
+    }
+
+  }
+
+  @media screen and (max-width:600px) {
+    .about-content .column:first-child {
+      padding-right: 10px;
+    }
+
+    .about-content .column:last-child {
+      padding-left: 10px;
+    }
+
+  }
+
+  @media screen and (max-width:400px) {
+    .about-content .column:first-child {
+      padding-right: 0;
+    }
+
+    .about-content .column:last-child {
+      padding-left: 0;
+    }
+
+  }
+
+
+
 
 a:hover,
 a:active {
@@ -803,75 +883,8 @@ a:active {
     outline: 0;
 }
 
-.aboutus-more {
-    border: 1px solid #fdb801;
-    border-radius: 25px;
-    color: #fdb801;
-    display: inline-block;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0;
-    padding: 7px 20px;
-    text-transform: uppercase;
-}
 
-.feature .feature-box .iconset {
-    float: left;
-    position: relative;
-    width: 18%;
-}
 
-.feature .feature-box .iconset::after {
-    background: #fdb801 none repeat scroll 0 0;
-    content: "";
-    height: 150%;
-    left: 43%;
-    position: absolute;
-    top: 100%;
-    width: 1px;
-}
-
-.feature .feature-box .feature-content h4 {
-    color: #0f0f0f;
-    font-size: 18px;
-    letter-spacing: 0;
-    line-height: 22px;
-    margin: 0 0 5px;
-}
-
-.feature .feature-box .feature-content {
-    float: left;
-    padding-left: 28px;
-    width: 78%;
-}
-
-.feature .feature-box .feature-content h4 {
-    color: #0f0f0f;
-    font-size: 18px;
-    letter-spacing: 0;
-    line-height: 22px;
-    margin: 0 0 5px;
-}
-
-.feature .feature-box .feature-content p {
-    color: #606060;
-    font-size: 13px;
-    line-height: 22px;
-}
-
-.icon-about {
-    color: #f4b841;
-    padding: 0px;
-    font-size: 40px;
-    border: 1px solid #fdb801;
-    border-radius: 100px;
-    color: #fdb801;
-    font-size: 28px;
-    height: 70px;
-    line-height: 70px;
-    text-align: center;
-    width: 70px;
-}
 
 .team {
     color: #506A85;
@@ -1814,6 +1827,7 @@ p.checkout-coupon input[type="submit"] {
 
 .footer ul {
     margin-left: 0;
+    line-height: 2;
 }
 
 .footer .title {
@@ -1954,6 +1968,9 @@ a.readmore {
 
 .withpadding {
     padding: 30px 0;
+}
+.withpadding1 a {
+    color: #c9ca84;
 }
 
 .withpadding a,
@@ -2557,45 +2574,3 @@ line-height: 20px;
 
 
 
-
-
-
-
-
-
-/*
-
-#slider {
-    padding-bottom: 45px;
-    max-width: 100% !important;
-  }
-
-  .carousel-indicators li {
-    background: #C4C4BE;
-  }
-
-  .carousel-indicators li.active {
-        background: #FE980F;
-  }
-
-
-
-
-  .item button:hover {
-    background: #FE980F;
-  }
-
-  .control-carousel {
-    position: absolute;
-    top: 50%;
-    font-size: 60px;
-    color: #C2C2C1;
-  }
-
-  .control-carousel:hover{
-    color: #FE980F ;
-  }
-
-  .right {
-    right: 0;
-  } */

@@ -30,6 +30,7 @@ use Dompdf\Dompdf;
 use Session;
 use DB;
 use Carbon\Carbon;
+use Validator;
 
 class TourpackagesController extends Controller
 {
@@ -63,6 +64,19 @@ class TourpackagesController extends Controller
              if (Tourpackages::where('PackageCode', $request->PackageCode)->exists()){
                 return redirect()->back()->with('flash_message_error', 'Package code already exists!');
             }
+            if(empty($data['PackagePrice'])){
+                return redirect()->back()->with('flash_message_error', 'Price cannot be empty!');
+            }
+
+            $validator = Validator::make($request->all(), [
+                'PackageName' => 'required|regex:/^[\pL\s\-]+$/u|max:255',
+                'PackagePrice' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+                'PackageCode' => 'required',
+            ]);
+            if($validator->fails()){
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
             $tourpackages = new Tourpackages;
             $tourpackages->Category_id = $data['Category_id'];
             $tourpackages->PackageName = $data['PackageName'];
@@ -146,6 +160,15 @@ class TourpackagesController extends Controller
                 return redirect()->back()->with('flash_message_error', 'Select Under category option!');
             }
 
+            $validator = Validator::make($request->all(), [
+                'PackageName' => 'required|regex:/^[\pL\s\-]+$/u|max:255',
+                'PackagePrice' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+                'PackageCode' => 'required',
+            ]);
+            if($validator->fails()){
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
             if($request->hasFile('Imageaddress')){
                 $Imageaddress_tmp = $request->file('Imageaddress');
                 if($Imageaddress_tmp->isValid()){
@@ -191,7 +214,7 @@ class TourpackagesController extends Controller
             }else{
                 $selected = " ";
             }
-            $tourpackagecategory_dropdown .= "<option value='".$cat->id."'>".$cat->CategoryName."</option>";
+            $tourpackagecategory_dropdown .= "<option value='".$cat->id."' ".$selected.">".$cat->CategoryName."</option>";
         }
 
         return view('admin.tour.edit_tourpackages')->with(compact('tourpackagesDetails', 'tourpackagecategory_dropdown'));
@@ -295,6 +318,7 @@ class TourpackagesController extends Controller
         }
         if($request->isMethod('post')){
             $data = $request->all();
+
             //echo "<pre>"; print_r($data); die;
              foreach($data['idType'] as $key => $type){
                  Tourtype::where(['id' =>$data['idType'][$key]])->update([
@@ -396,6 +420,14 @@ class TourpackagesController extends Controller
                         return redirect('admin/add-tourtype/'.$id)->with('flash_message_error','"'.$val.'"Transportation name already exist for this tour! Please add another name.');
                     }
 
+                    $validator = Validator::make($request->all(), [
+                        'ToransportName' => 'required|regex:/^[\pL\s\-]+$/u|max:255',
+                        'TransportCost' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+                    ]);
+                    if($validator->fails()){
+                        return redirect()->back()->withErrors($validator)->withInput();
+                    }
+
                     $tourtransportation = new Tourtransportation;
                     $tourtransportation->Package_id =$id;
                     $tourtransportation->TransportName =$val;
@@ -416,6 +448,12 @@ class TourpackagesController extends Controller
         if($request->isMethod('post')){
             $data = $request->all();
             //echo "<pre>"; print_r($data); die;
+            $validator = Validator::make($request->all(), [
+                'TransportCost' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            ]);
+            if($validator->fails()){
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
             foreach($data['idTransport'] as $key => $transport){
                 Tourtransportation::where(['id' =>$data['idTransport'][$key]])->update([
                     'TransportCost'=>$data['TransportCost'][$key]
@@ -513,7 +551,9 @@ class TourpackagesController extends Controller
             if($request->isMethod('post')){
                 $data = $request->all();
                 //echo "<pre>"; print_r($data);die;
-
+                if(empty($data['LocationName'])){
+                    return redirect()->back()->with('flash_message_error', 'LocationName cannot be empty!');
+                }
                 $tourlocations = new Tourlocations;
                 $tourlocations->Package_id =$id;
                 $tourlocations->LocationName = $data['LocationName'];
@@ -655,17 +695,17 @@ class TourpackagesController extends Controller
     }
 
 
-    public function getTransportCost(Request $request)
-    {
-        $data = $request->all();
-        // echo "<pre>"; print_r($data); die;
-        $tranArr = explode("-", $data['idTransportName']);
+    // public function getTransportCost(Request $request)
+    // {
+    //     $data = $request->all();
+    //     // echo "<pre>"; print_r($data); die;
+    //     $tranArr = explode("-", $data['idTransportName']);
 
-        //echo $tourArr[0]; echo $tourArr[1]; die;
+    //     //echo $tourArr[0]; echo $tourArr[1]; die;
 
-        $tranAtt = Tourtransportation::where(['Package_id' => $tranArr[0], 'TransportName' => $tranArr[1]])->first();
-        echo $tranAtt->TransportCost;
-    }
+    //     $tranAtt = Tourtransportation::where(['Package_id' => $tranArr[0], 'TransportName' => $tranArr[1]])->first();
+    //     echo $tranAtt->TransportCost;
+    // }
 
     public function addtocart(Request $request){
         Session::forget('CouponAmount');
@@ -754,16 +794,16 @@ class TourpackagesController extends Controller
                 Session::put('Session_id',$Session_id);
             }
 
-            if (empty($data['TransportName'])){
-                $data['TransportName'] = '';
-            }
+            // if (empty($data['TransportName'])){
+            //     $data['TransportName'] = '';
+            // }
 
 
             $TourTypeNameArr = explode("-", $data['TourTypeName']);
             $TourTypeName = $TourTypeNameArr[1];
 
-            $TransportNameArr = explode("-", $data['TransportName']);
-            $TransportName = $TransportNameArr[1];
+            // $TransportNameArr = explode("-", $data['TransportName']);
+            // $TransportName = $TransportNameArr[1];
 
             if(empty($data['TourTypeName'])){
                 return redirect()->back()->with('flash_message_error', 'Select Tour type !');
@@ -797,7 +837,7 @@ class TourpackagesController extends Controller
                     'PackagePrice'=>$data['PackagePrice'],
                     'Travellers'=>$data['Travellers'],
                     'TourTypeName'=>$TourTypeName,
-                    'TransportName'=>$TransportName,
+                    // 'TransportName'=>$TransportName,
                     'UserEmail'=>$data['UserEmail'],
                     'Session_id'=>$Session_id]);
 
@@ -819,6 +859,7 @@ class TourpackagesController extends Controller
 
         foreach($userCart as $key =>$tourpackages){
             $tourpackagesDetails = Tourpackages::where('id', $tourpackages->Package_id)->first();
+            $tourpackagecategory = Tourpackagecategory::with('tourcategories')->where($id=null)->get();
             $userCart[$key]->Imageaddress = $tourpackagesDetails->Imageaddress;
         }
         $meta_title = "Booking Cart - GhanaTrek";

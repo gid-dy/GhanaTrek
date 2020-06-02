@@ -15,6 +15,7 @@
         <meta name="keywords" content="{{ $meta_keywords }}">
     @endif
   <!-- Favicons -->
+
   <link rel="shortcut icon" href="{{ asset('images/frontend_images/icon.png') }}" type="image/x-icon">
   <link rel="icon" href="{{ asset('images/frontend_images/icon.png') }}" type="image/x-icon">
 
@@ -41,6 +42,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexslider/2.2.0/flexslider-min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
   <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5e8d2b907daa0a0012e7bee3&product=inline-share-buttons&cms=website' async='async'></script>
+
 </head>
 </body>
 
@@ -64,6 +66,7 @@
     <script src="{{ asset('lib/animate-enhanced/animate-enhanced.min.js') }}"></script>
     <script src="{{ asset('lib/jigowatt/jigowatt.js') }}"></script>
     <script src="{{ asset('lib/easypiechart/easypiechart.min.js') }}"></script>
+
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
