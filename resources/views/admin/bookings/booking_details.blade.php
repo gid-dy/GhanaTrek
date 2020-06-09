@@ -3,7 +3,7 @@
 <!--main-container-part-->
 <div id="content">
     <div id="content-header">
-        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">Booking</a> </div>
+        <div id="breadcrumb"> <a href="{{ url('admin/dashboard') }}" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">Booking</a> </div>
             <h1>Booking #{{ $bookingDetails->id }}</h1>
             @if (Session::has('flash_message_success'))
                 <div class="alert alert-success alert-block">

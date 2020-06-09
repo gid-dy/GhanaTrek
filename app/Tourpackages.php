@@ -66,12 +66,12 @@ class Tourpackages extends Model
         return $currenciesArr;
     }
     public static function getTourSize($Package_id, $TourTypeName){
-        $getTourSize = TourType::select('TourTypeSize')->where(['Package_id'=>$Package_id, 'TourTypeName'=>$TourTypeName])->first();
+        $getTourSize = Tourtype::select('TourTypeSize')->where(['Package_id'=>$Package_id, 'TourTypeName'=>$TourTypeName])->first();
         return $getTourSize->TourTypeSize;
     }
 
     public static function getPackagePrice($Package_id,$TourTypeName){
-        $getPackagePrice = TourType::select('PackagePrice')->where(['Package_id'=>$Package_id,'TourTypeName'=>$TourTypeName])->first();
+        $getPackagePrice = Tourtype::select('PackagePrice')->where(['Package_id'=>$Package_id,'TourTypeName'=>$TourTypeName])->first();
         return $getPackagePrice->PackagePrice;
     }
 
@@ -90,7 +90,7 @@ class Tourpackages extends Model
     }
 
     public static function getTourTypeCount($Package_id,$TourTypeName){
-        $getTourTypeCount = TourType::where(['Package_id'=>$Package_id,'TourTypeName'=>$TourTypeName])->count();
+        $getTourTypeCount = Tourtype::where(['Package_id'=>$Package_id,'TourTypeName'=>$TourTypeName])->count();
         return $getTourTypeCount;
     }
 
@@ -101,7 +101,7 @@ class Tourpackages extends Model
         $userCart = json_decode(json_encode($userCart),true);
         // echo "<pre>"; print_r($userCart); die;
         foreach($userCart as $tour){
-            $tourPrice = TourType::where(['Package_id'=>$tour['Package_id'],'TourTypeName'=>$tour['TourTypeName']])->first();
+            $tourPrice = Tourtype::where(['Package_id'=>$tour['Package_id'],'TourTypeName'=>$tour['TourTypeName']])->first();
             $PackagePriceArray[] = $tourPrice->PackagePrice;
         }
         //echo print_r($PackagePriceArray);die;

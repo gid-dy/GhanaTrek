@@ -3,7 +3,7 @@
 
 <div id="content">
   <div id="content-header">
-    <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#">Banners</a> <a href="#" class="current">Edit Banner</a> </div>
+    <div id="breadcrumb"> <a href="{{ url('admin/dashboard') }}" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#">Banners</a> <a href="#" class="current">Edit Banner</a> </div>
     <h1>Banners</h1>
      @if (Session::has('flash_message_error'))
             <div class="alert alert-error alert-block">
@@ -39,9 +39,9 @@
                             <span class="action">Choose File</span></div>
                             @if(!empty($bannerDetails->Image))
                             <input type="hidden" name="current_image" value="{{ $bannerDetails->Image }}">
-                                
+
                             @endif
-                        
+
                     </div>
                 </div>
                 <div class="control-group">

@@ -602,7 +602,7 @@ class TourpackagesController extends Controller
         // $tourpackagesAll = json_decode(json_encode($tourpackagesAll));
         // dd($tourpackagesAll);
 
-        $TourTypeNameArray = TourType::select('TourTypeName')->groupBy('TourTypeName')->get();
+        $TourTypeNameArray = Tourtype::select('TourTypeName')->groupBy('TourTypeName')->get();
         $TourTypeNameArray =array_flatten(json_decode(json_encode($TourTypeNameArray),true));
         //dd($TourTypeNameArray);
         //echo "<pre>"; print_r($TourTypeNameArray); die;
@@ -665,7 +665,7 @@ class TourpackagesController extends Controller
         //    $tourAltImage = json_decode(json_encode($tourAltImage));
         //    echo "<pre>"; print_r($tourAltImage); die;
 
-        $total_availability = TourType::where('Package_id',$id)->sum('TourTypeSize');
+        $total_availability = Tourtype::where('Package_id',$id)->sum('TourTypeSize');
         //dd( $tourpackagesDetails);
 
         $feedbacks = Feedback::where('Status', '1')->get();
@@ -730,16 +730,16 @@ class TourpackagesController extends Controller
             $TourTypeNameArr = explode("-", $data['TourTypeName']);
             $TourTypeName = $TourTypeNameArr[1];
             //Get Tour package price
-            $tourPrice = TourType::where(['Package_id'=>$data['Package_id'], 'TourTypeName'=>$TourTypeName])->first();
+            $tourPrice = Tourtype::where(['Package_id'=>$data['Package_id'], 'TourTypeName'=>$TourTypeName])->first();
             $PackagePrice = $tourPrice->PackagePrice;
 
 
-            if (empty($data['TransportName'])){
-                $data['TransportName'] = '';
-            }
+            // if (empty($data['TransportName'])){
+            //     $data['TransportName'] = '';
+            // }
 
-            $TransportNameArr = explode("-", $data['TransportName']);
-            $TransportName = $TransportNameArr[1];
+            // $TransportNameArr = explode("-", $data['TransportName']);
+            // $TransportName = $TransportNameArr[1];
 
 
             //Get User Email
@@ -751,12 +751,20 @@ class TourpackagesController extends Controller
             //Get current date
             $created_at = Carbon::now();
 
-            $wishlistCount = DB::table('wishlist')->where(['UserEmail'=>$UserEmail,'Package_id'=>$data['Package_id'],'PackageName'=>$data['PackageName'],'PackageCode'=>$data['PackageCode'],'TourTypeName'=>$TourTypeName,'TransportName'=>$TransportName])->count();
+            $wishlistCount = DB::table('wishlist')->where(['UserEmail'=>$UserEmail,'Package_id'=>$data['Package_id'],'PackageName'=>$data['PackageName'],'PackageCode'=>$data['PackageCode'],'TourTypeName'=>$TourTypeName])->count();
 
             if($wishlistCount>0){
                 return redirect()->back()->with('flash_message_error','Tour package already exists in wishlist');
             }else{
-                DB::table('wishlist')->insert(['Package_id'=>$data['Package_id'],'PackageName'=>$data['PackageName'],'PackageCode'=>$data['PackageCode'],'PackagePrice'=>$PackagePrice,'TourTypeName'=>$TourTypeName,'TransportName'=>$TransportName,'Travellers'=>$data['Travellers'],'UserEmail'=>$UserEmail,'created_at'=>$created_at]);
+                DB::table('wishlist')->insert([
+                    'Package_id'=>$data['Package_id'],
+                    'PackageName'=>$data['PackageName'],
+                    'PackageCode'=>$data['PackageCode'],
+                    'PackagePrice'=>$PackagePrice,
+                    'TourTypeName'=>$TourTypeName,
+                    'Travellers'=>$data['Travellers'],
+                    'UserEmail'=>$UserEmail,
+                    'created_at'=>$created_at]);
             return redirect()->back()->with('flash_message_success','Tour packages has been added to your wishlist');
 
             }
@@ -766,10 +774,13 @@ class TourpackagesController extends Controller
             if (!empty($data['cartbutton']) && $data['cartbutton']=="Add-to-wishlist") {
                 // $data['Travellers'] =1;
             }
+            if(empty($data['TourTypeName'])){
+                return redirect()->back()->with('flash_message_error', 'Select Tour type !');
+            }
             //checking tour package availability
             $TourTypeName = explode("-", $data['TourTypeName']);
             //echo $data['Travellers']; die;
-            $getTourSize = TourType::where(['Package_id'=>$data['Package_id'],'TourTypeName'=>$TourTypeName[1]])->first();
+            $getTourSize = Tourtype::where(['Package_id'=>$data['Package_id'],'TourTypeName'=>$TourTypeName[1]])->first();
 
 
             if($getTourSize->TourTypeSize<$data['Travellers']){
@@ -783,13 +794,9 @@ class TourpackagesController extends Controller
             }else{
                 $data['UserEmail'] = Auth::user()->UserEmail;
             }
-            if (empty($data['TransportCost'])){
-                $data['TransportCost'] = '';
-            }
-
 
             $Session_id = Session::get('Session_id');
-            if(empty($Session_id)){
+            if(!isset($Session_id)){
                 $Session_id = str::random(40);
                 Session::put('Session_id',$Session_id);
             }
@@ -829,7 +836,7 @@ class TourpackagesController extends Controller
             }
 
 
-                $getSKU =Tourtype::select('SKU')->where(['Package_id' =>$data['Package_id'],'TourTypeName'=>$TourTypeNameArr[1]])->first();
+                $getSKU =Tourtype::select('SKU')->where(['Package_id' =>$data['Package_id'],'TourTypeName'=>$TourTypeName])->first();
                 DB::table('carts')->insert([
                     'Package_id'=>$data['Package_id'],
                     'PackageName'=>$data['PackageName'],
@@ -859,7 +866,6 @@ class TourpackagesController extends Controller
 
         foreach($userCart as $key =>$tourpackages){
             $tourpackagesDetails = Tourpackages::where('id', $tourpackages->Package_id)->first();
-            $tourpackagecategory = Tourpackagecategory::with('tourcategories')->where($id=null)->get();
             $userCart[$key]->Imageaddress = $tourpackagesDetails->Imageaddress;
         }
         $meta_title = "Booking Cart - GhanaTrek";
@@ -871,8 +877,8 @@ class TourpackagesController extends Controller
         if(Auth::check()){
             $UserEmail = Auth::user()->UserEmail;
         $userwishlist = DB::table('wishlist')->where('UserEmail',$UserEmail)->get();
-        foreach($userwishlist as $key => $tourpackage){
-            $tourpackagesDetails = Tourpackages::where('id',$tourpackage->Package_id)->first();
+        foreach($userwishlist as $key => $tourpackages){
+            $tourpackagesDetails = Tourpackages::where('id',$tourpackages->Package_id)->first();
             $userwishlist[$key]->Imageaddress =$tourpackagesDetails->Imageaddress;
             }
         }else{
@@ -1151,14 +1157,14 @@ class TourpackagesController extends Controller
                 $cartPro->save();
 
                 //reduce TourSize
-                $getTourSize = TourType::where('SKU', $pro->PackageCode)->first();
+                $getTourSize = Tourtype::where('SKU', $pro->PackageCode)->first();
                 //  echo "Original Size: " .$getTourSize->TourTypeSize;
                 //  echo "TourTypeSize to reduce: " .$pro->Travellers;
                  $newSize = $getTourSize->TourTypeSize - $pro->Travellers;
                  if($newSize<0){
                      $newSize = 0;
                  }
-                 TourType::where('SKU',$pro->PackageCode)->update(['TourTypeSize'=>$newSize]);
+                 Tourtype::where('SKU',$pro->PackageCode)->update(['TourTypeSize'=>$newSize]);
 
 
             }
@@ -1187,9 +1193,9 @@ class TourpackagesController extends Controller
                 $message->to($UserEmail)->subject('Booking Placed - GhanaTrek');
             });
 
-            if($data['Payment_method']=="COD"){
+            if($data['Payment_method']=="flutterwave"){
                 //cod......redirect user to thanks page
-                return redirect('/thanks');
+                return redirect('/flutterwave');
             }else{
                 //Ipay.....redirect user to ipay page
                 return redirect('/ipay');
@@ -1216,6 +1222,41 @@ class TourpackagesController extends Controller
         $UserEmail = Auth::user()->UserEmail;
         DB::table('carts')->where('UserEmail', $UserEmail)->delete();
         return view('booking.ipay');
+    }
+
+    public function flutterwave(Request $request){
+        $UserEmail = Auth::user()->UserEmail;
+        DB::table('carts')->where('UserEmail', $UserEmail)->delete();
+        $Booking_id = Session::get('Booking_id');
+        $Grand_total = Session::get('Grand_total');
+        $bookingDetails = Booking::getBookingDetails($Booking_id);
+        $bookingDetails = json_decode(json_encode($bookingDetails));
+
+        $parameters = [
+            "PBFPubKey" =>"FLWPUBK-5e15198d8fa8fee5c2cfb680d9eb9426-X",
+            "currency"=> "GHS",
+            "payment_type" => "mobilemoneygh",
+            "country" => "GH",
+            "amount" => $Grand_total,
+            "email" => $UserEmail,
+            "phonenumber"=> "",
+            "network"=> "MTN",
+            "firstname"=> "",
+            "lastname"=> "",
+            "voucher"=> "128373", // only needed for Vodafone users.
+            "IP"=> "355426087298442",
+            "txRef"=> "RV135706",
+            "orderRef"=> $Booking_id,
+            "is_mobile_money_gh"=> 1,
+            "redirect_url"=> url('https://rave-webhook.herokuapp.com/receivepayment'),
+            "device_fingerprint"=> "69e6b7f0b72037aa8428b70fbe03986c",
+            "curl"=>url('https://api.flutterwave.com/v3/transactions/123456/verify')
+        ];
+
+        return view('booking.flutterwave');
+    }
+    public function flutterwavethanks(Request $request){
+        return view('booking.thanks_flutterwave');
     }
 
     public function userBookings(){

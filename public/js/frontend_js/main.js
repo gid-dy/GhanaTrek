@@ -641,7 +641,7 @@ $().ready(function(){
 });
 
 function selectPaymentMethod(){
-    if($('#Slydepay').is(':checked') || $('#ipay').is(':checked') || $('#COD').is(':checked')){
+    if($('#flutterwave').is(':checked') || $('#ipay').is(':checked') || $('#COD').is(':checked')){
         //  alert("checked");
     }else{
         alert("Please select Payment Method");

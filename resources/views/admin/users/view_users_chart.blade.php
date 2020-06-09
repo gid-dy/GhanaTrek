@@ -36,7 +36,7 @@ $dataPoints = array(
 </script>
 <div id="content" class="col-lg-12">
   <div id="content-header">
-    <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#">Report</a> <a href="#" class="current">View Users Repoting</a> </div>
+    <div id="breadcrumb"> <a href="{{ url('admin/dashboard') }}" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#">Report</a> <a href="#" class="current">View Users Repoting</a> </div>
     <h1>Users Reporting</h1>
 
   </div>

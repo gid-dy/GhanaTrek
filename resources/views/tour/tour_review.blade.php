@@ -147,10 +147,10 @@
                         <div class="panel-group">
                             <span>Select Payment Method:</strong></label></span>
                         </div>
-                        {{--  <span class="col-md-4">
-                            <label><input type="radio" id="Slydepay" name="Payment_method" value="Slydepay">
+                         <span class="col-md-4">
+                            <label><input type="radio" id="flutterwave" name="Payment_method" value="flutterwave">
                                 Slydepay <img src="{{ asset('images/frontend_images/payment.png') }}"></label>
-                        </span>  --}}
+                        </span>
                         <span class="col-md-4">
                             <label><input type="radio" id="ipay" name="Payment_method" value="ipay">
                                 ipay <img src="{{ asset('images/frontend_images/ipay.jpg') }}"></label>

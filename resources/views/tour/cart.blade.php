@@ -1,4 +1,3 @@
-
 @extends('layouts.frontLayout.userdesign')
     @section('content')
     <?php use App\Tourpackages; ?>

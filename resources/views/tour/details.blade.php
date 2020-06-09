@@ -79,11 +79,13 @@
                                             <label>Number of Travellers</label>
                                             <input id="nt" type="number"  min="1" max="1"  name="Travellers" value="1" />
                                         </span>
-                                        @if($total_availability>0)
-                                            <button class="add-to-cart btn btn-default" id="cartbutton" type="submit" name="cartbutton " value="Add to cart">add to cart</button>
-                                        @endif
-                                        <button class="like btn btn-default pull-right"  id="wishlistbutton" type="submit" name="wishlistbutton" value="Add to wishlist">Add to wishlist <span class="fa fa-heart"></span></button>
-                                        <div class="sharethis-inline-share-buttons" style="margin-top:10px;"></div>
+                                        <span id="next-action">
+                                            @if($total_availability>0)
+                                                <button class="add-to-cart btn" id="cartbutton" type="submit" name="cartbutton " value="Add to cart">add to cart</button>
+                                            @endif
+                                            <button class="like btn"  id="wishlistbutton" type="submit" name="wishlistbutton" value="Add to wishlist">Add to wishlist <span class="fa fa-heart"></span></button>
+                                            <div class="sharethis-inline-share-buttons" style="margin-top:10px;"></div>
+                                        </span>
                                     </div>
                                 </form>
                             </div>
@@ -94,21 +96,19 @@
         </div>
     </section>
     <section>
-        <div class="container info" style="margin-top: 40px;">
-    <div class="container">
+        <div class="container">
             <div class="row">
-                <div class="col-md-12">
+                <div class="weather col-sm-12">
                     @foreach($tourpackagesDetails->tourlocations as $tourlocation)
-                        <div class="col-md-8">
+                        <div class="col-sm-8">
                             <?php echo nl2br($tourlocation->Weather); ?>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-sm-4">
                             <?php echo nl2br($tourlocation->WeatherDetails); ?>
                         </div>
                     @endforeach
                 </div>
             </div>
-        </div>
 
 
 
@@ -116,7 +116,7 @@
                 <div class="col-lg-12 col-sm-12">
                     <div class="row center">
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
+                            <div class="modal-dialog" role="document" style="width: 1200px;">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="exampleModalLabel">{{ $tourpackagesDetails->PackageName}}</h5>
@@ -127,7 +127,7 @@
                                     <div class="modal-body col-lg-12 col-sm-12">
                                         @foreach($tourpackagesDetails->tourlocations as $tourlocation)
                                             {{--  <div id="map-canvas"></div>  --}}
-                                            <div id="map" style="height: 700px; "></div>
+                                            <div id="map" style="height: 1000px; "></div>
                                         <script>
                                              var map, infoWindow;
                                             function initMap(){
@@ -199,7 +199,7 @@
 
 
                                         </script>
-                                        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxfczdjYzwjxHIzMGAXkKwimiM3eaKFoc&callback=initMap" async="" defer="defer" type="text/javascript">
+                                        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpBlWKR3Uy7ZIVYtShVwPAC7ebaE3vZqg&callback=initMap" async="" defer="defer" type="text/javascript">
                                         </script>
                                         @endforeach
                                     </div>
@@ -226,7 +226,7 @@
             <div class="row">
                 <!-- Nav tabs -->
                 <div class="col-xs-12">
-                    <ul class="pro-info-tab-list longbar section">
+                    <ul class="pro-info-tab-list withpadding1" style="list-style-type: none">
                         <li class="active"><a href="#more-info" data-toggle="tab">Description</a></li>
                         <li><a href="#data-sheet" data-toggle="tab">All You need to know</a></li>
                         <li><a href="#reviews" data-toggle="tab">Reviews</a></li>
@@ -235,23 +235,24 @@
                 </div>
                 <!-- Tab panes -->
                 <div class="tab-content col-xs-12">
-                    <div class="pro-info-tab tab-pane active" id="more-info">
+
                         <p style="font-weight: 700;"><?php echo nl2br($tourpackagesDetails->Description); ?></p>
                         <hr>
+                        <div class="pro-info-tab tab-pane active" id="more-info">
                                 <label class="control-label"><h4>EXTRA</h4></label>
                         @foreach($tourpackagesDetails->tourincludes as $tourinclude)
-                        <p style="margin-left:240px;font-weight: 700;">{{ $tourinclude->TourIncludeInfo }}</p>
+                        <p style="font-weight: 700;">{{ $tourinclude->TourIncludeInfo }}</p>
                         @endforeach
                         <hr>
 
                             <label class="control-label"><h4>Accomodation</h4></label>
                         @foreach($tourpackagesDetails->accommodations as $accommodation)
-                        <p style="margin-left:240px;font-weight: 700;">{{ $accommodation->AccommodationName }}</p>
+                        <p style="font-weight: 700;">{{ $accommodation->AccommodationName }}</p>
                         @endforeach
                         <hr>
 
                         <label class="control-label"><h4>Important Information</h4></label>
-                        <ul style="margin-left:240px; font-size:16px;font-weight: 700;line-height:2">
+                        <ul style=" font-size:16px;font-weight: 700;line-height:2">
                             <li>Passport or ID card for children</li>
                             <li>Children will need a valid ID in order to prove their age at the time of the activity (applicable for 4 to 17-year-olds)</li>
                             <li>Passport or ID card for children</li>
@@ -261,11 +262,11 @@
                     <div class="pro-info-tab tab-pane" id="data-sheet">
                         <label class="control-label"><strong>Include</strong></label>
                             @foreach($tourpackagesDetails->tourincludes as $tourinclude)
-                                <p style="margin-left:240px;"><i class="fa fa-check-circle"></i> {{ $tourinclude->IncludeName }}</p>
+                                <p style=""><i class="fa fa-check-circle"></i> {{ $tourinclude->IncludeName }}</p>
                             @endforeach
                             <label class="control-label"><strong>Exclude</strong></label>
                              @foreach($tourpackagesDetails->tourincludes as $tourinclude)
-                                <p style="margin-left:240px;"><i class="fa fa-times-circle"></i> {{ $tourinclude->TourExcludeName }}</p>
+                                <p style=""><i class="fa fa-times-circle"></i> {{ $tourinclude->TourExcludeName }}</p>
                             @endforeach
                     </div>
                     <div class="pro-info-tab tab-pane" id="reviews">

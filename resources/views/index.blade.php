@@ -1,6 +1,6 @@
-<?php use App\Tourpackages; ?>
 @extends('layouts.frontLayout.userdesign')
     @section('content')
+        <?php use App\Tourpackages; ?>
 
 
 
@@ -15,25 +15,9 @@
                 </div>
             </li>
             @endforeach
-            
+
         </ul>
     </div>
-
-    {{-- <div class="video_banner">
-	    <div class="overlay"></div>
-        <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">
-            <source src="{{ asset('images/frontend_images/tour.mp4') }}" type="video/mp4">
-        </video>
-        <div class="container h-100">
-            <div class="d-flex text-center h-100">
-                <div class="my-auto w-100 text-white">
-                    <h1 class="display-3">Great Offers</h1>
-                    <h2>Experience the best from us</h2>
-                </div>
-            </div>
-        </div>
-	</div> --}}
-
 
     <section class="section1">
         <div class="container clearfix">

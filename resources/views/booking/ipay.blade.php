@@ -13,6 +13,9 @@
                                     border-color: #04448C;
                                     border-radius: 17px !important;
                                 }
+                                .button{
+                                    margin-left:100px;
+                                }
             .modal{
                             width: 100% !important;
                         }
@@ -65,7 +68,7 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <img src="https://payments2.ipaygh.com/app/webroot/img/LOGO-MER02797.png" class="mx-auto d-block logo">
+                                        <h4 style="text-align: center; font-weight:400;">GHANA<span style="color: #fafd44;">TREK</span></h4>
                                     </div>
                                     <?php $bookingDetails = Booking::getBookingDetails(Session::get('Booking_id'));
                                     $bookingDetails =json_decode(json_encode($bookingDetails));
@@ -73,7 +76,7 @@
                                     <form action="https://manage.ipaygh.com/gateway/checkout" id="ipay_checkout" method="post" name="ipay_checkout" target="_blank">
                                         <div class="modal-body">
                                             <legend class="text-center mt-1">Make Payment</legend>
-                                            <input name="merchant_key" type="hidden" value="tk_9e3161cc-8efa-11ea-b8b9-f23c9170642f">
+                                            <input name="merchant_key" type="hidden" value="9e315bdc-8efa-11ea-b8b9-f23c9170642f">
                                             <input id="merchant_code" type="hidden" value="MER04816">
                                             <input name="source" type="hidden" value="WIDGET">
                                             <input name="success_url" type="hidden" value="{{ url('ipay/thanks') }}">
@@ -84,35 +87,35 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="checkout-form-list">
-                                                        <input type="text" title="Name" name="extra_name" id="name" class="form-control" placeholder="First & Last Name" value="{{  $bookingDetails->SurName }} {{  $bookingDetails->OtherNames }}">
+                                                        <input type="text" title="Name" name="extra_name" id="name" class="form-control" placeholder="First & Last Name" value="{{  $bookingDetails->SurName }} {{  $bookingDetails->OtherNames }}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="checkout-form-list">
-                                                        <input type="tel" title="Mobile Number" name="extra_mobile" id="number" class="form-control" maxlength="10" placeholder="Contact Number" value="{{  $bookingDetails->Mobile }}">
+                                                        <input type="tel" title="Mobile Number" name="extra_mobile" id="number" class="form-control" maxlength="10" placeholder="Contact Number" value="{{  $bookingDetails->Mobile }}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="checkout-form-list">
-                                                        <input type="email" name="email" id="extra_email" class="form-control" placeholder="Email" value="{{  $bookingDetails->UserEmail }}">
+                                                        <input type="email" name="email" id="extra_email" class="form-control" placeholder="Email" value="{{  $bookingDetails->UserEmail }}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="checkout-form-list">
-                                                        <input type="text" name="total" class="form-control" id="total" placeholder="Amount(GH₵)" value="{{  $bookingDetails->Grand_total }}">
+                                                        <input type="text" name="total" class="form-control" id="total" placeholder="Amount(GH₵)" value="{{  $bookingDetails->Grand_total }}.00" readonly>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="checkout-form-list">
-                                                        <input class="form-control" type="text" name="description" id="description" placeholder="Description of Payment" value="Payment of tour site.">
+                                                        <input class="form-control" type="text" name="description" id="description" placeholder="Description of Payment" value="Payment of tour site." readonly>
                                                     </div>
                                                 </div>
                                             </div>

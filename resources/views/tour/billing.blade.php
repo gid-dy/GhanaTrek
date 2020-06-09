@@ -85,7 +85,7 @@
                                         </div>
                                     </div>
                                     <div class="form-check">
-                                        <input value="{{ $userDetails->SurName }}" class="form-check-input" id="ship-box" type="checkbox" />
+                                        <input value="{{ $userDetails->SurName }} {{ $userDetails->OtherNames }}" type="checkbox" class="form-check-input" id="ship-box"  />
                                         <label class="form-check-label" for="ship-box">DIFFERENT TRAVELING DETAILS ?<label>
                                     </div>
                                 </div>

@@ -3,15 +3,15 @@
 
 <div id="content">
   <div id="content-header">
-    <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#">Tour Packages</a> <a href="#" class="current">Add Image</a> </div>
+    <div id="breadcrumb"> <a href="{{ url('admin/dashboard') }}" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#">Tour Packages</a> <a href="#" class="current">Add Image</a> </div>
     <h1>Images</h1>
-     @if (Session::has('flash_message_error'))    
+     @if (Session::has('flash_message_error'))
             <div class="alert alert-error alert-block">
                 <button type="button" class="close" data-dismiss='alert'></button>
                 <strong>{!! session('flash_message_error') !!}</strong>
             </div>
-        @endif 
-        @if (Session::has('flash_message_success'))    
+        @endif
+        @if (Session::has('flash_message_success'))
             <div class="alert alert-success alert-block">
                 <button type="button" class="close" data-dismiss='alert'></button>
                 <strong>{!! session('flash_message_success') !!}</strong>
@@ -25,7 +25,7 @@
           <div class="widget-title"> <span class="icon"> <i class="icon-info-sign"></i> </span>
             <h5>Add Tour Image</h5>
           </div>
-          
+
           <div class="widget-content nopadding">
             <form enctype="multipart/form-data" class="form-horizontal" method="post" action="{{ url('/admin/add-image/'.$tourpackagesDetails->id) }}" name="add_image" id="add_image">
                 @csrf
@@ -45,7 +45,7 @@
                     </div>
                 </div>
 
-              
+
               <div class="form-actions">
                 <input type="submit" value="Add Alt Image" class="btn btn-success">
               </div>
@@ -57,7 +57,7 @@
 
   </div>
   <div class="row-fluid">
-      <div class="span12"> 
+      <div class="span12">
         <div class="widget-box">
           <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
             <h5>View Tourtype</h5>
@@ -71,7 +71,7 @@
                     <th>Image</th>
                     <th>Actions</th>
                     </tr>
-                     
+
                 </thead>
                 <tbody>
                         @foreach ($packageimages as $packageimage)
@@ -87,7 +87,7 @@
                               <a rel="{{ $packageimage->id }}" rel1="delete-alt-image" href="javascript:" class="btn btn-danger btn-mini deleteRecord">Delete</a>
                             </td>
                         </tr>
-                    @endforeach                
+                    @endforeach
                 </tbody>
             </table>
           </div>
@@ -97,6 +97,6 @@
 
 
 
- 
+
 </div>
 @endsection

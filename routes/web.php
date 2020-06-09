@@ -20,16 +20,6 @@
   Route::get('/home', 'HomeController@index')->name('home');
 
 // Auth::routes();
-
-// Route::get('/home', 'HomeController@index')->name('home');
-
-// Auth::routes();
-
-// Route::get('/home', 'HomeController@index')->name('home');
-
-// Auth::routes();
-
-// Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/', 'IndexController@index')->name('index');
 //tour filter
 Route::match(['get','post'],'/tours-filter','TourpackagesController@filter');
@@ -38,31 +28,38 @@ Route::match(['get','post'],'/tours-filter','TourpackagesController@filter');
 //category listing page
 Route::get('/tour/{CategoryName}','TourpackagesController@tour');
 
-
 //tour detail page
 Route::get('/tours/{id}','TourpackagesController@tours');
-Route::get('/feedback','TourpackagesController@getfeedback');
-
-
-//add to cart
-Route::match(['get','post'],'/add-cart', 'TourpackagesController@addtocart')->name('add-cart');
 
 //cart page
 Route::match(['get','post'],'/cart', 'TourpackagesController@cart');
 
-//Route::get('/cart', 'TourpackagesController@cart');
-
-//delete tour from cart
-Route::get('/wishlist/delete-tourpackage/{id}', 'TourpackagesController@deletewishlistPackage');
+//add to cart
+Route::match(['get','post'],'/add-cart', 'TourpackagesController@addtocart')->name('add-cart');
 
 //delete tour from wishlist
 Route::get('/cart/delete-tourpackage/{id}', 'TourpackagesController@deleteCartPackage');
 
+//TourType Price
 Route::get('/get-tourpackage-Price','TourpackagesController@getTourpackagePrice');
-Route::get('/get-transport-Cost','TourpackagesController@getTransportCost');
+
+ //wishlist page
+ Route::match(['get','post'],'/wishlist', 'TourpackagesController@wishlist');
 
 //Apply Coupon
 Route::post('/cart/apply-coupon', 'TourpackagesController@applyCoupon');
+
+//feedback
+Route::get('/feedback','TourpackagesController@getfeedback');
+
+
+//delete tour from cart
+Route::get('/wishlist/delete-tourpackage/{id}', 'TourpackagesController@deletewishlistPackage');
+
+
+Route::get('/get-transport-Cost','TourpackagesController@getTransportCost');
+
+
 
 
 
@@ -230,9 +227,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminlogin']], function() {
     Route::get('/update-feedback/{id}/{Status}','FeedbackController@updateFeedbackStatus');
     //Delete Feedback
     Route::get('/delete-feedback/{id}', 'FeedbackController@deleteFeedback');
-
-
-
 });
 
 
@@ -245,22 +239,23 @@ Route::group(['middleware' => ['frontlogin']], function() {
     Route::post('/check-user-pwd', 'UsersController@chkUserPassword');
     Route::post('/update-user-pwd', 'UsersController@updatePassword');
     //checkout page
-    Route::match(['get','post'],'billing', 'TourpackagesController@billing');
+    Route::match(['get','post'],'/billing', 'TourpackagesController@billing');
     //tour Review Page
     Route::match(['get','post'],'/tour-review','TourpackagesController@tourReview');
     //Place Package
     Route::match(['get','post'],'/place-package','TourpackagesController@placePackage');
-    //wishlist page
-    Route::match(['get','post'],'/wishlist', 'TourpackagesController@wishlist');
     //Thanks Page
     Route::get('/thanks', 'TourpackagesController@thanks');
     //ipay routes
     Route::get('/ipay','TourpackagesController@ipay');
+    //flutter routes
+    Route::get('/flutterwave','TourpackagesController@flutterwave');
     //ipay return thanks page
     Route::get('/ipay/thanks','TourpackagesController@ipaythanks');
-    //ipay rcancel page
+    //ipay cancel page
     Route::get('/ipay/cancel','TourpackagesController@ipayCancel');
-    Route::get('/slydepay','SlydepayController@SlydepayPayment');
+    //flutterwave return thanks page
+    Route::get('/flutterwave/thanks','TourpackagesController@flutterwavethanks');
     //User Bookings Page
     Route::get('/Bookings', 'TourpackagesController@userBookings');
     //User Booked Package Page

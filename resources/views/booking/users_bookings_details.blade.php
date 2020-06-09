@@ -7,9 +7,9 @@
             <div class="row" style="margin-top: 30px;">
                 <section class="post-wrapper-top">
                     <div class="container">
-                        <div class="breadcrumb">
+                        <div class="breadcrumb withpadding1">
                             <ul class="breadcrumb">
-                                <li><a href="index.html">Home</a></li>
+                                <li><a href="{{ url('/') }}">Home</a></li>
                                 <li><a href="{{ url('Bookings') }}">Booking</a></li>
                                 <li class="active">{{ $bookingDetails->id }}</li>
                             </ul>

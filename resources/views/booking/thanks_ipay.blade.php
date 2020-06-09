@@ -1,6 +1,6 @@
 @extends('layouts.frontLayout.userdesign')
     @section('content')
-
+    <?php use App\Booking; ?>
 
     <section>
         <div class="container">
@@ -8,7 +8,6 @@
                 <div class="jumbotron text-center">
                     <h3>YOUR IPAY BOOKING HAS BEEN PLACED</h3>
                     <p>Thanks for the payment. We will process your booking very soon</p>
-                    <p class="lead">Your booking number is <strong>{{ Session::get('Booking_id') }}</strong> and total amount paid is <strong>GHS {{ Session::get('Grand_total') }}</strong></p>
                     <hr>
 
 

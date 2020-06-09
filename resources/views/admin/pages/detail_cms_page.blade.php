@@ -2,7 +2,7 @@
 @section('content')
 <div id="content">
     <div id="content-header">
-        <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#">CMS Pages</a> <a href="#" class="current">Detail CMS Pages</a> </div>
+        <div id="breadcrumb"> <a href="{{ url('admin/dashboard') }}" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#">CMS Pages</a> <a href="#" class="current">Detail CMS Pages</a> </div>
         <h1>Detail CMS Page</h1>
         @if (Session::has('flash_message_error'))
             <div class="alert alert-error alert-block">

@@ -1,6 +1,6 @@
 @extends('layouts.frontLayout.userdesign')
     @section('content')
-
+    <?php use App\Booking; ?>
 
     <section>
         <div class="container">

@@ -90,7 +90,7 @@ class UsersController extends Controller
 
                 if(!empty(Session::get('Session_id'))){
                     $Session_id = Session::get('Session_id');
-                    DB::table('carts')->where('Session_id', $Session_id)->update(['UserEmail', $data['UserEmail']]);
+                    DB::table('carts')->where('Session_id', $Session_id)->update(['UserEmail'=> $data['UserEmail']]);
                 }
                 return redirect('/cart');
             }
@@ -129,7 +129,7 @@ class UsersController extends Controller
 
             if(!empty(Session::get('Session_id'))){
                 $Session_id = Session::get('Session_id');
-                DB::table('carts')->where('Session_id', $Session_id)->update(['UserEmail', $data['UserEmail']]);
+                DB::table('carts')->where('Session_id',$Session_id)->update(['UserEmail'=> $data['UserEmail']]);
             }
             return redirect(url('/cart'));
         }else{
