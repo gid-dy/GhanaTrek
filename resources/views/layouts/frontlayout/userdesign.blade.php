@@ -39,6 +39,7 @@
   <link rel="stylesheet" href="{{ asset('css/frontend_css/colors/blue.css') }}">
   <link rel="stylesheet" href="{{ asset('css/frontend_css/shop.css') }}">
   <link rel="stylesheet" href="{{ asset('css/frontend_css/passtrength.css') }}">
+  {{-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"> --}}
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexslider/2.2.0/flexslider-min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
   <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5e8d2b907daa0a0012e7bee3&product=inline-share-buttons&cms=website' async='async'></script>
@@ -46,11 +47,11 @@
 </head>
 </body>
 
-    @include('layouts.frontlayout.user_topbar')
-    @include('layouts.frontlayout.user_header')
+    @include('layouts.frontLayout.user_topbar')
+    @include('layouts.frontLayout.user_header')
     @yield('content')
-    @include('layouts.frontlayout.user_subscription')
-    @include('layouts.frontlayout.user_footer')
+    @include('layouts.frontLayout.user_subscription')
+    @include('layouts.frontLayout.user_footer')
 {{--  <!-- JavaScript Libraries -->  --}}
 
     <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
