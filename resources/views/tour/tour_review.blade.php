@@ -149,11 +149,11 @@
                         </div>
                          <span class="col-md-4">
                             <label><input type="radio" id="flutterwave" name="Payment_method" value="flutterwave">
-                                Slydepay <img src="{{ asset('images/frontend_images/payment.png') }}"></label>
+                                CARD <img src="{{ asset('images/frontend_images/payment.png') }}"></label>
                         </span>
                         <span class="col-md-4">
                             <label><input type="radio" id="ipay" name="Payment_method" value="ipay">
-                                ipay <img src="{{ asset('images/frontend_images/ipay.jpg') }}"></label>
+                                MOBILE MONEY <img src="{{ asset('images/frontend_images/ipay.jpg') }}"></label>
                         </span>
                         <span class="col-md-4">
                         {{--  <label><input type="radio" id="COD" name="Payment_method" value="COD">
