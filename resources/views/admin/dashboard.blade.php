@@ -62,7 +62,8 @@ $dataPoints = array(
                 {y: <?php echo $getUserCountries[0]['count']; ?>, label: "<?php echo $getUserCountries[0]['Country']; ?>"},
                 {y: <?php echo $getUserCountries[1]['count']; ?>, label: "<?php echo $getUserCountries[1]['Country']; ?>"},
                 {y: <?php echo $getUserCountries[2]['count']; ?>, label: "<?php echo $getUserCountries[2]['Country']; ?>"},
-
+                {y: <?php echo $getUserCountries[3]['count']; ?>, label: "<?php echo $getUserCountries[3]['Country']; ?>"},
+                {y: <?php echo $getUserCountries[4]['count']; ?>, label: "<?php echo $getUserCountries[4]['Country']; ?>"},
             ]
         }]
     });
