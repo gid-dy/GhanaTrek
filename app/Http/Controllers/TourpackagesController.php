@@ -1134,7 +1134,7 @@ class TourpackagesController extends Controller
             $booking->Amount = $Amount;
             $booking->Status = "new";
             $booking->Payment_method = $data['Payment_method'];
-            $booking->Grand_total = $Grand_total;
+            $booking->Grand_total = $data['Grand_total'];
             $booking->save();
 
             $Booking_id = DB::getPdo()->lastInsertId();
@@ -1166,7 +1166,7 @@ class TourpackagesController extends Controller
 
             }
             Session::put('Booking_id',$Booking_id);
-            Session::put('Grand_total',$Grand_total);
+            Session::put('Grand_total',$data['Grand_total']);
 
             $tourpackagesDetails = Booking::with('bookings')->where('id', $Booking_id)->first();
             $tourpackagesDetails = json_decode(json_encode($tourpackagesDetails),true);
