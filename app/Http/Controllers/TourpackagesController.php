@@ -1206,23 +1206,27 @@ class TourpackagesController extends Controller
     }
 
     public function ipaythanks(Request $request){
+        $UserEmail = Auth::user()->UserEmail;
+        DB::table('carts')->where('UserEmail', $UserEmail)->delete();
         return view('booking.thanks_ipay');
     }
 
     public function ipaycancel(Request $request){
+        $UserEmail = Auth::user()->UserEmail;
+        DB::table('carts')->where('UserEmail', $UserEmail);
         return view('booking.cancel_ipay');
     }
 
 
     public function ipay(Request $request){
         $UserEmail = Auth::user()->UserEmail;
-        DB::table('carts')->where('UserEmail', $UserEmail)->delete();
+        DB::table('carts')->where('UserEmail', $UserEmail);
         return view('booking.ipay');
     }
 
     public function flutterwave(Request $request){
         $UserEmail = Auth::user()->UserEmail;
-        DB::table('carts')->where('UserEmail', $UserEmail)->delete();
+        DB::table('carts')->where('UserEmail', $UserEmail);
         $Booking_id = Session::get('Booking_id');
         $Grand_total = Session::get('Grand_total');
         $bookingDetails = Booking::getBookingDetails($Booking_id);
@@ -1252,6 +1256,8 @@ class TourpackagesController extends Controller
         return view('booking.flutterwave');
     }
     public function flutterwavethanks(Request $request){
+        $UserEmail = Auth::user()->UserEmail;
+        DB::table('carts')->where('UserEmail', $UserEmail)->delete();
         return view('booking.thanks_flutterwave');
     }
 
