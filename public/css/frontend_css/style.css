@@ -1190,20 +1190,23 @@ a:active {
 	===========================*/
 
 
-@media (min-width: 576px) {
-    .subscribe {
-        position: relative;
-        margin-top: 40px;
-        padding: 120px 0;
-        background: url("/images/frontend_images/32.jpg")no-repeat center fixed;
-        background-size: cover;
-        z-index: 1;
-    }
+@media (min-width: 360px) {
+
+.subscribe {
+    position: relative;
+    margin-top: 40px;
+    padding: 120px 0;
+    background: url("/images/frontend_images/32.jpg")no-repeat center fixed;
+    background-size: cover;
+    z-index: 1;
+}
+
     .your-order {
         background: #f2f2f2 none repeat scroll 0 0;
         padding: 30px 40px 45px;
     }
 }
+
 
 
 /*subscribe-title*/
@@ -2573,11 +2576,3 @@ line-height: 20px;
     padding-bottom: 30px;
     margin-bottom: 20px;
   }
-
-
-
-
-
-
-
-
