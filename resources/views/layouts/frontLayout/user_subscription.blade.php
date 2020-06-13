@@ -14,7 +14,7 @@
                     <div class="clearfix"></div>
                     <i class="fa fa-envelope"></i>
                 </div>
-                <div  id="statusSubscriber" style="display: none; font-weight:1600; font-size:30px; background-color: #f2eee4; opacity:0.5; border:0;"></div>
+                <div onclick="checkSubscriber();"  id="statusSubscriber" style="display: none; font-weight:1600; font-size:30px; background-color: #f2eee4; opacity:0.5; border:0;"></div>
             </div>
         </div>
     </form>

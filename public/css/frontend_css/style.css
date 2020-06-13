@@ -1190,13 +1190,8 @@ a:active {
 	===========================*/
 
 
-@media (min-width: 576px) {
+@media (min-width: 360px) {
 
-    .your-order {
-        background: #f2f2f2 none repeat scroll 0 0;
-        padding: 30px 40px 45px;
-    }
-}
 .subscribe {
     position: relative;
     margin-top: 40px;
@@ -1205,6 +1200,14 @@ a:active {
     background-size: cover;
     z-index: 1;
 }
+
+    .your-order {
+        background: #f2f2f2 none repeat scroll 0 0;
+        padding: 30px 40px 45px;
+    }
+}
+
+
 
 /*subscribe-title*/
 
@@ -2573,11 +2576,3 @@ line-height: 20px;
     padding-bottom: 30px;
     margin-bottom: 20px;
   }
-
-
-
-
-
-
-
-

@@ -154,12 +154,13 @@
                         <span class="col-md-4">
                             <label><input type="radio" id="ipay" name="Payment_method" value="ipay">
                                 MOBILE MONEY <img src="{{ asset('images/frontend_images/ipay.jpg') }}"></label>
-                        </span>
-                        <br/><br/><br/>
+                        </span><br><br><br>
                         <span class="col-md-4">
                         {{--  <label><input type="radio" id="COD" name="Payment_method" value="COD">
                                 COD <img src="{{ asset('images/frontend_images/payment.png') }}"></label>
                         </span>  --}}
+                        <hr>
+
                         <div class="order-button-payment">
                             <input type="submit" onclick="return selectPaymentMethod();" value="Proceed to Payment" />
                         </div>

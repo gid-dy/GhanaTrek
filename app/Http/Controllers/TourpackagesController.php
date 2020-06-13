@@ -1117,7 +1117,6 @@ class TourpackagesController extends Controller
 
             $Grand_total = Tourpackages::getGrandTotal();
 
-
             $booking = new Booking;
             $booking->user_id = $user_id;
             $booking->UserEmail = $UserEmail;
@@ -1224,6 +1223,9 @@ class TourpackagesController extends Controller
         return view('booking.ipay');
     }
 
+
+
+
     public function flutterwave(Request $request){
         $UserEmail = Auth::user()->UserEmail;
         DB::table('carts')->where('UserEmail', $UserEmail);
@@ -1231,27 +1233,6 @@ class TourpackagesController extends Controller
         $Grand_total = Session::get('Grand_total');
         $bookingDetails = Booking::getBookingDetails($Booking_id);
         $bookingDetails = json_decode(json_encode($bookingDetails));
-
-        $parameters = [
-            "PBFPubKey" =>"FLWPUBK-5e15198d8fa8fee5c2cfb680d9eb9426-X",
-            "currency"=> "GHS",
-            "payment_type" => "mobilemoneygh",
-            "country" => "GH",
-            "amount" => $Grand_total,
-            "email" => $UserEmail,
-            "phonenumber"=> "",
-            "network"=> "MTN",
-            "firstname"=> "",
-            "lastname"=> "",
-            "voucher"=> "128373", // only needed for Vodafone users.
-            "IP"=> "355426087298442",
-            "txRef"=> "RV135706",
-            "orderRef"=> $Booking_id,
-            "is_mobile_money_gh"=> 1,
-            "redirect_url"=> url('https://rave-webhook.herokuapp.com/receivepayment'),
-            "device_fingerprint"=> "69e6b7f0b72037aa8428b70fbe03986c",
-            "curl"=>url('https://api.flutterwave.com/v3/transactions/123456/verify')
-        ];
 
         return view('booking.flutterwave');
     }
