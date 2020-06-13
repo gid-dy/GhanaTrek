@@ -94,6 +94,11 @@ class Tourpackages extends Model
         return $getTourTypeCount;
     }
 
+    public static function getCart($PackagePrice){
+        $getCart = DB::table('carts')->where(['PackagePrice'=>$PackagePrice])->count();
+        return $getCart;
+    }
+
     public static function getGrandTotal(){
         $getGrandTotal = "";
         $SurName = Auth::user()->UserEmail;

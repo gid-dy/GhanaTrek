@@ -9,12 +9,12 @@
         <div class="row">
             <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
                 <div id="btnSubmit" class="custom-input-group">
-                    <input onfocus="enableSubscriber();" onfocusout="checkSubscriber();" type="email" name="newsletter_email" id="newsletter_email" class="form-control" placeholder="Enter your Email Here">
+                    <input onfocus="enableSubscriber();" onfocusout="checkSubscriber();" type="email" name="newsletter_email" id="newsletter_email" class="form-control" placeholder="Enter Email">
                     <button  onclick="checkSubscriber(); addSubscriber();" type="submit" class="appsLand-btn subscribe-btn">Subscribe</button>
                     <div class="clearfix"></div>
                     <i class="fa fa-envelope"></i>
                 </div>
-                <div  id="statusSubscriber" style="display: none; font-weight:1600; font-size:30px; background-color: #f2eee4; opacity:0.5; border:0;"></div>
+                <div onclick="checkSubscriber();"  id="statusSubscriber" style="display: none; font-weight:1600; font-size:30px; background-color: #f2eee4; opacity:0.5; border:0;"></div>
             </div>
         </div>
     </form>
